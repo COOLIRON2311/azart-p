@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/battery16.png</file>
+        <file>resources/battery32.png</file>
+        <file>resources/download16.png</file>
+        <file>resources/download32.png</file>
+        <file>resources/picture16.png</file>
+        <file>resources/picture32.png</file>
+        <file>resources/settings16.png</file>
+        <file>resources/settings32.png</file>
+    </qresource>
+</RCC>
