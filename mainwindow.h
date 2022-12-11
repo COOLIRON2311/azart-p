@@ -6,7 +6,7 @@
 #include "QListWidget"
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
@@ -29,7 +29,7 @@ public Q_SLOTS:
     void channels_list_screen();
     void directions_list_screen();
 
-    void channel_editor_screen();
+    void channel_editor_screen(uint32_t ch);
 
 private slots:
     void on_menu_list_itemDoubleClicked(QListWidgetItem *item);
@@ -54,9 +54,16 @@ private slots:
 
     void on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
-    void on_comboBox_activated(const QString &arg1);
+    void on_channel_editor_back_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_channel_editor_state_currentIndexChanged(int index);
 
 private:
+    struct Channel;
+    struct Direction;
+
     Ui::MainWindow *ui;
 
     QListWidgetItem* selected_item = NULL;
@@ -65,10 +72,28 @@ private:
     QListWidgetItem* service_menu_list_item[9];
     QListWidgetItem* data_editor_list_item[9];
 
-    std::vector<QListWidgetItem*> directions_list_item;
-    std::vector<QListWidgetItem*> channels_list_item;
+    std::vector<Direction*> directions_list_item;
+    std::vector<std::pair<QListWidgetItem*, Channel*>> channels_list_item;
+    int current_direction = -1;
+    int current_channel = -1;
+
 
     QListWidgetItem* channels_popup_menu_list_item[3];
+};
+
+struct MainWindow::Channel
+{
+    quint32 state = 0; //"Не задано"
+    bool PRD = false;
+    bool dualfreq = false;
+    quint32 freq = 0;
+    quint32 ctcss = 0;
+    QString name = "";
+};
+
+struct MainWindow::Direction
+{
+    Channel* ch;
 };
 
 #endif // MAINWINDOW_H

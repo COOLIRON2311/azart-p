@@ -277,18 +277,62 @@ void MainWindow::on_channel_menu_button_clicked()
 
 void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
+    if(item == channels_popup_menu_list_item[0]){
+        if(current_channel == -1) return;
+        channel_editor_screen(current_channel);
+    }
     if(item == channels_popup_menu_list_item[1]){
-        channel_editor_screen();
+        channels_list_item.push_back(std::make_pair(new QListWidgetItem(QIcon(""), ""), new Channel()));
+        channel_editor_screen(channels_list_item.size() - 1);
+    }
+    if(item == channels_popup_menu_list_item[2]){
+        if(current_channel != -1){
+            channels_list_item.erase(channels_list_item.begin() + current_channel);
+            current_channel--;
+        }
     }
 }
 
-void MainWindow::channel_editor_screen(){
+void MainWindow::channel_editor_screen(uint32_t ch){
     ui->mainPages->setCurrentWidget(ui->channel_editor_page);
+
+    //ui->channel_editor_state->currentIndex()
+    Channel* curr = channels_list_item[ch].second;
+    if(curr->state == 0){
+        ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+    }
+    if(curr->state == 5){
+        ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
+        ui->is_forbidden_prd->setTristate(curr->PRD);
+        ui->dualfreq->setTristate(curr->dualfreq);
+        ui->channel_freq->setText(QString::number(curr->freq));
+        ui->ctcss->setCurrentIndex(curr->ctcss);
+        ui->channel_name->setText(curr->name);
+    }
 }
 
-void MainWindow::on_comboBox_activated(const QString &arg1)
+void MainWindow::on_channel_editor_back_clicked()
 {
-    if(arg1 == "ЧМ25"){
+    channels_list_screen();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    Channel* curr = channels_list_item[0].second;
+    curr->state = ui->channel_editor_state->currentIndex();
+    if(curr->state == 5){
+        curr->PRD = ui->is_forbidden_prd->isTristate();
+        curr->dualfreq = ui->dualfreq->isTristate();
+        curr->freq = (uint32_t)ui->channel_freq->text().toInt();
+        curr->ctcss = ui->ctcss->currentIndex();
+        curr->name = ui->channel_name->text();
+    }
+    channels_list_screen();
+}
+
+void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
+{
+    if(index == 5){
         ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
     }
     else {

@@ -553,7 +553,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  </widget>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QComboBox" name="comboBox">
+                 <widget class="QComboBox" name="channel_editor_state">
                   <property name="currentText">
                    <string>Не задано</string>
                   </property>
@@ -610,7 +610,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              <item>
               <widget class="QStackedWidget" name="channel_editor_states">
                <property name="currentIndex">
-                <number>0</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="empty_state_page">
                 <layout class="QFormLayout" name="formLayout_4">
@@ -664,14 +664,14 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </widget>
                    </item>
                    <item row="0" column="1">
-                    <widget class="QCheckBox" name="checkBox">
+                    <widget class="QCheckBox" name="is_forbidden_prd">
                      <property name="text">
                       <string/>
                      </property>
                     </widget>
                    </item>
                    <item row="1" column="1">
-                    <widget class="QCheckBox" name="checkBox_2">
+                    <widget class="QCheckBox" name="dualfreq">
                      <property name="text">
                       <string/>
                      </property>
@@ -706,10 +706,10 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </widget>
                    </item>
                    <item row="4" column="1">
-                    <widget class="QLineEdit" name="lineEdit_2"/>
+                    <widget class="QLineEdit" name="channel_name"/>
                    </item>
                    <item row="3" column="1">
-                    <widget class="QComboBox" name="comboBox_2">
+                    <widget class="QComboBox" name="ctcss">
                      <item>
                       <property name="text">
                        <string>Нет</string>
@@ -730,7 +730,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                    <item row="2" column="1">
                     <layout class="QHBoxLayout" name="horizontalLayout_4">
                      <item>
-                      <widget class="QLineEdit" name="lineEdit_3"/>
+                      <widget class="QLineEdit" name="channel_freq"/>
                      </item>
                      <item>
                       <widget class="QLabel" name="label_32">
@@ -786,12 +786,16 @@ QLabel {
               <number>2</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_23">
+              <widget class="QPushButton" name="pushButton">
                <property name="font">
                 <font>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(255, 255, 255);
+text-align:left;</string>
                </property>
                <property name="text">
                 <string>Сохранить</string>
@@ -799,7 +803,7 @@ QLabel {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="data_editor_back_2">
+              <widget class="QPushButton" name="channel_editor_back">
                <property name="font">
                 <font>
                  <weight>75</weight>
