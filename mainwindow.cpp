@@ -55,6 +55,18 @@ MainWindow::MainWindow(QWidget *parent) :
     for(QListWidgetItem* item : data_editor_list_item){
         ui->data_editor_list->addItem(item);
     }
+
+    channels_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
+    channels_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить");
+    channels_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить");
+
+    for(QListWidgetItem* item : channels_popup_menu_list_item){
+        ui->channel_popup_menu_list->addItem(item);
+    }
+
+    ui->channel_popup_menu->setEnabled(false);
+    ui->channel_popup_menu->setVisible(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -63,7 +75,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::selfcontrol_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->selfcontrol_page);
+    ui->mainPages->setCurrentWidget(ui->selfcontrol_page);
 
 
     ui->label_CPU->hide();
@@ -137,7 +149,7 @@ void MainWindow::selfcontrol_screen(){
 }
 
 void MainWindow::loading_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->loading_page);
+    ui->mainPages->setCurrentWidget(ui->loading_page);
 
     // kinda choice
     delay(2000);
@@ -146,20 +158,20 @@ void MainWindow::loading_screen(){
 }
 
 void MainWindow::main_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->main_page);
+    ui->mainPages->setCurrentWidget(ui->main_page);
     delay(2000);
 
     // переключение
 }
 
 void MainWindow::menu_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->menu_page);
+    ui->mainPages->setCurrentWidget(ui->menu_page);
     ui->menu_list->setCurrentRow(0);
     selected_item = ui->menu_list->currentItem();
 }
 
 void MainWindow::service_menu_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->service_menu_page);
+    ui->mainPages->setCurrentWidget(ui->service_menu_page);
     ui->service_menu_list->setCurrentRow(0);
     selected_item = ui->service_menu_list->currentItem();
 }
@@ -204,19 +216,19 @@ void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 }
 
 void MainWindow::data_editor_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->data_editor_page);
+    ui->mainPages->setCurrentWidget(ui->data_editor_page);
     ui->data_editor_list->setCurrentRow(0);
     selected_item = ui->data_editor_list->currentItem();
 }
 
 void MainWindow::channels_list_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->channels_list_page);
+    ui->mainPages->setCurrentWidget(ui->channels_list_page);
     ui->channels_list->setCurrentRow(0);
     selected_item = ui->channels_list->currentItem();
 }
 
 void MainWindow::directions_list_screen(){
-    ui->stackedWidget->setCurrentWidget(ui->directions_list_page);
+    ui->mainPages->setCurrentWidget(ui->directions_list_page);
     ui->directions_list->setCurrentRow(0);
     selected_item = ui->directions_list->currentItem();
 }
@@ -231,7 +243,7 @@ void MainWindow::on_data_editor_list_itemDoubleClicked(QListWidgetItem *item)
     }
 }
 
-void MainWindow::on_service_menu_back_pressed()
+void MainWindow::on_service_menu_back_clicked()
 {
     menu_screen();
 }
@@ -249,4 +261,37 @@ void MainWindow::on_directions_list_back_clicked()
 void MainWindow::on_data_editor_back_clicked()
 {
     service_menu_screen();
+}
+
+void MainWindow::on_channel_menu_button_clicked()
+{
+    if(ui->channel_popup_menu->isVisible()){
+        ui->channel_popup_menu->setEnabled(false);
+        ui->channel_popup_menu->setVisible(false);
+    }
+    else{
+        ui->channel_popup_menu->setEnabled(true);
+        ui->channel_popup_menu->setVisible(true);
+    }
+}
+
+void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
+{
+    if(item == channels_popup_menu_list_item[1]){
+        channel_editor_screen();
+    }
+}
+
+void MainWindow::channel_editor_screen(){
+    ui->mainPages->setCurrentWidget(ui->channel_editor_page);
+}
+
+void MainWindow::on_comboBox_activated(const QString &arg1)
+{
+    if(arg1 == "ЧМ25"){
+        ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
+    }
+    else {
+        ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+    }
 }

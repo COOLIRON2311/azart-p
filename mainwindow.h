@@ -29,6 +29,8 @@ public Q_SLOTS:
     void channels_list_screen();
     void directions_list_screen();
 
+    void channel_editor_screen();
+
 private slots:
     void on_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
@@ -40,13 +42,19 @@ private slots:
 
     void on_data_editor_list_itemDoubleClicked(QListWidgetItem *item);
 
-    void on_service_menu_back_pressed();
+    void on_service_menu_back_clicked();
 
     void on_channels_list_back_clicked();
 
     void on_directions_list_back_clicked();
 
     void on_data_editor_back_clicked();
+
+    void on_channel_menu_button_clicked();
+
+    void on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_comboBox_activated(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
@@ -59,6 +67,8 @@ private:
 
     std::vector<QListWidgetItem*> directions_list_item;
     std::vector<QListWidgetItem*> channels_list_item;
+
+    QListWidgetItem* channels_popup_menu_list_item[3];
 };
 
 #endif // MAINWINDOW_H
