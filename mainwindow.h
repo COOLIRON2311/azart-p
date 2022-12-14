@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "QTimer"
 #include "QListWidget"
+#include <map>
 
 namespace Ui {
     class MainWindow;
@@ -66,7 +67,7 @@ private:
 
     Ui::MainWindow *ui;
 
-    QListWidgetItem* selected_item = NULL;
+    std::map<QString, QListWidgetItem*> selected_items;
 
     QListWidgetItem* menu_list_item[7];
     QListWidgetItem* service_menu_list_item[9];
