@@ -224,7 +224,7 @@ void MainWindow::data_editor_screen(){
 }
 
 void MainWindow::channels_list_screen(){
-    ui->mainPages->setCurrentWidget(ui->channels_list_page);
+    ui->mainPages->setCurrentWidget(ui->channels_list_page);    
     ui->channels_list->setCurrentItem(selected_items["channels_list"]);
 }
 
@@ -281,54 +281,72 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     ui->channel_popup_menu->setVisible(false);
 
     if(item == channels_popup_menu_list_item[0]){
-        if(current_channel == -1) return;
-        channel_editor_screen(current_channel);
+        if(selected_items["channels_list"] == nullptr) return;
+        channel_editor_screen();
     }
     if(item == channels_popup_menu_list_item[1]){
-        channels_list_item.push_back(std::make_pair(new QListWidgetItem(QIcon(""), ""), new Channel()));
-        channel_editor_screen(channels_list_item.size() - 1);
+        auto ref = new QListWidgetItem(QIcon(""), "");
+        channels_map[ref] = new Channel();
+        ui->channels_list->addItem(ref);
+        selected_items["channels_list"] = ref;
+        channel_editor_screen();
     }
     if(item == channels_popup_menu_list_item[2]){
-        if(current_channel != -1){
-            channels_list_item.erase(channels_list_item.begin() + current_channel);
-            current_channel--;
+        if(selected_items["channels_list"] != nullptr){
+            ui->channels_list->removeItemWidget(selected_items["channels_list"]);
+            channels_map.erase(selected_items["channels_list"]);
+            delete selected_items["channels_list"];
+            selected_items["channels_list"] = channels_map.empty() ? nullptr : channels_map.begin()->first;
         }
     }
 }
 
-void MainWindow::channel_editor_screen(uint32_t ch){
+// channel loading
+void MainWindow::channel_editor_screen(){
     ui->mainPages->setCurrentWidget(ui->channel_editor_page);
 
-    //ui->channel_editor_state->currentIndex()
-    Channel* curr = channels_list_item[ch].second;
+    Channel* curr = channels_map[selected_items["channels_list"]];
+
     if(curr->state == 0){
         ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
     }
     if(curr->state == 5){
         ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
-        ui->is_forbidden_prd->setTristate(curr->PRD);
-        ui->dualfreq->setTristate(curr->dualfreq);
-        ui->channel_freq->setText(QString::number(curr->freq));
-        ui->ctcss->setCurrentIndex(curr->ctcss);
-        ui->channel_name->setText(curr->name);
     }
+
+    ui->channel_editor_state->setCurrentIndex(curr->state);
+    ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+    ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
+    ui->channel_freq->setText(QString::number(curr->freq));
+    ui->ctcss->setCurrentIndex(curr->ctcss);
+    ui->channel_name->setText(curr->name);
 }
 
 void MainWindow::on_channel_editor_back_clicked()
 {
-    channels_list_screen();
+    //channels_list_screen();
 }
 
+// channel saving
 void MainWindow::on_pushButton_clicked()
 {
-    Channel* curr = channels_list_item[0].second;
+    Channel* curr = channels_map[selected_items["channels_list"]];
     curr->state = ui->channel_editor_state->currentIndex();
+    if(curr->state == 0){
+        curr->PRD = false;
+        curr->dualfreq = false;
+        curr->freq = 0;
+        curr->ctcss = 0;
+        curr->name = "";
+        selected_items["channels_list"]->setText("");
+    }
     if(curr->state == 5){
-        curr->PRD = ui->is_forbidden_prd->isTristate();
-        curr->dualfreq = ui->dualfreq->isTristate();
+        curr->PRD = ui->is_forbidden_prd->isChecked();
+        curr->dualfreq = ui->dualfreq->isChecked();
         curr->freq = (uint32_t)ui->channel_freq->text().toInt();
         curr->ctcss = ui->ctcss->currentIndex();
         curr->name = ui->channel_name->text();
+        selected_items["channels_list"]->setText(curr->name);
     }
     channels_list_screen();
 }
@@ -341,4 +359,9 @@ void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
     else {
         ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
     }
+}
+
+void MainWindow::on_channels_list_itemClicked(QListWidgetItem *item)
+{
+    selected_items["channels_list"] = item;
 }

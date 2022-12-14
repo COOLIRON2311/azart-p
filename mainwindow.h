@@ -30,7 +30,7 @@ public Q_SLOTS:
     void channels_list_screen();
     void directions_list_screen();
 
-    void channel_editor_screen(uint32_t ch);
+    void channel_editor_screen();
 
 private slots:
     void on_menu_list_itemDoubleClicked(QListWidgetItem *item);
@@ -61,6 +61,8 @@ private slots:
 
     void on_channel_editor_state_currentIndexChanged(int index);
 
+    void on_channels_list_itemClicked(QListWidgetItem *item);
+
 private:
     struct Channel;
     struct Direction;
@@ -74,7 +76,7 @@ private:
     QListWidgetItem* data_editor_list_item[9];
 
     std::vector<Direction*> directions_list_item;
-    std::vector<std::pair<QListWidgetItem*, Channel*>> channels_list_item;
+    std::map<QListWidgetItem*, Channel*> channels_map;
     int current_direction = -1;
     int current_channel = -1;
 
