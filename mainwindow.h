@@ -5,6 +5,7 @@
 #include "QTimer"
 #include "QListWidget"
 #include <map>
+#include <tuple >
 
 namespace Ui {
     class MainWindow;
@@ -27,10 +28,13 @@ public Q_SLOTS:
     void service_menu_screen();
     void data_editor_screen();
 
+    void update_channels_list_screen();
+
     void channels_list_screen();
     void directions_list_screen();
 
     void channel_editor_screen();
+    void direction_editor_screen();
 
 private slots:
     void on_menu_list_itemDoubleClicked(QListWidgetItem *item);
@@ -45,13 +49,13 @@ private slots:
 
     void on_service_menu_back_clicked();
 
-    void on_channels_list_back_clicked();
+    void on_channel_list_left_clicked(); //
+    void on_channels_list_right_clicked(); //
 
-    void on_directions_list_back_clicked();
+    void on_direction_list_left_clicked(); //
+    void on_directions_list_right_clicked(); //
 
     void on_data_editor_back_clicked();
-
-    void on_channel_menu_button_clicked();
 
     void on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
@@ -63,25 +67,47 @@ private slots:
 
     void on_channels_list_itemClicked(QListWidgetItem *item);
 
+    void on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_economizer_currentIndexChanged(int index);
+
+    void on_direction_editor_left_clicked();
+
+    void on_channel_in_dir_name_clicked();
+
 private:
     struct Channel;
     struct Direction;
 
     Ui::MainWindow *ui;
 
-    std::map<QString, QListWidgetItem*> selected_items;
+    using ref = QListWidgetItem*;
 
-    QListWidgetItem* menu_list_item[7];
-    QListWidgetItem* service_menu_list_item[9];
-    QListWidgetItem* data_editor_list_item[9];
+    std::map<QString, ref> selected_items;
 
-    std::vector<Direction*> directions_list_item;
-    std::map<QListWidgetItem*, Channel*> channels_map;
-    int current_direction = -1;
-    int current_channel = -1;
+    ref menu_list_item[7];
+    ref service_menu_list_item[9];
+    ref data_editor_list_item[9];
+
+    struct channelData
+    {
+        Channel* channel;
+        ref ref2; // reference to a row in channel_choice_list
+    };
+
+    /*
+    {channels_map}   ref  -> (Channel* , ref2)
+    {channels_map_d} ref2 -> Channel*
+    */
+    std::map<ref, channelData> channels_map;
+    std::map<ref, Channel*> channels_map_d;
+    std::map<ref, Direction*> directions_map;
 
 
     QListWidgetItem* channels_popup_menu_list_item[3];
+    QListWidgetItem* directions_popup_menu_list_item[3];
 };
 
 struct MainWindow::Channel
@@ -96,7 +122,13 @@ struct MainWindow::Channel
 
 struct MainWindow::Direction
 {
-    Channel* ch;
+    Channel* ch = nullptr;
+    bool PRD = false;
+    bool tone_call = false;
+    quint32 scan_list = 0; //32
+    quint32 economizer = 0; //4
+    QString name = "";
+    quint32 background = 0; //?
 };
 
 #endif // MAINWINDOW_H

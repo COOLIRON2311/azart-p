@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menu_list_item[6] = new QListWidgetItem(QIcon(":/resources/battery32.png"), "Батарея");
 
     for(QListWidgetItem* item : menu_list_item){
-        ui->menu_list->addItem(item);
+        ui->menu_list->addItem(item);        
     }
 
     selected_items["menu_list"] = menu_list_item[0];
@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     selected_items["data_editor_list"] = data_editor_list_item[0];
 
+    //
     channels_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
     channels_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить");
     channels_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить");
@@ -70,11 +71,36 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->channel_popup_menu_list->addItem(item);
     }
 
-    selected_items["channels_popup_menu_list"] = channels_popup_menu_list_item[0];
+    selected_items["channel_popup_menu_list"] = channels_popup_menu_list_item[0];
 
     ui->channel_popup_menu->setEnabled(false);
     ui->channel_popup_menu->setVisible(false);
 
+    //
+    directions_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
+    directions_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить");
+    directions_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить");
+
+    for(QListWidgetItem* item : directions_popup_menu_list_item){
+        ui->direction_popup_menu_list->addItem(item);
+    }
+
+    selected_items["direction_popup_menu_list"] = directions_popup_menu_list_item[0];
+
+    ui->direction_popup_menu->setEnabled(false);
+    ui->direction_popup_menu->setVisible(false);
+
+    ui->scan_list->addItem("Нет");
+    for (int i = 1; i < 33; i++) {
+        ui->scan_list->addItem(QString::number(i));
+    }
+
+    for (int i = 0; i < 4; i++) {
+        ui->economizer->addItem(QString::number(i));
+    }
+    for (int i = 0; i < 6; i++) {
+        ui->background_dir_picture->addItem(QString::number(i));
+    }
 }
 
 MainWindow::~MainWindow()
@@ -223,8 +249,18 @@ void MainWindow::data_editor_screen(){
     ui->data_editor_list->setCurrentItem(selected_items["data_editor_list"]);
 }
 
+void MainWindow::update_channels_list_screen(){
+    if(selected_items["channels_list"] == nullptr){
+        ui->channel_list_stackedWidget->setCurrentWidget(ui->empty_channel_list_page);
+    }
+    else{
+        ui->channel_list_stackedWidget->setCurrentWidget(ui->nonempty_channel_list_page);
+    }
+}
+
 void MainWindow::channels_list_screen(){
-    ui->mainPages->setCurrentWidget(ui->channels_list_page);    
+    ui->mainPages->setCurrentWidget(ui->channels_list_page);
+    update_channels_list_screen();
     ui->channels_list->setCurrentItem(selected_items["channels_list"]);
 }
 
@@ -248,12 +284,12 @@ void MainWindow::on_service_menu_back_clicked()
     menu_screen();
 }
 
-void MainWindow::on_channels_list_back_clicked()
+void MainWindow::on_channels_list_right_clicked()
 {
     data_editor_screen();
 }
 
-void MainWindow::on_directions_list_back_clicked()
+void MainWindow::on_directions_list_right_clicked()
 {
     data_editor_screen();
 }
@@ -263,16 +299,10 @@ void MainWindow::on_data_editor_back_clicked()
     service_menu_screen();
 }
 
-void MainWindow::on_channel_menu_button_clicked()
+void MainWindow::on_channel_list_left_clicked()
 {
-    if(ui->channel_popup_menu->isVisible()){
-        ui->channel_popup_menu->setEnabled(false);
-        ui->channel_popup_menu->setVisible(false);
-    }
-    else{
-        ui->channel_popup_menu->setEnabled(true);
-        ui->channel_popup_menu->setVisible(true);
-    }
+    ui->channel_popup_menu->setEnabled(!ui->channel_popup_menu->isVisible());
+    ui->channel_popup_menu->setVisible(!ui->channel_popup_menu->isVisible());
 }
 
 void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
@@ -285,18 +315,36 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
         channel_editor_screen();
     }
     if(item == channels_popup_menu_list_item[1]){
-        auto ref = new QListWidgetItem(QIcon(""), "");
-        channels_map[ref] = new Channel();
+        QListWidgetItem* ref = new QListWidgetItem(QIcon(""), "");
+        QListWidgetItem* ref2 = new QListWidgetItem(QIcon(""), "");
+        Channel* new_ch = new Channel();
+        channels_map[ref] = {new_ch, ref2};
+        channels_map_d[ref2] = new_ch;
+
+        // for channels
         ui->channels_list->addItem(ref);
+        // for directions
+        ui->channel_choice_list->addItem(ref2);
+
         selected_items["channels_list"] = ref;
         channel_editor_screen();
     }
     if(item == channels_popup_menu_list_item[2]){
         if(selected_items["channels_list"] != nullptr){
+
+            // for channels
             ui->channels_list->removeItemWidget(selected_items["channels_list"]);
+            // for directions
+            ui->channel_choice_list->removeItemWidget(channels_map[selected_items["channels_list"]].ref2);
+            channels_map_d.erase(channels_map[selected_items["channels_list"]].ref2);
+
+            delete channels_map[selected_items["channels_list"]].channel;
+            delete channels_map[selected_items["channels_list"]].ref2;
             channels_map.erase(selected_items["channels_list"]);
             delete selected_items["channels_list"];
             selected_items["channels_list"] = channels_map.empty() ? nullptr : channels_map.begin()->first;
+
+            update_channels_list_screen();
         }
     }
 }
@@ -305,7 +353,7 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
 void MainWindow::channel_editor_screen(){
     ui->mainPages->setCurrentWidget(ui->channel_editor_page);
 
-    Channel* curr = channels_map[selected_items["channels_list"]];
+    Channel* curr = channels_map[selected_items["channels_list"]].channel;
 
     if(curr->state == 0){
         ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
@@ -330,7 +378,7 @@ void MainWindow::on_channel_editor_back_clicked()
 // channel saving
 void MainWindow::on_pushButton_clicked()
 {
-    Channel* curr = channels_map[selected_items["channels_list"]];
+    Channel* curr = channels_map[selected_items["channels_list"]].channel;
     curr->state = ui->channel_editor_state->currentIndex();
     if(curr->state == 0){
         curr->PRD = false;
@@ -339,6 +387,7 @@ void MainWindow::on_pushButton_clicked()
         curr->ctcss = 0;
         curr->name = "";
         selected_items["channels_list"]->setText("");
+        channels_map[selected_items["channels_list"]].ref2->setText("");
     }
     if(curr->state == 5){
         curr->PRD = ui->is_forbidden_prd->isChecked();
@@ -347,6 +396,7 @@ void MainWindow::on_pushButton_clicked()
         curr->ctcss = ui->ctcss->currentIndex();
         curr->name = ui->channel_name->text();
         selected_items["channels_list"]->setText(curr->name);
+        channels_map[selected_items["channels_list"]].ref2->setText(curr->name);
     }
     channels_list_screen();
 }
@@ -364,4 +414,95 @@ void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
 void MainWindow::on_channels_list_itemClicked(QListWidgetItem *item)
 {
     selected_items["channels_list"] = item;
+}
+
+void MainWindow::on_direction_list_left_clicked()
+{
+    ui->direction_popup_menu->setEnabled(!ui->direction_popup_menu->isVisible());
+    ui->direction_popup_menu->setVisible(!ui->direction_popup_menu->isVisible());
+}
+
+void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
+{
+    ui->direction_popup_menu->setEnabled(false);
+    ui->direction_popup_menu->setVisible(false);
+
+    if(item == directions_popup_menu_list_item[0]){
+        if(selected_items["directions_list"] == nullptr) return;
+        direction_editor_screen();
+    }
+    if(item == directions_popup_menu_list_item[1]){
+        auto ref = new QListWidgetItem(QIcon(""), "");
+        directions_map[ref] = new Direction();
+        ui->directions_list->addItem(ref);
+        selected_items["directions_list"] = ref;
+        direction_editor_screen();
+    }
+    if(item == directions_popup_menu_list_item[2]){
+        if(selected_items["directions_list"] != nullptr){
+            ui->directions_list->removeItemWidget(selected_items["directions_list"]);
+            directions_map.erase(selected_items["directions_list"]);
+            delete selected_items["directions_list"];
+            selected_items["directions_list"] = directions_map.empty() ? nullptr : directions_map.begin()->first;
+        }
+    }
+}
+
+// direction loading
+void MainWindow::direction_editor_screen(){
+    ui->mainPages->setCurrentWidget(ui->direction_editor_page);
+
+    Direction* curr = directions_map[selected_items["directions_list"]];
+
+    if(curr->ch == nullptr){
+        ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+    }
+    else{
+        ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
+    }
+
+    ui->is_forbidden_prd_d->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+    ui->is_tone_call->setCheckState(curr->tone_call ? Qt::Checked : Qt::Unchecked);
+    ui->scan_list->setCurrentIndex(curr->scan_list);
+    ui->economizer->setCurrentIndex(curr->economizer);
+    ui->name_d->setText(curr->name);
+    ui->background_dir_picture->setCurrentIndex(curr->background);
+}
+
+void MainWindow::on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item)
+{
+    directions_map[selected_items["directions_list"]]->ch = channels_map_d[item];
+    ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
+    ui->channel_in_dir_name->setText(channels_map_d[item]->name);
+}
+
+void MainWindow::on_economizer_currentIndexChanged(int index)
+{
+    switch (index) {
+    case 0:
+        ui->label_34->setText("0ms / 0ms");
+        break;
+    case 1:
+        ui->label_34->setText("50ms / 500ms");
+        break;
+    case 2:
+        ui->label_34->setText("100ms / 1000ms");
+        break;
+    case 3:
+        ui->label_34->setText("200ms / 2000ms");
+        break;
+    default:
+        break;
+    }
+}
+
+// direction saving
+void MainWindow::on_direction_editor_left_clicked()
+{
+
+}
+
+void MainWindow::on_channel_in_dir_name_clicked()
+{
+    ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);
 }
