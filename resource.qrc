@@ -8,5 +8,6 @@
         <file>resources/picture32.png</file>
         <file>resources/settings16.png</file>
         <file>resources/settings32.png</file>
+        <file>resources/Kremlin.png</file>
     </qresource>
 </RCC>

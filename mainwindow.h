@@ -5,7 +5,7 @@
 #include "QTimer"
 #include "QListWidget"
 #include <map>
-#include <tuple >
+#include <tuple>
 
 namespace Ui {
     class MainWindow;
@@ -39,6 +39,8 @@ public Q_SLOTS:
 
     void channel_editor_screen();
     void direction_editor_screen();
+
+    void direction_selection_screen();
 
 private slots:
 
@@ -91,6 +93,12 @@ private slots:
 
     void on_menu_back_clicked();
 
+    void on_direction_selection_left_clicked();
+
+    void on_direction_selection_right_clicked();
+
+    void on_directions_selection_list_itemClicked(QListWidgetItem *item);
+
 private:
     struct Channel;
     struct Direction;
@@ -108,7 +116,13 @@ private:
     struct channelData
     {
         Channel* channel;
-        ref ref2; // reference to a row in channel_choice_list
+        ref ref2; // reference to a row in direction_selection_list
+    };
+
+    struct directionData
+    {
+        Direction* direction;
+        ref ref2; // reference to a row in direction_selection_list
     };
 
     /*
@@ -117,13 +131,15 @@ private:
     */
     std::map<ref, channelData> channels_map;
     std::map<ref, Channel*> channels_map_d;
-    std::map<ref, Direction*> directions_map;
-
+    std::map<ref, directionData> directions_map;
+    std::map<ref, Direction*> directions_map_d;
 
     QListWidgetItem* channels_popup_menu_list_item[3];
     QListWidgetItem* directions_popup_menu_list_item[3];
 
     QTimer time_timer;
+
+    Direction* current_direction = nullptr;
 };
 
 struct MainWindow::Channel

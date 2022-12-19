@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTime>
+#include <QDate>
 //#include <QDebug>
 
 inline void delay(int millisecondsWait)
@@ -12,12 +13,17 @@ inline void delay(int millisecondsWait)
     loop.exec();
 }
 
-void MainWindow::change_global_time(){
+void MainWindow::change_global_time()
+{
     QTime time = QTime::currentTime();
+
     ui->hours_minutes->setText(QString::number(time.hour()) + ":" + QString::number(time.minute()));
     ui->seconds->setText(QString::number(time.second()));
+
     ui->hours_minutes_2->setText(QString::number(time.hour()) + ":" + QString::number(time.minute()));
     ui->seconds_2->setText(QString::number(time.second()));
+
+    ui->data_label->setText(QDate::currentDate().toString("dd.MM.yyyy"));
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -126,7 +132,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::selfcontrol_screen(){
+void MainWindow::selfcontrol_screen()
+{
     ui->mainPages->setCurrentWidget(ui->selfcontrol_page);
 
 
@@ -200,7 +207,8 @@ void MainWindow::selfcontrol_screen(){
     loading_screen();
 }
 
-void MainWindow::loading_screen(){
+void MainWindow::loading_screen()
+{
     ui->mainPages->setCurrentWidget(ui->loading_page);
 
     // kinda choice
@@ -209,21 +217,39 @@ void MainWindow::loading_screen(){
     main_screen();
 }
 
-void MainWindow::main_screen(){
+void MainWindow::main_screen()
+{
     ui->mainPages->setCurrentWidget(ui->main_page);
+
+    if(current_direction != nullptr){
+        ui->direction_label->setText(current_direction->name);
+        if(current_direction->ch != nullptr){
+            ui->channel_label->setText(current_direction->ch->name);
+        }
+
+        ui->main_background->setStyleSheet("border-image: url(./resources/Kremlin.png)");
+        ui->dejurnii_label->setText("Дежурный приём");
+    }
+    else{
+        ui->main_background->setStyleSheet("background-color: black");
+        ui->dejurnii_label->setText("");
+    }
 }
 
-void MainWindow::menu_screen(){
+void MainWindow::menu_screen()
+{
     ui->mainPages->setCurrentWidget(ui->menu_page);
     ui->menu_list->setCurrentItem(selected_items["menu_list"]);
 }
 
-void MainWindow::service_menu_screen(){
+void MainWindow::service_menu_screen()
+{
     ui->mainPages->setCurrentWidget(ui->service_menu_page);
     ui->service_menu_list->setCurrentItem(selected_items["service_menu_list"]);
 }
 
-void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item){
+void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
+{
     if(item == menu_list_item[5]){
         service_menu_screen();
     }
@@ -259,12 +285,14 @@ void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
     }
 }
 
-void MainWindow::data_editor_screen(){
+void MainWindow::data_editor_screen()
+{
     ui->mainPages->setCurrentWidget(ui->data_editor_page);
     ui->data_editor_list->setCurrentItem(selected_items["data_editor_list"]);
 }
 
-void MainWindow::update_channels_list_screen(){
+void MainWindow::update_channels_list_screen()
+{
     if(selected_items["channels_list"] == nullptr){
         ui->channel_list_stackedWidget->setCurrentWidget(ui->empty_channel_list_page);
     }
@@ -273,13 +301,15 @@ void MainWindow::update_channels_list_screen(){
     }
 }
 
-void MainWindow::channels_list_screen(){
+void MainWindow::channels_list_screen()
+{
     ui->mainPages->setCurrentWidget(ui->channels_list_page);
     update_channels_list_screen();
     ui->channels_list->setCurrentItem(selected_items["channels_list"]);
 }
 
-void MainWindow::directions_list_screen(){
+void MainWindow::directions_list_screen()
+{
     ui->mainPages->setCurrentWidget(ui->directions_list_page);
     ui->directions_list->setCurrentItem(selected_items["directions_list"]);
 }
@@ -365,7 +395,8 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
 }
 
 // channel loading
-void MainWindow::channel_editor_screen(){
+void MainWindow::channel_editor_screen()
+{
     ui->mainPages->setCurrentWidget(ui->channel_editor_page);
 
     Channel* curr = channels_map[selected_items["channels_list"]].channel;
@@ -447,15 +478,29 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
         direction_editor_screen();
     }
     if(item == directions_popup_menu_list_item[1]){
-        auto ref = new QListWidgetItem(QIcon(""), "");
-        directions_map[ref] = new Direction();
+        QListWidgetItem* ref = new QListWidgetItem(QIcon(""), "");
+        QListWidgetItem* ref2 = new QListWidgetItem(QIcon(""), "");
+        Direction* new_dir = new Direction();
+        directions_map[ref] = {new_dir, ref2};
+        directions_map_d[ref2] = new_dir;
+
         ui->directions_list->addItem(ref);
+        ui->directions_selection_list->addItem(ref2);
+
         selected_items["directions_list"] = ref;
         direction_editor_screen();
     }
     if(item == directions_popup_menu_list_item[2]){
         if(selected_items["directions_list"] != nullptr){
             ui->directions_list->removeItemWidget(selected_items["directions_list"]);
+            ui->directions_selection_list->removeItemWidget(directions_map[selected_items["directions_list"]].ref2);
+            directions_map_d.erase(directions_map[selected_items["directions_list"]].ref2);
+
+            if(current_direction == directions_map[selected_items["directions_list"]].direction){
+                current_direction = nullptr;
+            }
+            delete directions_map[selected_items["directions_list"]].direction;
+            delete directions_map[selected_items["directions_list"]].ref2;
             directions_map.erase(selected_items["directions_list"]);
             delete selected_items["directions_list"];
             selected_items["directions_list"] = directions_map.empty() ? nullptr : directions_map.begin()->first;
@@ -464,10 +509,11 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
 }
 
 // direction loading
-void MainWindow::direction_editor_screen(){
+void MainWindow::direction_editor_screen()
+{
     ui->mainPages->setCurrentWidget(ui->direction_editor_page);
 
-    Direction* curr = directions_map[selected_items["directions_list"]];
+    Direction* curr = directions_map[selected_items["directions_list"]].direction;
 
     if(curr->ch == nullptr){
         ui->channel_in_dir_name->setText("Не задано(Idle)");
@@ -495,7 +541,7 @@ void MainWindow::direction_editor_screen(){
 
 void MainWindow::on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item)
 {
-    directions_map[selected_items["directions_list"]]->ch = channels_map_d[item];
+    directions_map[selected_items["directions_list"]].direction->ch = channels_map_d[item];
     ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
     ui->channel_in_dir_name->setText(channels_map_d[item]->name);
 }
@@ -523,7 +569,7 @@ void MainWindow::on_economizer_currentIndexChanged(int index)
 // direction saving
 void MainWindow::on_direction_editor_left_clicked()
 {
-    Direction* curr = directions_map[selected_items["directions_list"]];
+    Direction* curr = directions_map[selected_items["directions_list"]].direction;
 
     curr->PRD = ui->is_forbidden_prd_d->isChecked();
     curr->tone_call = ui->is_tone_call->isChecked();
@@ -531,8 +577,10 @@ void MainWindow::on_direction_editor_left_clicked()
     curr->economizer = ui->economizer->currentIndex();
     curr->name = ui->name_d->text();
     curr->background = ui->background_dir_picture->currentIndex();
-    selected_items["directions_list"]->setText(curr->name);
-
+    selected_items["directions_list"]->setText(curr->name + "\n" + curr->ch->name);
+    selected_items["directions_list"]->setIcon(QIcon(":/resources/picture32.png"));
+    directions_map[selected_items["directions_list"]].ref2->setText(curr->name + "\n" + curr->ch->name);
+    directions_map[selected_items["directions_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
     directions_list_screen();
 }
 
@@ -558,10 +606,39 @@ void MainWindow::on_main_left_clicked()
 
 void MainWindow::on_main_right_clicked()
 {
-
+    direction_selection_screen();
 }
 
 void MainWindow::on_menu_back_clicked()
 {
     main_screen();
+}
+
+void MainWindow::on_direction_selection_left_clicked()
+{
+    if(selected_items["directions_selection_list"] != nullptr){
+        current_direction = directions_map_d[selected_items["directions_selection_list"]];
+    }
+    else{
+        current_direction = nullptr;
+    }
+    main_screen();
+}
+
+void MainWindow::on_direction_selection_right_clicked()
+{
+    main_screen();
+}
+
+void MainWindow::direction_selection_screen()
+{
+    ui->mainPages->setCurrentWidget(ui->direction_selection_page);
+    if(selected_items["directions_selection_list"] == nullptr){
+        selected_items["directions_selection_list"] = directions_map_d.empty() ? nullptr : directions_map_d.begin()->first;
+    }
+}
+
+void MainWindow::on_directions_selection_list_itemClicked(QListWidgetItem *item)
+{
+    selected_items["directions_selection_list"] = item;
 }
