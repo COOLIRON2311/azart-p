@@ -19,7 +19,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void change_global_time();
+
 public Q_SLOTS:
+
 
     void selfcontrol_screen();
     void loading_screen();
@@ -37,6 +41,7 @@ public Q_SLOTS:
     void direction_editor_screen();
 
 private slots:
+
     void on_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
     void on_menu_list_itemSelectionChanged();
@@ -112,6 +117,8 @@ private:
 
     QListWidgetItem* channels_popup_menu_list_item[3];
     QListWidgetItem* directions_popup_menu_list_item[3];
+
+    QTimer time_timer;
 };
 
 struct MainWindow::Channel

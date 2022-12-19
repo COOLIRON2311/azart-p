@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QTime>
+//#include <QDebug>
 
 inline void delay(int millisecondsWait)
 {
@@ -10,11 +12,25 @@ inline void delay(int millisecondsWait)
     loop.exec();
 }
 
+void MainWindow::change_global_time(){
+    QTime time = QTime::currentTime();
+    ui->hours_minutes->setText(QString::number(time.hour()) + ":" + QString::number(time.minute()));
+    ui->seconds->setText(QString::number(time.second()));
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+
+    time_timer.setInterval(1000);
+    time_timer.connect(&time_timer, &QTimer::timeout, this, &MainWindow::change_global_time);
+    time_timer.start();
+
+    ui->hours_minutes->setText("");
+    ui->seconds->setText("");
 
     menu_list_item[0] = new QListWidgetItem(QIcon(":/resources/settings32.png"), "Шумоподавление");
     menu_list_item[1] = new QListWidgetItem(QIcon(":/resources/settings32.png"), "Громкость");
