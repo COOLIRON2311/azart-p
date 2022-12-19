@@ -86,6 +86,11 @@ private slots:
 
     void on_directions_list_itemClicked(QListWidgetItem *item);
 
+    void on_main_left_clicked(); //
+    void on_main_right_clicked(); //
+
+    void on_menu_back_clicked();
+
 private:
     struct Channel;
     struct Direction;

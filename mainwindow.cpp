@@ -16,6 +16,8 @@ void MainWindow::change_global_time(){
     QTime time = QTime::currentTime();
     ui->hours_minutes->setText(QString::number(time.hour()) + ":" + QString::number(time.minute()));
     ui->seconds->setText(QString::number(time.second()));
+    ui->hours_minutes_2->setText(QString::number(time.hour()) + ":" + QString::number(time.minute()));
+    ui->seconds_2->setText(QString::number(time.second()));
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -204,14 +206,11 @@ void MainWindow::loading_screen(){
     // kinda choice
     delay(2000);
 
-    menu_screen();
+    main_screen();
 }
 
 void MainWindow::main_screen(){
     ui->mainPages->setCurrentWidget(ui->main_page);
-    delay(2000);
-
-    // переключение
 }
 
 void MainWindow::menu_screen(){
@@ -550,4 +549,19 @@ void MainWindow::on_channel_choice_list_itemClicked(QListWidgetItem *item)
 void MainWindow::on_directions_list_itemClicked(QListWidgetItem *item)
 {
     selected_items["directions_list"] = item;
+}
+
+void MainWindow::on_main_left_clicked()
+{
+    menu_screen();
+}
+
+void MainWindow::on_main_right_clicked()
+{
+
+}
+
+void MainWindow::on_menu_back_clicked()
+{
+    main_screen();
 }
