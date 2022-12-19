@@ -77,6 +77,10 @@ private slots:
 
     void on_channel_in_dir_name_clicked();
 
+    void on_channel_choice_list_itemClicked(QListWidgetItem *item);
+
+    void on_directions_list_itemClicked(QListWidgetItem *item);
+
 private:
     struct Channel;
     struct Direction;

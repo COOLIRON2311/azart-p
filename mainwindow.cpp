@@ -455,9 +455,18 @@ void MainWindow::direction_editor_screen(){
     Direction* curr = directions_map[selected_items["directions_list"]];
 
     if(curr->ch == nullptr){
+        ui->channel_in_dir_name->setText("Не задано(Idle)");
+        ui->channel_choice_list->setCurrentRow(-1);
         ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
     }
     else{
+        ui->channel_in_dir_name->setText(curr->ch->name);
+        for(const auto& p : channels_map_d){
+            if(p.second == curr->ch){
+                ui->channel_choice_list->setCurrentItem(p.first);
+                break;
+            }
+        }
         ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
     }
 
@@ -499,10 +508,30 @@ void MainWindow::on_economizer_currentIndexChanged(int index)
 // direction saving
 void MainWindow::on_direction_editor_left_clicked()
 {
+    Direction* curr = directions_map[selected_items["directions_list"]];
 
+    curr->PRD = ui->is_forbidden_prd_d->isChecked();
+    curr->tone_call = ui->is_tone_call->isChecked();
+    curr->scan_list = ui->scan_list->currentIndex();
+    curr->economizer = ui->economizer->currentIndex();
+    curr->name = ui->name_d->text();
+    curr->background = ui->background_dir_picture->currentIndex();
+    selected_items["directions_list"]->setText(curr->name);
+
+    directions_list_screen();
 }
 
 void MainWindow::on_channel_in_dir_name_clicked()
 {
     ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);
+}
+
+void MainWindow::on_channel_choice_list_itemClicked(QListWidgetItem *item)
+{
+    selected_items["channels_choice_list"] = item;
+}
+
+void MainWindow::on_directions_list_itemClicked(QListWidgetItem *item)
+{
+    selected_items["directions_list"] = item;
 }
