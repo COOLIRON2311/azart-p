@@ -731,7 +731,7 @@ void MainWindow::sendDatagrams()
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    //1if(current_direction != nullptr && current_direction->ch != nullptr)
+    if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         if(event->key() == Qt::Key_1 && !transmitting)
         {
@@ -746,7 +746,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-    //if(current_direction != nullptr && current_direction->ch != nullptr)
+    if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         if(event->key() == Qt::Key_1 && !event->isAutoRepeat())
         {
