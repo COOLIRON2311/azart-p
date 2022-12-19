@@ -227,7 +227,8 @@ void MainWindow::main_screen()
             ui->channel_label->setText(current_direction->ch->name);
         }
 
-        ui->main_background->setStyleSheet("border-image: url(./resources/Kremlin.png)");
+
+        ui->main_background->setStyleSheet("border-image: url(:/resources/Kremlin.png)");
         ui->dejurnii_label->setText("Дежурный приём");
     }
     else{
@@ -579,7 +580,7 @@ void MainWindow::on_direction_editor_left_clicked()
     curr->background = ui->background_dir_picture->currentIndex();
     selected_items["directions_list"]->setText(curr->name + "\n" + curr->ch->name);
     selected_items["directions_list"]->setIcon(QIcon(":/resources/picture32.png"));
-    directions_map[selected_items["directions_list"]].ref2->setText(curr->name + "\n" + curr->ch->name);
+    directions_map[selected_items["directions_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
     directions_map[selected_items["directions_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
     directions_list_screen();
 }

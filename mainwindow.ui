@@ -2383,8 +2383,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
           <item>
            <widget class="QWidget" name="main_background" native="true">
             <property name="styleSheet">
-             <string notr="true">border-image: url(./resources/Kremlin.png);
-</string>
+             <string notr="true">border-image: url(./resources/Kremlin.png)</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_34">
              <property name="leftMargin">
