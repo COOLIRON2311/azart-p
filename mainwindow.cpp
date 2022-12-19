@@ -2,7 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QTime>
 #include <QDate>
-//#include <QDebug>
+#include <QDebug>
+#include <QtMultimedia>
+#include <iostream>
 
 inline void delay(int millisecondsWait)
 {
@@ -125,11 +127,19 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i = 0; i < 6; i++) {
         ui->background_dir_picture->addItem(QString::number(i));
     }
+
+    broadcast_init();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    udpSocket.leaveMulticastGroup(QHostAddress(ADDR));
+    outpDev->close();
+    delete inpt;
+    delete outp;
+    delete inptDev;
+    delete outpDev;
 }
 
 void MainWindow::selfcontrol_screen()
@@ -642,4 +652,114 @@ void MainWindow::direction_selection_screen()
 void MainWindow::on_directions_selection_list_itemClicked(QListWidgetItem *item)
 {
     selected_items["directions_selection_list"] = item;
+}
+
+void MainWindow::broadcast_init()
+{
+    udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
+    udpSocket.joinMulticastGroup(QHostAddress(ADDR));
+    connect(&udpSocket, &QUdpSocket::readyRead,
+        this, &MainWindow::recieveDatagrams);
+
+    QAudioFormat format_in;
+    format_in.setSampleRate(8000);
+    format_in.setChannelCount(1);
+    format_in.setSampleSize(8);
+    format_in.setCodec("audio/pcm");
+    format_in.setByteOrder(QAudioFormat::LittleEndian);
+    format_in.setSampleType(QAudioFormat::UnSignedInt);
+
+    QAudioDeviceInfo info(QAudioDeviceInfo::defaultInputDevice());
+    if (!info.isFormatSupported(format_in))
+        format_in = info.nearestFormat(format_in);
+
+    QAudioFormat format_out;
+    format_out.setSampleRate(8000);
+    format_out.setChannelCount(1);
+    format_out.setSampleSize(8);
+    format_out.setCodec("audio/pcm");
+    format_out.setByteOrder(QAudioFormat::LittleEndian);
+    format_out.setSampleType(QAudioFormat::UnSignedInt);
+
+    QAudioDeviceInfo info2(QAudioDeviceInfo::defaultOutputDevice());
+    if (!info2.isFormatSupported(format_out))
+        format_out = info2.nearestFormat(format_out);
+
+    inpt = new QAudioInput(format_in, this);
+    outp = new QAudioOutput(format_out, this);
+    inpt->setBufferSize(BUF_SZ);
+    outp->setBufferSize(BUF_SZ);
+
+    outpDev = outp->start();
+
+    connect(&udpSocket, SIGNAL(readyRead()), this, SLOT(recieveDatagrams()), Qt::QueuedConnection);
+}
+
+void MainWindow::recieveDatagrams()
+{
+    QByteArray datagram;
+    while (udpSocket.hasPendingDatagrams()) {
+        datagram.resize(int(udpSocket.pendingDatagramSize()));
+        udpSocket.readDatagram(datagram.data(), datagram.size());
+    }
+    int freq = getFreq();
+    int incoming_freq;
+    from_byte_array(datagram.constData(), incoming_freq);
+    if (incoming_freq == freq && !transmitting)
+    {
+        buffer.append(datagram.constData() + 4, datagram.size() - 4);
+        playSamples();
+    }
+}
+
+void MainWindow::playSamples()
+{
+    outpDev->write(buffer);
+    buffer.clear();
+}
+
+void MainWindow::sendDatagrams()
+{
+    QByteArray datagram;
+    int freq = getFreq();
+    to_byte_array(freq_bytes, freq);
+    datagram.append(freq_bytes, 4);
+    datagram.append(inptDev->readAll());
+    udpSocket.writeDatagram(datagram.data(), datagram.size(),
+        QHostAddress(ADDR), PORT);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    //1if(current_direction != nullptr && current_direction->ch != nullptr)
+    {
+        if(event->key() == Qt::Key_1 && !transmitting)
+        {
+            qDebug() << "pressed\n";
+            transmitting = true;
+            inptDev = inpt->start();
+            inptConn = connect(inptDev, &QIODevice::readyRead,
+                this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
+        }
+    }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    //if(current_direction != nullptr && current_direction->ch != nullptr)
+    {
+        if(event->key() == Qt::Key_1 && !event->isAutoRepeat())
+        {
+            qDebug() << "released\n";
+            transmitting = false;
+            inptDev->close();
+            inpt->stop();
+            disconnect(inptConn);
+        }
+    }
+}
+
+inline int MainWindow::getFreq(){
+    if(current_direction == nullptr || current_direction->ch == nullptr) return 0;
+    return (int)current_direction->ch->freq;
 }

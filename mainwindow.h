@@ -6,6 +6,10 @@
 #include "QListWidget"
 #include <map>
 #include <tuple>
+#include <QUdpSocket>
+#include <QAudioInput>
+#include <QAudioOutput>
+#include <qbuffer.h>
 
 namespace Ui {
     class MainWindow;
@@ -24,7 +28,6 @@ public slots:
 
 public Q_SLOTS:
 
-
     void selfcontrol_screen();
     void loading_screen();
     void main_screen();
@@ -42,7 +45,30 @@ public Q_SLOTS:
 
     void direction_selection_screen();
 
+    void broadcast_init();
+
+private:
+    void sendDatagrams();
+    void playSamples();
+
+    inline int getFreq();
+
+    template<typename T>
+    inline void to_byte_array(char a[], T t)
+    {
+        memcpy(a, &t, sizeof(T));
+    }
+
+    template<typename T>
+    inline void from_byte_array(const char a[], T& t)
+    {
+        memcpy(&t, a, sizeof(T));
+    }
+
 private slots:
+
+
+    void recieveDatagrams();
 
     void on_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
@@ -140,6 +166,26 @@ private:
     QTimer time_timer;
 
     Direction* current_direction = nullptr;
+
+
+    QUdpSocket udpSocket;
+    const QString ADDR = "26.115.163.75";
+    const uint PORT = 52130;
+    bool transmitting = false;
+    QAudioInput* inpt;
+    QAudioOutput* outp;
+    QIODevice* inptDev;
+    QIODevice* outpDev;
+    QByteArray buffer;
+    QMetaObject::Connection inptConn;
+    QMetaObject::Connection outpConn;
+    const uint BUF_SZ = 1024;
+    char freq_bytes[4];
+
+protected:
+
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 };
 
 struct MainWindow::Channel
