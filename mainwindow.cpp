@@ -19,11 +19,15 @@ void MainWindow::change_global_time()
 {
     QTime time = QTime::currentTime();
 
-    ui->hours_minutes->setText(QString::number(time.hour()) + ":" + QString::number(time.minute()));
-    ui->seconds->setText(QString::number(time.second()));
+    QString hm, s;
+    hm.sprintf("%02d:%02d", time.hour(), time.minute());
+    s.sprintf("%02d", time.second());
 
-    ui->hours_minutes_2->setText(QString::number(time.hour()) + ":" + QString::number(time.minute()));
-    ui->seconds_2->setText(QString::number(time.second()));
+    ui->hours_minutes->setText(hm);
+    ui->seconds->setText(s);
+
+    ui->hours_minutes_2->setText(hm);
+    ui->seconds_2->setText(s);
 
     ui->data_label->setText(QDate::currentDate().toString("dd.MM.yyyy"));
 }
