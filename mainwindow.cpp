@@ -335,9 +335,14 @@ void MainWindow::on_data_editor_list_itemDoubleClicked(QListWidgetItem *item)
     }
 }
 
-void MainWindow::on_service_menu_back_clicked()
+void MainWindow::on_service_menu_right_clicked()
 {
     menu_screen();
+}
+
+void MainWindow::on_service_menu_left_clicked()
+{
+    on_service_menu_list_itemDoubleClicked(selected_items["service_menu_list"]);
 }
 
 void MainWindow::on_channels_list_right_clicked()
@@ -735,7 +740,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     {
         if(event->key() == Qt::Key_1 && !transmitting)
         {
-            qDebug() << "pressed\n";
             transmitting = true;
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
@@ -750,7 +754,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
     {
         if(event->key() == Qt::Key_1 && !event->isAutoRepeat())
         {
-            qDebug() << "released\n";
             transmitting = false;
             inptDev->close();
             inpt->stop();
@@ -762,4 +765,31 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 inline int MainWindow::getFreq(){
     if(current_direction == nullptr || current_direction->ch == nullptr) return 0;
     return (int)current_direction->ch->freq;
+}
+
+void MainWindow::on_directions_button_clicked()
+{
+    direction_selection_screen();
+}
+
+void MainWindow::on_left_arrow_clicked()
+{
+    auto curr = ui->mainPages->currentWidget();
+    if(curr == ui->main_page){
+        ui->main_left->click();
+    }
+    else if(ui->service_menu_page){
+        ui->service_menu_left->click();
+    }
+}
+
+void MainWindow::on_right_arrow_clicked()
+{
+    auto curr = ui->mainPages->currentWidget();
+    if(curr == ui->main_page){
+        ui->main_right->click();
+    }
+    else if(ui->service_menu_page){
+        ui->service_menu_right->click();
+    }
 }

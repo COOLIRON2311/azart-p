@@ -9,5 +9,7 @@
         <file>resources/settings16.png</file>
         <file>resources/settings32.png</file>
         <file>resources/Kremlin.png</file>
+        <file>resources/front.png</file>
+        <file>resources/left.png</file>
     </qresource>
 </RCC>

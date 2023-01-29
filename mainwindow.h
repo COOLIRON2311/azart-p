@@ -80,7 +80,8 @@ private slots:
 
     void on_data_editor_list_itemDoubleClicked(QListWidgetItem *item);
 
-    void on_service_menu_back_clicked();
+    void on_service_menu_left_clicked(); //
+    void on_service_menu_right_clicked(); //
 
     void on_channel_list_left_clicked(); //
     void on_channels_list_right_clicked(); //
@@ -124,6 +125,12 @@ private slots:
     void on_direction_selection_right_clicked();
 
     void on_directions_selection_list_itemClicked(QListWidgetItem *item);
+
+    void on_directions_button_clicked();
+
+    void on_left_arrow_clicked();
+
+    void on_right_arrow_clicked();
 
 private:
     struct Channel;
