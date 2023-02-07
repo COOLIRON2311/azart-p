@@ -224,11 +224,8 @@ void MainWindow::selfcontrol_screen()
 void MainWindow::loading_screen()
 {
     ui->mainPages->setCurrentWidget(ui->loading_page);
-
-    // kinda choice
-    delay(2000);
-
-    main_screen();
+    ui->label_15->setStyleSheet("font-weight: bold;");
+    ui->widget_8->setStyleSheet("font-weight: bold;");
 }
 
 void MainWindow::main_screen()
@@ -779,6 +776,11 @@ void MainWindow::on_directions_button_clicked()
 void MainWindow::on_left_arrow_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
+    if(curr == ui->loading_page){
+        if(is_open_communication){
+            main_screen();
+        }
+    }
     if(curr == ui->main_page){
         ui->main_left->click();
     }
@@ -796,4 +798,95 @@ void MainWindow::on_right_arrow_clicked()
     else if(ui->service_menu_page){
         ui->service_menu_right->click();
     }
+}
+
+void MainWindow::on_number_1_clicked()
+{
+    on_number_i_clicked(1);
+}
+void MainWindow::on_number_2_clicked()
+{
+    on_number_i_clicked(2);
+}
+void MainWindow::on_number_3_clicked()
+{
+    on_number_i_clicked(3);
+}
+void MainWindow::on_number_4_clicked()
+{
+    on_number_i_clicked(4);
+}
+void MainWindow::on_number_5_clicked()
+{
+    on_number_i_clicked(5);
+}
+void MainWindow::on_number_6_clicked()
+{
+    on_number_i_clicked(6);
+}
+void MainWindow::on_number_7_clicked()
+{
+    on_number_i_clicked(7);
+}
+void MainWindow::on_number_8_clicked()
+{
+    on_number_i_clicked(8);
+}
+void MainWindow::on_number_9_clicked()
+{
+    on_number_i_clicked(9);
+}
+void MainWindow::on_number_0_clicked()
+{
+    on_number_i_clicked(0);
+}
+
+void MainWindow::on_number_i_clicked(int i)
+{
+    auto curr = ui->mainPages->currentWidget();
+    // TODO: ..
+}
+
+
+
+void MainWindow::on_up_arrow_clicked()
+{
+    auto curr = ui->mainPages->currentWidget();
+    if(curr == ui->loading_page){
+        //changing type
+        if(!is_open_communication){
+            is_open_communication = true;
+            ui->label_14->setStyleSheet("background: rgb(0, 0, 255);");
+            ui->widget_7->setStyleSheet("background: rgb(0, 0, 255);");
+
+            ui->label_15->setStyleSheet("font-weight: bold;");
+            ui->widget_8->setStyleSheet("font-weight: bold;");
+        }
+    }
+}
+
+void MainWindow::on_down_arrow_clicked()
+{
+    auto curr = ui->mainPages->currentWidget();
+    if(curr == ui->loading_page){
+        //changing type
+        if(is_open_communication){
+            is_open_communication = false;
+            ui->label_14->setStyleSheet("font-weight: bold;");
+            ui->widget_7->setStyleSheet("font-weight: bold; ");
+
+            ui->label_15->setStyleSheet("background: rgb(0, 0, 255);");
+            ui->widget_8->setStyleSheet("background: rgb(0, 0, 255);");
+        }
+    }
+}
+
+void MainWindow::on_left_tube_clicked()
+{
+    auto curr = ui->mainPages->currentWidget();
+}
+
+void MainWindow::on_right_tube_clicked()
+{
+    auto curr = ui->mainPages->currentWidget();
 }

@@ -132,6 +132,27 @@ private slots:
 
     void on_right_arrow_clicked();
 
+    void on_number_1_clicked();
+    void on_number_2_clicked();
+    void on_number_3_clicked();
+    void on_number_4_clicked();
+    void on_number_5_clicked();
+    void on_number_6_clicked();
+    void on_number_7_clicked();
+    void on_number_8_clicked();
+    void on_number_9_clicked();
+    void on_number_0_clicked();
+
+    void on_number_i_clicked(int);
+
+    void on_up_arrow_clicked();
+
+    void on_down_arrow_clicked();
+
+    void on_left_tube_clicked();
+
+    void on_right_tube_clicked();
+
 private:
     struct Channel;
     struct Direction;
@@ -141,6 +162,7 @@ private:
     using ref = QListWidgetItem*;
 
     std::map<QString, ref> selected_items;
+    bool is_open_communication = true;
 
     ref menu_list_item[7];
     ref service_menu_list_item[9];
