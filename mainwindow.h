@@ -118,7 +118,8 @@ private slots:
     void on_main_left_clicked(); //
     void on_main_right_clicked(); //
 
-    void on_menu_back_clicked();
+    void on_menu_left_clicked();
+    void on_menu_right_clicked();
 
     void on_direction_selection_left_clicked();
 
@@ -166,9 +167,12 @@ private:
     std::map<QString, ref> selected_items;
     bool is_open_communication = true;
 
-    ref menu_list_item[7];
-    ref service_menu_list_item[9];
-    ref data_editor_list_item[9];
+    static const uint menu_list_size = 7;
+    ref menu_list_item[menu_list_size];
+    static const uint service_menu_list_size = 9;
+    ref service_menu_list_item[service_menu_list_size];
+    static const uint data_editor_list_size = 9;
+    ref data_editor_list_item[data_editor_list_size];
 
     struct channelData
     {

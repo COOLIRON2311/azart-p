@@ -629,7 +629,13 @@ void MainWindow::on_main_right_clicked()
     direction_selection_screen();
 }
 
-void MainWindow::on_menu_back_clicked()
+void MainWindow::on_menu_left_clicked()
+{
+    //TODO
+    ui->menu_list->itemDoubleClicked(ui->menu_list->currentItem());
+}
+
+void MainWindow::on_menu_right_clicked()
 {
     main_screen();
 }
@@ -783,12 +789,22 @@ void MainWindow::on_left_arrow_clicked()
         if(is_open_communication){
             main_screen();
         }
+        return;
     }
     if(curr == ui->main_page){
+        qInfo("main_page");
         ui->main_left->click();
+        return;
     }
-    else if(ui->service_menu_page){
+    if(curr == ui->menu_page){
+        qInfo("menu_page");
+        ui->menu_left->click();
+        return;
+    }
+    if(curr == ui->service_menu_page){
+        qInfo("service_menu_page");
         ui->service_menu_left->click();
+        return;
     }
 }
 
@@ -796,10 +812,19 @@ void MainWindow::on_right_arrow_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->main_page){
+        qInfo("main_page");
         ui->main_right->click();
+        return;
     }
-    else if(ui->service_menu_page){
+    if(curr == ui->menu_page){
+        qInfo("menu_page");
+        ui->menu_right->click();
+        return;
+    }
+    if(curr == ui->service_menu_page){
+        qInfo("service_menu_page");
         ui->service_menu_right->click();
+        return;
     }
 }
 
@@ -865,6 +890,10 @@ void MainWindow::on_up_arrow_clicked()
             ui->label_15->setStyleSheet("font-weight: bold;");
             ui->widget_8->setStyleSheet("font-weight: bold;");
         }
+        return;
+    }
+    if(curr == ui->menu_page){
+        ui->menu_list->setCurrentRow((ui->menu_list->currentRow() - 1 + menu_list_size) % menu_list_size);
     }
 }
 
@@ -881,6 +910,10 @@ void MainWindow::on_down_arrow_clicked()
             ui->label_15->setStyleSheet("background: rgb(0, 0, 255);");
             ui->widget_8->setStyleSheet("background: rgb(0, 0, 255);");
         }
+        return;
+    }
+    if(curr == ui->menu_page){
+        ui->menu_list->setCurrentRow((ui->menu_list->currentRow() + 1) % menu_list_size);
     }
 }
 
