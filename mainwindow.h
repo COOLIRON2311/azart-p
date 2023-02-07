@@ -143,8 +143,6 @@ private slots:
     void on_number_9_clicked();
     void on_number_0_clicked();
 
-    void on_number_i_clicked(int);
-
     void on_up_arrow_clicked();
 
     void on_down_arrow_clicked();
@@ -152,6 +150,10 @@ private slots:
     void on_left_tube_clicked();
 
     void on_right_tube_clicked();
+
+private:
+    void on_number_i_clicked(int);
+
 
 private:
     struct Channel;

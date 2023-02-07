@@ -238,8 +238,11 @@ void MainWindow::main_screen()
             ui->channel_label->setText(current_direction->ch->name);
         }
 
+        ui->main_background->setStyleSheet(
+            "#main_background {"
+            " border-image: url(:/resources/Kremlin.png)"
+            "}");
 
-        ui->main_background->setStyleSheet("border-image: url(:/resources/Kremlin.png)");
         ui->dejurnii_label->setText("Дежурный приём");
     }
     else{
