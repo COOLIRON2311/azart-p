@@ -543,7 +543,7 @@ background: white;</string>
          <number>1</number>
         </property>
         <property name="currentIndex">
-         <number>6</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="service_menu_page">
          <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1919,20 +1919,39 @@ QLabel {
                 <number>2</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_22">
+                <widget class="QPushButton" name="data_editor_left">
                  <property name="font">
                   <font>
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <property name="autoFillBackground">
+                  <bool>false</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: rgb(255, 255, 255);
+text-align: left;</string>
+                 </property>
                  <property name="text">
                   <string>Выбрать</string>
+                 </property>
+                 <property name="autoDefault">
+                  <bool>false</bool>
+                 </property>
+                 <property name="default">
+                  <bool>false</bool>
+                 </property>
+                 <property name="flat">
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="data_editor_back">
+                <widget class="QPushButton" name="data_editor_right">
                  <property name="font">
                   <font>
                    <weight>75</weight>

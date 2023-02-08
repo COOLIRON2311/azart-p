@@ -89,7 +89,8 @@ private slots:
     void on_direction_list_left_clicked(); //
     void on_directions_list_right_clicked(); //
 
-    void on_data_editor_back_clicked();
+    void on_data_editor_left_clicked(); //
+    void on_data_editor_right_clicked(); //
 
     void on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
@@ -118,11 +119,10 @@ private slots:
     void on_main_left_clicked(); //
     void on_main_right_clicked(); //
 
-    void on_menu_left_clicked();
-    void on_menu_right_clicked();
+    void on_menu_left_clicked(); //
+    void on_menu_right_clicked(); //
 
     void on_direction_selection_left_clicked();
-
     void on_direction_selection_right_clicked();
 
     void on_directions_selection_list_itemClicked(QListWidgetItem *item);
@@ -130,7 +130,6 @@ private slots:
     void on_directions_button_clicked();
 
     void on_left_arrow_clicked();
-
     void on_right_arrow_clicked();
 
     void on_number_1_clicked();
@@ -151,6 +150,8 @@ private slots:
     void on_left_tube_clicked();
 
     void on_right_tube_clicked();
+
+    void on_data_editor_list_itemSelectionChanged();
 
 private:
     void on_number_i_clicked(int);

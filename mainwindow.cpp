@@ -293,6 +293,18 @@ void MainWindow::on_service_menu_list_itemSelectionChanged()
     selected_items["service_menu_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
+void MainWindow::on_data_editor_list_itemSelectionChanged()
+{
+
+    selected_items["data_editor_list"]->setBackground(QColor(255, 255, 255));
+    selected_items["data_editor_list"]->setTextColor(QColor(133, 165, 200));
+
+    selected_items["data_editor_list"] = ui->data_editor_list->currentItem();
+
+    selected_items["data_editor_list"]->setBackground(QColor(56, 82, 130));
+    selected_items["data_editor_list"]->setTextColor(QColor(255, 255 ,255));
+}
+
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     if(item == service_menu_list_item[7]){
@@ -359,7 +371,13 @@ void MainWindow::on_directions_list_right_clicked()
     data_editor_screen();
 }
 
-void MainWindow::on_data_editor_back_clicked()
+void MainWindow::on_data_editor_left_clicked()
+{
+    QString s = "item: " + selected_items["data_editor_list"]->text();
+    on_data_editor_list_itemDoubleClicked(selected_items["data_editor_list"]);
+}
+
+void MainWindow::on_data_editor_right_clicked()
 {
     service_menu_screen();
 }
@@ -792,18 +810,19 @@ void MainWindow::on_left_arrow_clicked()
         return;
     }
     if(curr == ui->main_page){
-        qInfo("main_page");
         ui->main_left->click();
         return;
     }
     if(curr == ui->menu_page){
-        qInfo("menu_page");
         ui->menu_left->click();
         return;
     }
     if(curr == ui->service_menu_page){
-        qInfo("service_menu_page");
         ui->service_menu_left->click();
+        return;
+    }
+    if(curr == ui->data_editor_page){
+        ui->data_editor_left->click();
         return;
     }
 }
@@ -812,18 +831,19 @@ void MainWindow::on_right_arrow_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->main_page){
-        qInfo("main_page");
         ui->main_right->click();
         return;
     }
     if(curr == ui->menu_page){
-        qInfo("menu_page");
         ui->menu_right->click();
         return;
     }
     if(curr == ui->service_menu_page){
-        qInfo("service_menu_page");
         ui->service_menu_right->click();
+        return;
+    }
+    if(curr == ui->data_editor_page){
+        ui->data_editor_right->click();
         return;
     }
 }
@@ -894,6 +914,15 @@ void MainWindow::on_up_arrow_clicked()
     }
     if(curr == ui->menu_page){
         ui->menu_list->setCurrentRow((ui->menu_list->currentRow() - 1 + menu_list_size) % menu_list_size);
+        return;
+    }
+    if(curr == ui->service_menu_page){
+        ui->service_menu_list->setCurrentRow((ui->service_menu_list->currentRow() - 1 + service_menu_list_size) % service_menu_list_size);
+        return;
+    }
+    if(curr == ui->data_editor_page){
+        ui->data_editor_list->setCurrentRow((ui->data_editor_list->currentRow() - 1 + data_editor_list_size) % data_editor_list_size);
+        return;
     }
 }
 
@@ -914,6 +943,15 @@ void MainWindow::on_down_arrow_clicked()
     }
     if(curr == ui->menu_page){
         ui->menu_list->setCurrentRow((ui->menu_list->currentRow() + 1) % menu_list_size);
+        return;
+    }
+    if(curr == ui->service_menu_page){
+        ui->service_menu_list->setCurrentRow((ui->service_menu_list->currentRow() + 1) % service_menu_list_size);
+        return;
+    }
+    if(curr == ui->data_editor_page){
+        ui->data_editor_list->setCurrentRow((ui->data_editor_list->currentRow() + 1) % data_editor_list_size);
+        return;
     }
 }
 
