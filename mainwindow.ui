@@ -543,7 +543,7 @@ background: white;</string>
          <number>1</number>
         </property>
         <property name="currentIndex">
-         <number>4</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="service_menu_page">
          <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -725,7 +725,7 @@ text-align:right;</string>
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="channels_list_page">
+        <widget class="QWidget" name="channel_list_page">
          <property name="styleSheet">
           <string notr="true"/>
          </property>
@@ -812,7 +812,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QListWidget" name="channels_list">
+                 <widget class="QListWidget" name="channel_list">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -961,7 +961,7 @@ text-align:left;</string>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="channels_list_right">
+                <widget class="QPushButton" name="channel_list_right">
                  <property name="font">
                   <font>
                    <weight>75</weight>

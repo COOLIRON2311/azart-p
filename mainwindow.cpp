@@ -93,15 +93,15 @@ MainWindow::MainWindow(QWidget *parent) :
     selected_items["data_editor_list"] = data_editor_list_item[0];
 
     //
-    channels_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
-    channels_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить");
-    channels_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить");
+    channel_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
+    channel_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить");
+    channel_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить");
 
-    for(QListWidgetItem* item : channels_popup_menu_list_item){
+    for(QListWidgetItem* item : channel_popup_menu_list_item){
         ui->channel_popup_menu_list->addItem(item);
     }
 
-    selected_items["channel_popup_menu_list"] = channels_popup_menu_list_item[0];
+    selected_items["channel_popup_menu_list"] = channel_popup_menu_list_item[0];
 
     ui->channel_popup_menu->setEnabled(false);
     ui->channel_popup_menu->setVisible(false);
@@ -318,9 +318,9 @@ void MainWindow::data_editor_screen()
     ui->data_editor_list->setCurrentItem(selected_items["data_editor_list"]);
 }
 
-void MainWindow::update_channels_list_screen()
+void MainWindow::update_channel_list_screen()
 {
-    if(selected_items["channels_list"] == nullptr){
+    if(selected_items["channel_list"] == nullptr){
         ui->channel_list_stackedWidget->setCurrentWidget(ui->empty_channel_list_page);
     }
     else{
@@ -328,11 +328,11 @@ void MainWindow::update_channels_list_screen()
     }
 }
 
-void MainWindow::channels_list_screen()
+void MainWindow::channel_list_screen()
 {
-    ui->mainPages->setCurrentWidget(ui->channels_list_page);
-    update_channels_list_screen();
-    ui->channels_list->setCurrentItem(selected_items["channels_list"]);
+    ui->mainPages->setCurrentWidget(ui->channel_list_page);
+    update_channel_list_screen();
+    ui->channel_list->setCurrentItem(selected_items["channel_list"]);
 }
 
 void MainWindow::directions_list_screen()
@@ -347,7 +347,7 @@ void MainWindow::on_data_editor_list_itemDoubleClicked(QListWidgetItem *item)
         directions_list_screen();
     }
     if(item == data_editor_list_item[2]){
-        channels_list_screen();
+        channel_list_screen();
     }
 }
 
@@ -361,7 +361,7 @@ void MainWindow::on_service_menu_left_clicked()
     on_service_menu_list_itemDoubleClicked(selected_items["service_menu_list"]);
 }
 
-void MainWindow::on_channels_list_right_clicked()
+void MainWindow::on_channel_list_right_clicked()
 {
     data_editor_screen();
 }
@@ -393,41 +393,41 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     ui->channel_popup_menu->setEnabled(false);
     ui->channel_popup_menu->setVisible(false);
 
-    if(item == channels_popup_menu_list_item[0]){
-        if(selected_items["channels_list"] == nullptr) return;
+    if(item == channel_popup_menu_list_item[0]){
+        if(selected_items["channel_list"] == nullptr) return;
         channel_editor_screen();
     }
-    if(item == channels_popup_menu_list_item[1]){
+    if(item == channel_popup_menu_list_item[1]){
         QListWidgetItem* ref = new QListWidgetItem(QIcon(""), "");
         QListWidgetItem* ref2 = new QListWidgetItem(QIcon(""), "");
         Channel* new_ch = new Channel();
-        channels_map[ref] = {new_ch, ref2};
-        channels_map_d[ref2] = new_ch;
+        channel_map[ref] = {new_ch, ref2};
+        channel_map_d[ref2] = new_ch;
 
-        // for channels
-        ui->channels_list->addItem(ref);
+        // for channel
+        ui->channel_list->addItem(ref);
         // for directions
         ui->channel_choice_list->addItem(ref2);
 
-        selected_items["channels_list"] = ref;
+        selected_items["channel_list"] = ref;
         channel_editor_screen();
     }
-    if(item == channels_popup_menu_list_item[2]){
-        if(selected_items["channels_list"] != nullptr){
+    if(item == channel_popup_menu_list_item[2]){
+        if(selected_items["channel_list"] != nullptr){
 
-            // for channels
-            ui->channels_list->removeItemWidget(selected_items["channels_list"]);
+            // for channel
+            ui->channel_list->removeItemWidget(selected_items["channel_list"]);
             // for directions
-            ui->channel_choice_list->removeItemWidget(channels_map[selected_items["channels_list"]].ref2);
-            channels_map_d.erase(channels_map[selected_items["channels_list"]].ref2);
+            ui->channel_choice_list->removeItemWidget(channel_map[selected_items["channel_list"]].ref2);
+            channel_map_d.erase(channel_map[selected_items["channel_list"]].ref2);
 
-            delete channels_map[selected_items["channels_list"]].channel;
-            delete channels_map[selected_items["channels_list"]].ref2;
-            channels_map.erase(selected_items["channels_list"]);
-            delete selected_items["channels_list"];
-            selected_items["channels_list"] = channels_map.empty() ? nullptr : channels_map.begin()->first;
+            delete channel_map[selected_items["channel_list"]].channel;
+            delete channel_map[selected_items["channel_list"]].ref2;
+            channel_map.erase(selected_items["channel_list"]);
+            delete selected_items["channel_list"];
+            selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
 
-            update_channels_list_screen();
+            update_channel_list_screen();
         }
     }
 }
@@ -437,7 +437,7 @@ void MainWindow::channel_editor_screen()
 {
     ui->mainPages->setCurrentWidget(ui->channel_editor_page);
 
-    Channel* curr = channels_map[selected_items["channels_list"]].channel;
+    Channel* curr = channel_map[selected_items["channel_list"]].channel;
 
     if(curr->state == 0){
         ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
@@ -456,13 +456,13 @@ void MainWindow::channel_editor_screen()
 
 void MainWindow::on_channel_editor_back_clicked()
 {
-    //channels_list_screen();
+    //channel_list_screen();
 }
 
 // channel saving
 void MainWindow::on_pushButton_clicked()
 {
-    Channel* curr = channels_map[selected_items["channels_list"]].channel;
+    Channel* curr = channel_map[selected_items["channel_list"]].channel;
     curr->state = ui->channel_editor_state->currentIndex();
     if(curr->state == 0){
         curr->PRD = false;
@@ -470,8 +470,8 @@ void MainWindow::on_pushButton_clicked()
         curr->freq = 0;
         curr->ctcss = 0;
         curr->name = "";
-        selected_items["channels_list"]->setText("");
-        channels_map[selected_items["channels_list"]].ref2->setText("");
+        selected_items["channel_list"]->setText("");
+        channel_map[selected_items["channel_list"]].ref2->setText("");
     }
     if(curr->state == 5){
         curr->PRD = ui->is_forbidden_prd->isChecked();
@@ -479,10 +479,10 @@ void MainWindow::on_pushButton_clicked()
         curr->freq = (uint32_t)ui->channel_freq->text().toInt();
         curr->ctcss = ui->ctcss->currentIndex();
         curr->name = ui->channel_name->text();
-        selected_items["channels_list"]->setText(curr->name);
-        channels_map[selected_items["channels_list"]].ref2->setText(curr->name);
+        selected_items["channel_list"]->setText(curr->name);
+        channel_map[selected_items["channel_list"]].ref2->setText(curr->name);
     }
-    channels_list_screen();
+    channel_list_screen();
 }
 
 void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
@@ -495,9 +495,9 @@ void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
     }
 }
 
-void MainWindow::on_channels_list_itemClicked(QListWidgetItem *item)
+void MainWindow::on_channel_list_itemClicked(QListWidgetItem *item)
 {
-    selected_items["channels_list"] = item;
+    selected_items["channel_list"] = item;
 }
 
 void MainWindow::on_direction_list_left_clicked()
@@ -560,7 +560,7 @@ void MainWindow::direction_editor_screen()
     }
     else{
         ui->channel_in_dir_name->setText(curr->ch->name);
-        for(const auto& p : channels_map_d){
+        for(const auto& p : channel_map_d){
             if(p.second == curr->ch){
                 ui->channel_choice_list->setCurrentItem(p.first);
                 break;
@@ -579,9 +579,9 @@ void MainWindow::direction_editor_screen()
 
 void MainWindow::on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item)
 {
-    directions_map[selected_items["directions_list"]].direction->ch = channels_map_d[item];
+    directions_map[selected_items["directions_list"]].direction->ch = channel_map_d[item];
     ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
-    ui->channel_in_dir_name->setText(channels_map_d[item]->name);
+    ui->channel_in_dir_name->setText(channel_map_d[item]->name);
 }
 
 void MainWindow::on_economizer_currentIndexChanged(int index)
@@ -629,7 +629,7 @@ void MainWindow::on_channel_in_dir_name_clicked()
 
 void MainWindow::on_channel_choice_list_itemClicked(QListWidgetItem *item)
 {
-    selected_items["channels_choice_list"] = item;
+    selected_items["channel_choice_list"] = item;
 }
 
 void MainWindow::on_directions_list_itemClicked(QListWidgetItem *item)
@@ -825,6 +825,10 @@ void MainWindow::on_left_arrow_clicked()
         ui->data_editor_left->click();
         return;
     }
+    if(curr == ui->channel_list_page){
+        ui->channel_list_left->click();
+        return;
+    }
 }
 
 void MainWindow::on_right_arrow_clicked()
@@ -844,6 +848,10 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->data_editor_page){
         ui->data_editor_right->click();
+        return;
+    }
+    if(curr == ui->channel_list_page){
+        ui->channel_list_right->click();
         return;
     }
 }

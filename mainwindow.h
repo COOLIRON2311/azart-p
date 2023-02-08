@@ -35,9 +35,9 @@ public Q_SLOTS:
     void service_menu_screen();
     void data_editor_screen();
 
-    void update_channels_list_screen();
+    void update_channel_list_screen();
 
-    void channels_list_screen();
+    void channel_list_screen();
     void directions_list_screen();
 
     void channel_editor_screen();
@@ -84,7 +84,7 @@ private slots:
     void on_service_menu_right_clicked(); //
 
     void on_channel_list_left_clicked(); //
-    void on_channels_list_right_clicked(); //
+    void on_channel_list_right_clicked(); //
 
     void on_direction_list_left_clicked(); //
     void on_directions_list_right_clicked(); //
@@ -100,7 +100,7 @@ private slots:
 
     void on_channel_editor_state_currentIndexChanged(int index);
 
-    void on_channels_list_itemClicked(QListWidgetItem *item);
+    void on_channel_list_itemClicked(QListWidgetItem *item);
 
     void on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
@@ -188,15 +188,15 @@ private:
     };
 
     /*
-    {channels_map}   ref  -> (Channel* , ref2)
-    {channels_map_d} ref2 -> Channel*
+    {channel_map}   ref  -> (Channel* , ref2)
+    {channel_map_d} ref2 -> Channel*
     */
-    std::map<ref, channelData> channels_map;
-    std::map<ref, Channel*> channels_map_d;
+    std::map<ref, channelData> channel_map;
+    std::map<ref, Channel*> channel_map_d;
     std::map<ref, directionData> directions_map;
     std::map<ref, Direction*> directions_map_d;
 
-    QListWidgetItem* channels_popup_menu_list_item[3];
+    QListWidgetItem* channel_popup_menu_list_item[3];
     QListWidgetItem* directions_popup_menu_list_item[3];
 
     QTimer time_timer;
