@@ -799,7 +799,12 @@ void MainWindow::on_directions_button_clicked()
 {
     direction_selection_screen();
 }
-
+/*
+                     /////
+                    /////=========
+                    \\\\\=========
+                     \\\\\
+*/
 void MainWindow::on_left_arrow_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
@@ -831,6 +836,12 @@ void MainWindow::on_left_arrow_clicked()
     }
 }
 
+/*
+                   \\\\\
+            ========\\\\\
+            ========/////
+                   /////
+*/
 void MainWindow::on_right_arrow_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
@@ -903,7 +914,16 @@ void MainWindow::on_number_i_clicked(int i)
     // TODO: ..
 }
 
+/*
 
+              //\\
+             ///\\\
+            ////\\\\
+               ==
+               ==
+               ==
+               ==
+*/
 
 void MainWindow::on_up_arrow_clicked()
 {
@@ -933,6 +953,18 @@ void MainWindow::on_up_arrow_clicked()
         return;
     }
 }
+
+/*
+
+               ==
+               ==
+               ==
+               ==
+            \\\\////
+             \\\///
+              \\//
+
+*/
 
 void MainWindow::on_down_arrow_clicked()
 {
