@@ -414,13 +414,13 @@ void MainWindow::on_channel_list_left_clicked()
 
 void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
-    ui->channel_popup_menu->setEnabled(false);
-    ui->channel_popup_menu->setVisible(false);
-
     //look at the choice
     // EDIT
     if(item == channel_popup_menu_list_item[0]){
         if(selected_items["channel_list"] == nullptr) return;
+        //else
+        ui->channel_popup_menu->setEnabled(false);
+        ui->channel_popup_menu->setVisible(false);
         channel_editor_screen();
     }
     // ADD
@@ -437,6 +437,9 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
         ui->channel_choice_list->addItem(ref2);
 
         selected_items["channel_list"] = ref;
+
+        ui->channel_popup_menu->setEnabled(false);
+        ui->channel_popup_menu->setVisible(false);
         channel_editor_screen();
     }
     // DELETE
@@ -455,6 +458,8 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
             delete selected_items["channel_list"];
             selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
 
+            ui->channel_popup_menu->setEnabled(false);
+            ui->channel_popup_menu->setVisible(false);
             update_channel_list_screen();
         }
     }
@@ -942,6 +947,11 @@ void MainWindow::on_number_i_clicked(int i)
     // TODO: ..
 }
 
+void go_up(QListWidget* qlw, uint size){
+    qlw->setCurrentRow((qlw->currentRow() - 1 + size) % size);
+}
+
+
 /*
 
               //\\
@@ -969,17 +979,34 @@ void MainWindow::on_up_arrow_clicked()
         return;
     }
     if(curr == ui->menu_page){
-        ui->menu_list->setCurrentRow((ui->menu_list->currentRow() - 1 + menu_list_size) % menu_list_size);
+        go_up(ui->menu_list, menu_list_size);
         return;
     }
     if(curr == ui->service_menu_page){
-        ui->service_menu_list->setCurrentRow((ui->service_menu_list->currentRow() - 1 + service_menu_list_size) % service_menu_list_size);
+        go_up(ui->service_menu_list, service_menu_list_size);
         return;
     }
     if(curr == ui->data_editor_page){
-        ui->data_editor_list->setCurrentRow((ui->data_editor_list->currentRow() - 1 + data_editor_list_size) % data_editor_list_size);
+        go_up(ui->data_editor_list, data_editor_list_size);
         return;
     }
+    if(curr == ui->channel_list_page){
+        if(ui->channel_popup_menu->isVisible()){
+            //change selection in menu list
+            go_up(ui->channel_popup_menu_list, 3);
+        }
+        else{
+            //change selection in channel list
+            if(!channel_map.empty()){
+                go_up(ui->channel_list, channel_map.size());
+            }
+        }
+        return;
+    }
+}
+
+void go_down(QListWidget* qlw, uint size){
+    qlw->setCurrentRow((qlw->currentRow() + 1) % size);
 }
 
 /*
@@ -1010,15 +1037,28 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
     if(curr == ui->menu_page){
-        ui->menu_list->setCurrentRow((ui->menu_list->currentRow() + 1) % menu_list_size);
+        go_down(ui->menu_list, menu_list_size);
         return;
     }
     if(curr == ui->service_menu_page){
-        ui->service_menu_list->setCurrentRow((ui->service_menu_list->currentRow() + 1) % service_menu_list_size);
+        go_down(ui->service_menu_list, service_menu_list_size);
         return;
     }
     if(curr == ui->data_editor_page){
-        ui->data_editor_list->setCurrentRow((ui->data_editor_list->currentRow() + 1) % data_editor_list_size);
+        go_down(ui->data_editor_list, data_editor_list_size);
+        return;
+    }
+    if(curr == ui->channel_list_page){
+        if(ui->channel_popup_menu->isVisible()){
+            //change selection in menu list
+            go_down(ui->channel_popup_menu_list, 3);
+        }
+        else{
+            //change selection in channel list
+            if(!channel_map.empty()){
+                go_down(ui->channel_list, channel_map.size());
+            }
+        }
         return;
     }
 }
