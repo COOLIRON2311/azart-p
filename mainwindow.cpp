@@ -283,7 +283,6 @@ void MainWindow::on_menu_list_itemSelectionChanged()
 
 void MainWindow::on_service_menu_list_itemSelectionChanged()
 {
-
     selected_items["service_menu_list"]->setBackground(QColor(255, 255, 255));
     selected_items["service_menu_list"]->setTextColor(QColor(133, 165, 200));
 
@@ -295,7 +294,6 @@ void MainWindow::on_service_menu_list_itemSelectionChanged()
 
 void MainWindow::on_data_editor_list_itemSelectionChanged()
 {
-
     selected_items["data_editor_list"]->setBackground(QColor(255, 255, 255));
     selected_items["data_editor_list"]->setTextColor(QColor(133, 165, 200));
 
@@ -303,6 +301,17 @@ void MainWindow::on_data_editor_list_itemSelectionChanged()
 
     selected_items["data_editor_list"]->setBackground(QColor(56, 82, 130));
     selected_items["data_editor_list"]->setTextColor(QColor(255, 255 ,255));
+}
+
+void MainWindow::on_channel_popup_menu_list_itemSelectionChanged()
+{
+    selected_items["channel_popup_menu_list"]->setBackground(QColor(255, 255, 255));
+    selected_items["channel_popup_menu_list"]->setTextColor(QColor(133, 165, 200));
+
+    selected_items["channel_popup_menu_list"] = ui->channel_popup_menu_list->currentItem();
+
+    selected_items["channel_popup_menu_list"]->setBackground(QColor(56, 82, 130));
+    selected_items["channel_popup_menu_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
@@ -363,7 +372,14 @@ void MainWindow::on_service_menu_left_clicked()
 
 void MainWindow::on_channel_list_right_clicked()
 {
-    data_editor_screen();
+    if(ui->channel_popup_menu->isVisible()){
+        ui->channel_list_left->setText("Меню");
+        ui->channel_popup_menu->setVisible(false);
+        ui->channel_popup_menu->setEnabled(false);
+    }
+    else{
+        data_editor_screen();
+    }
 }
 
 void MainWindow::on_directions_list_right_clicked()
@@ -373,7 +389,6 @@ void MainWindow::on_directions_list_right_clicked()
 
 void MainWindow::on_data_editor_left_clicked()
 {
-    QString s = "item: " + selected_items["data_editor_list"]->text();
     on_data_editor_list_itemDoubleClicked(selected_items["data_editor_list"]);
 }
 
@@ -384,8 +399,17 @@ void MainWindow::on_data_editor_right_clicked()
 
 void MainWindow::on_channel_list_left_clicked()
 {
-    ui->channel_popup_menu->setEnabled(!ui->channel_popup_menu->isVisible());
-    ui->channel_popup_menu->setVisible(!ui->channel_popup_menu->isVisible());
+    if(ui->channel_popup_menu->isVisible()){
+        // menu selection
+        on_channel_popup_menu_list_itemDoubleClicked(selected_items["channel_popup_menu_list"]);
+    }
+    else{
+        // menu activation
+        ui->channel_popup_menu->setEnabled(true);
+        ui->channel_popup_menu->setVisible(true);
+        ui->channel_popup_menu_list->setCurrentItem(selected_items["channel_popup_menu_list"]);
+        ui->channel_list_left->setText("Выбрать");
+    }
 }
 
 void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
@@ -393,10 +417,13 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     ui->channel_popup_menu->setEnabled(false);
     ui->channel_popup_menu->setVisible(false);
 
+    //look at the choice
+    // EDIT
     if(item == channel_popup_menu_list_item[0]){
         if(selected_items["channel_list"] == nullptr) return;
         channel_editor_screen();
     }
+    // ADD
     if(item == channel_popup_menu_list_item[1]){
         QListWidgetItem* ref = new QListWidgetItem(QIcon(""), "");
         QListWidgetItem* ref2 = new QListWidgetItem(QIcon(""), "");
@@ -412,6 +439,7 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
         selected_items["channel_list"] = ref;
         channel_editor_screen();
     }
+    // DELETE
     if(item == channel_popup_menu_list_item[2]){
         if(selected_items["channel_list"] != nullptr){
 
@@ -830,7 +858,7 @@ void MainWindow::on_left_arrow_clicked()
         ui->data_editor_left->click();
         return;
     }
-    if(curr == ui->channel_list_page){
+    if(curr == ui->channel_list_page){      
         ui->channel_list_left->click();
         return;
     }

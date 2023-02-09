@@ -153,6 +153,8 @@ private slots:
 
     void on_data_editor_list_itemSelectionChanged();
 
+    void on_channel_popup_menu_list_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
 
