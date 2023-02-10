@@ -527,14 +527,16 @@ void MainWindow::channel_editor_screen()
     ui->channel_name->setText(curr->name);
 }
 
-void MainWindow::on_channel_editor_back_clicked()
+void MainWindow::on_channel_editor_right_clicked()
 {
     //channel_list_screen();
+    //TODO
 }
 
 // channel saving
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_channel_editor_left_clicked()
 {
+    //TODO: change
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
     curr->state = ui->channel_editor_state->currentIndex();
     if(curr->state == 0){
@@ -894,10 +896,12 @@ inline int MainWindow::getFreq(){
     return (int)current_direction->ch->freq;
 }
 // Warning: where is it from??? mb main_right_clicked() ?
+/*
 void MainWindow::on_direction_button_clicked()
 {
     direction_selection_screen();
 }
+*/
 /*
                      /////
                     /////=========
@@ -941,6 +945,10 @@ void MainWindow::on_left_arrow_clicked()
         ui->direction_selection_left->click();
         return;
     }
+    if(curr == ui->channel_editor_page){
+        ui->channel_editor_left->click();
+        return;
+    }
 }
 
 /*
@@ -978,6 +986,10 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->direction_selection_page){
         ui->direction_selection_right->click();
+        return;
+    }
+    if(curr == ui->channel_editor_page){
+        ui->channel_editor_right->click();
         return;
     }
 }
@@ -1104,6 +1116,10 @@ void MainWindow::on_up_arrow_clicked()
         }
         return;
     }
+    if(curr == ui->channel_editor_page){
+        //TODO
+        return;
+    }
 }
 
 void go_down(QListWidget* qlw, uint size){
@@ -1179,6 +1195,10 @@ void MainWindow::on_down_arrow_clicked()
         if(!direction_map.empty()){
             go_down(ui->direction_selection_list, direction_map.size());
         }
+        return;
+    }
+    if(curr == ui->channel_editor_page){
+        //TODO
         return;
     }
 }

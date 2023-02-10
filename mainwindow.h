@@ -95,9 +95,8 @@ private slots:
 
     void on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
-    void on_channel_editor_back_clicked();
-
-    void on_pushButton_clicked();
+    void on_channel_editor_left_clicked(); //
+    void on_channel_editor_right_clicked(); //
 
     void on_channel_editor_state_currentIndexChanged(int index);
 
@@ -123,12 +122,12 @@ private slots:
     void on_menu_left_clicked(); //
     void on_menu_right_clicked(); //
 
-    void on_direction_selection_left_clicked();
-    void on_direction_selection_right_clicked();
+    void on_direction_selection_left_clicked(); //
+    void on_direction_selection_right_clicked(); //
 
     void on_direction_selection_list_itemClicked(QListWidgetItem *item);
 
-    void on_direction_button_clicked();
+    //void on_direction_button_clicked();
 
     void on_left_arrow_clicked();
     void on_right_arrow_clicked();
