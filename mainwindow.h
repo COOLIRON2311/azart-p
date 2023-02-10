@@ -36,9 +36,10 @@ public Q_SLOTS:
     void data_editor_screen();
 
     void update_channel_list_screen();
+    void update_direction_list_screen();
 
     void channel_list_screen();
-    void directions_list_screen();
+    void direction_list_screen();
 
     void channel_editor_screen();
     void direction_editor_screen();
@@ -87,7 +88,7 @@ private slots:
     void on_channel_list_right_clicked(); //
 
     void on_direction_list_left_clicked(); //
-    void on_directions_list_right_clicked(); //
+    void on_direction_list_right_clicked(); //
 
     void on_data_editor_left_clicked(); //
     void on_data_editor_right_clicked(); //
@@ -114,7 +115,7 @@ private slots:
 
     void on_channel_choice_list_itemClicked(QListWidgetItem *item);
 
-    void on_directions_list_itemClicked(QListWidgetItem *item);
+    void on_direction_list_itemClicked(QListWidgetItem *item);
 
     void on_main_left_clicked(); //
     void on_main_right_clicked(); //
@@ -125,9 +126,9 @@ private slots:
     void on_direction_selection_left_clicked();
     void on_direction_selection_right_clicked();
 
-    void on_directions_selection_list_itemClicked(QListWidgetItem *item);
+    void on_direction_selection_list_itemClicked(QListWidgetItem *item);
 
-    void on_directions_button_clicked();
+    void on_direction_button_clicked();
 
     void on_left_arrow_clicked();
     void on_right_arrow_clicked();
@@ -154,6 +155,10 @@ private slots:
     void on_data_editor_list_itemSelectionChanged();
 
     void on_channel_popup_menu_list_itemSelectionChanged();
+
+    void on_direction_popup_menu_list_itemSelectionChanged();
+
+    void on_direction_selection_list_itemSelectionChanged();
 
 private:
     void on_number_i_clicked(int);
@@ -195,11 +200,11 @@ private:
     */
     std::map<ref, channelData> channel_map;
     std::map<ref, Channel*> channel_map_d;
-    std::map<ref, directionData> directions_map;
-    std::map<ref, Direction*> directions_map_d;
+    std::map<ref, directionData> direction_map;
+    std::map<ref, Direction*> direction_map_d;
 
     QListWidgetItem* channel_popup_menu_list_item[3];
-    QListWidgetItem* directions_popup_menu_list_item[3];
+    QListWidgetItem* direction_popup_menu_list_item[3];
 
     QTimer time_timer;
 

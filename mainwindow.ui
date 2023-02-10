@@ -543,7 +543,7 @@ background: white;</string>
          <number>1</number>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>7</number>
         </property>
         <widget class="QWidget" name="service_menu_page">
          <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -793,76 +793,36 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              </widget>
             </item>
             <item>
-             <widget class="QStackedWidget" name="channel_list_stackedWidget">
-              <widget class="QWidget" name="nonempty_channel_list_page">
-               <layout class="QVBoxLayout" name="verticalLayout_30">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QListWidget" name="channel_list">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>206</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">color: rgb(133, 165, 200);
+             <widget class="QLabel" name="empty_channel_list_label">
+              <property name="text">
+               <string>Пустой список</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="channel_list">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>206</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(133, 165, 200);
 </string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-              <widget class="QWidget" name="empty_channel_list_page">
-               <layout class="QVBoxLayout" name="verticalLayout_31">
-                <item>
-                 <widget class="QLabel" name="label_23">
-                  <property name="text">
-                   <string>Пустой список</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </widget>
+              </property>
              </widget>
             </item>
             <item>
@@ -1989,7 +1949,7 @@ text-align:right;</string>
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="directions_list_page">
+        <widget class="QWidget" name="direction_list_page">
          <layout class="QVBoxLayout" name="verticalLayout_14">
           <property name="spacing">
            <number>0</number>
@@ -2054,7 +2014,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              </widget>
             </item>
             <item>
-             <widget class="QListWidget" name="directions_list">
+             <widget class="QListWidget" name="direction_list">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -2175,7 +2135,7 @@ text-align:left;</string>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="directions_list_right">
+                <widget class="QPushButton" name="direction_list_right">
                  <property name="font">
                   <font>
                    <weight>75</weight>
@@ -2656,7 +2616,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              </widget>
             </item>
             <item>
-             <widget class="QListWidget" name="directions_selection_list"/>
+             <widget class="QListWidget" name="direction_selection_list"/>
             </item>
             <item>
              <widget class="QWidget" name="horizontalWidget_10" native="true">
