@@ -159,9 +159,12 @@ private slots:
 
     void on_direction_selection_list_itemSelectionChanged();
 
+    void on_dualfreq_clicked();
+
 private:
     void on_number_i_clicked(int);
-
+    void clear_chm25_fields();
+    void update_channel_editor_page();
 
 private:
     struct Channel;
@@ -171,7 +174,14 @@ private:
 
     using ref = QListWidgetItem*;
 
+    // a current list item of all QListWidgets
     std::map<QString, ref> selected_items;
+
+    // a number of a current field in a specified editor screen
+    std::map<QString, uint> curr_editor_field;
+    // fields
+    std::map<QString, std::vector<QString>> editor_fields;
+
     bool is_open_communication = true;
 
     static const uint menu_list_size = 7;
@@ -236,6 +246,8 @@ struct MainWindow::Channel
     bool PRD = false;
     bool dualfreq = false;
     quint32 freq = 0;
+    quint32 prm_freq = 0;
+    quint32 prd_freq = 0;
     quint32 ctcss = 0;
     QString name = "";
 };

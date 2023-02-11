@@ -132,6 +132,13 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->background_dir_picture->addItem(QString::number(i));
     }
 
+    //                         0
+    editor_fields["none"] = { "type" };
+    curr_editor_field["none"] = 0;
+    //                          0                      1      2        3       4           5           6        7
+    editor_fields["chm25"] = { "merely a dummy cell", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
+    curr_editor_field["chm25"] = 0;
+
     broadcast_init();
 }
 
@@ -517,14 +524,17 @@ void MainWindow::channel_editor_screen()
     }
     if(curr->state == 5){
         ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
-    }
 
-    ui->channel_editor_state->setCurrentIndex(curr->state);
-    ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
-    ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
-    ui->channel_freq->setText(QString::number(curr->freq));
-    ui->ctcss->setCurrentIndex(curr->ctcss);
-    ui->channel_name->setText(curr->name);
+        ui->channel_editor_state->setCurrentIndex(curr->state);
+        ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+        ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
+        ui->channel_freq->setText(QString::number(curr->freq));
+        ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
+        ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
+        ui->ctcss->setCurrentIndex(curr->ctcss);
+        ui->channel_name->setText(curr->name);
+    }
+    update_channel_editor_page();
 }
 
 void MainWindow::on_channel_editor_right_clicked()
@@ -536,22 +546,28 @@ void MainWindow::on_channel_editor_right_clicked()
 // channel saving
 void MainWindow::on_channel_editor_left_clicked()
 {
-    //TODO: change
+    //TODO
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
     curr->state = ui->channel_editor_state->currentIndex();
-    if(curr->state == 0){
+    if(curr->state == 0){     
+        //curr_editor_field["none"] = 0;
         curr->PRD = false;
         curr->dualfreq = false;
         curr->freq = 0;
+        curr->prm_freq = 0;
+        curr->prm_freq = 0;
         curr->ctcss = 0;
         curr->name = "";
         selected_items["channel_list"]->setText("");
         channel_map[selected_items["channel_list"]].ref2->setText("");
     }
     if(curr->state == 5){
+        curr_editor_field["chm25"] = 0;
         curr->PRD = ui->is_forbidden_prd->isChecked();
         curr->dualfreq = ui->dualfreq->isChecked();
         curr->freq = (uint32_t)ui->channel_freq->text().toInt();
+        curr->prm_freq = (uint32_t)ui->channel_prm_freq->text().toInt();
+        curr->prd_freq = (uint32_t)ui->channel_prd_freq->text().toInt();
         curr->ctcss = ui->ctcss->currentIndex();
         curr->name = ui->channel_name->text();
         selected_items["channel_list"]->setText(curr->name);
@@ -568,6 +584,7 @@ void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
     else {
         ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
     }
+    update_channel_editor_page();
 }
 
 void MainWindow::on_channel_list_itemClicked(QListWidgetItem *item)
@@ -744,7 +761,7 @@ void MainWindow::on_main_right_clicked()
 
 void MainWindow::on_menu_left_clicked()
 {
-    //TODO
+    //TODO?
     ui->menu_list->itemDoubleClicked(ui->menu_list->currentItem());
 }
 
@@ -1045,6 +1062,75 @@ void go_up(QListWidget* qlw, uint size){
     qlw->setCurrentRow((qlw->currentRow() - 1 + size) % size);
 }
 
+void MainWindow::clear_chm25_fields(){
+    ui->channel_editor_state->setStyleSheet("");
+    ui->is_forbidden_prd->setStyleSheet("");
+    ui->dualfreq->setStyleSheet("");
+    ui->channel_freq_full->setStyleSheet("");
+    ui->channel_prm_freq_full->setStyleSheet("");
+    ui->channel_prd_freq_full->setStyleSheet("");
+    ui->ctcss->setStyleSheet("");
+    ui->channel_name->setStyleSheet("");
+}
+
+void MainWindow::update_channel_editor_page(){
+    //it will be hard...
+
+    // none
+    if(ui->channel_editor_state->currentIndex() == 0){
+        ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+    }
+    // chm25
+    if(ui->channel_editor_state->currentIndex() == 5){
+        clear_chm25_fields();
+        switch (curr_editor_field["chm25"]) {
+        case 0:
+            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            break;
+        case 1:
+            ui->is_forbidden_prd->setStyleSheet("border: 1px solid blue;");
+            break;
+        case 2:
+            ui->dualfreq->setStyleSheet("border: 1px solid blue;");
+            break;
+        case 3:
+            ui->channel_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
+            break;
+        case 4:
+            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
+            break;
+        case 5:
+            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid blue;}");
+            break;
+        case 6:
+            ui->ctcss->setStyleSheet("border: 1px solid blue;");
+            break;
+        case 7:
+            ui->channel_name->setStyleSheet("border: 1px solid blue;");
+            break;
+        default:
+            qCritical("chm25: update_channel_editor_page: no way");
+        }
+
+        if(ui->dualfreq->isChecked()){
+            ui->widget_6->setVisible(true);
+            ui->widget_6->setEnabled(true);
+            ui->widget_9->setVisible(true);
+            ui->widget_9->setEnabled(true);
+            ui->widget_4->setVisible(false);
+            ui->widget_4->setEnabled(false);
+        }
+        else{
+            ui->widget_6->setVisible(false);
+            ui->widget_6->setEnabled(false);
+            ui->widget_9->setVisible(false);
+            ui->widget_9->setEnabled(false);
+            ui->widget_4->setVisible(true);
+            ui->widget_4->setEnabled(true);
+        }
+        return;
+    }
+}
 
 /*
 
@@ -1117,7 +1203,20 @@ void MainWindow::on_up_arrow_clicked()
         return;
     }
     if(curr == ui->channel_editor_page){
-        //TODO
+        // TODO
+
+        // chm25
+        if(ui->channel_editor_state->currentIndex() == 5){
+            uint sz = editor_fields["chm25"].size();
+            curr_editor_field["chm25"] = (curr_editor_field["chm25"] - 1 + sz) % sz;
+            if(ui->dualfreq->isChecked()){
+                if(curr_editor_field["chm25"] == 3) curr_editor_field["chm25"]--;
+            }
+            else{
+                if(curr_editor_field["chm25"] == 5) curr_editor_field["chm25"] -= 2;
+            }
+        }
+        update_channel_editor_page();
         return;
     }
 }
@@ -1198,7 +1297,20 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
     if(curr == ui->channel_editor_page){
-        //TODO
+        // TODO
+
+        // chm25
+        if(ui->channel_editor_state->currentIndex() == 5){
+            uint sz = editor_fields["chm25"].size();
+            curr_editor_field["chm25"] = (curr_editor_field["chm25"] + 1) % sz;
+            if(ui->dualfreq->isChecked()){
+                if(curr_editor_field["chm25"] == 3) curr_editor_field["chm25"]++;
+            }
+            else{
+                if(curr_editor_field["chm25"] == 4) curr_editor_field["chm25"] += 2;
+            }
+        }
+        update_channel_editor_page();
         return;
     }
 }
@@ -1211,4 +1323,24 @@ void MainWindow::on_left_tube_clicked()
 void MainWindow::on_right_tube_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
+}
+
+void MainWindow::on_dualfreq_clicked()
+{
+    if(ui->dualfreq->isChecked()){
+        ui->widget_6->setVisible(true);
+        ui->widget_6->setEnabled(true);
+        ui->widget_9->setVisible(true);
+        ui->widget_9->setEnabled(true);
+        ui->widget_4->setVisible(false);
+        ui->widget_4->setEnabled(false);
+    }
+    else{
+        ui->widget_6->setVisible(false);
+        ui->widget_6->setEnabled(false);
+        ui->widget_9->setVisible(false);
+        ui->widget_9->setEnabled(false);
+        ui->widget_4->setVisible(true);
+        ui->widget_4->setEnabled(true);
+    }
 }
