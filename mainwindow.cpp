@@ -343,6 +343,17 @@ void MainWindow::on_direction_selection_list_itemSelectionChanged()
     selected_items["direction_selection_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
+void MainWindow::on_channel_list_itemSelectionChanged()
+{
+    selected_items["channel_list"]->setBackground(QColor(255, 255, 255));
+    selected_items["channel_list"]->setTextColor(QColor(133, 165, 200));
+
+    selected_items["channel_list"] = ui->channel_list->currentItem();
+
+    selected_items["channel_list"]->setBackground(QColor(56, 82, 130));
+    selected_items["channel_list"]->setTextColor(QColor(255, 255 ,255));
+}
+
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     if(item == service_menu_list_item[7]){
@@ -519,21 +530,25 @@ void MainWindow::channel_editor_screen()
 
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
 
+    ui->channel_editor_state->setCurrentIndex(curr->state);
+
     if(curr->state == 0){
         ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        curr_editor_field["none"] = 0;
     }
     if(curr->state == 5){
         ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
-
-        ui->channel_editor_state->setCurrentIndex(curr->state);
-        ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
-        ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
-        ui->channel_freq->setText(QString::number(curr->freq));
-        ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
-        ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
-        ui->ctcss->setCurrentIndex(curr->ctcss);
-        ui->channel_name->setText(curr->name);
+        curr_editor_field["chm25"] = 0;
     }
+
+    ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+    ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
+    ui->channel_freq->setText(QString::number(curr->freq));
+    ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
+    ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
+    ui->ctcss->setCurrentIndex(curr->ctcss);
+    ui->channel_name->setText(curr->name);
+
     update_channel_editor_page();
 }
 
@@ -550,7 +565,6 @@ void MainWindow::on_channel_editor_left_clicked()
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
     curr->state = ui->channel_editor_state->currentIndex();
     if(curr->state == 0){     
-        //curr_editor_field["none"] = 0;
         curr->PRD = false;
         curr->dualfreq = false;
         curr->freq = 0;
@@ -562,7 +576,6 @@ void MainWindow::on_channel_editor_left_clicked()
         channel_map[selected_items["channel_list"]].ref2->setText("");
     }
     if(curr->state == 5){
-        curr_editor_field["chm25"] = 0;
         curr->PRD = ui->is_forbidden_prd->isChecked();
         curr->dualfreq = ui->dualfreq->isChecked();
         curr->freq = (uint32_t)ui->channel_freq->text().toInt();

@@ -161,6 +161,8 @@ private slots:
 
     void on_dualfreq_clicked();
 
+    void on_channel_list_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
