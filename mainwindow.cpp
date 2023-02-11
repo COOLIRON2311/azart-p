@@ -1071,6 +1071,9 @@ void MainWindow::clear_chm25_fields(){
     ui->channel_prd_freq_full->setStyleSheet("");
     ui->ctcss->setStyleSheet("");
     ui->channel_name->setStyleSheet("");
+    ui->label_32->setVisible(false);
+    ui->label_42->setVisible(false);
+    ui->label_39->setVisible(false);
 }
 
 void MainWindow::update_channel_editor_page(){
@@ -1094,13 +1097,16 @@ void MainWindow::update_channel_editor_page(){
             ui->dualfreq->setStyleSheet("border: 1px solid blue;");
             break;
         case 3:
-            ui->channel_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
+            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid blue;}");
+            ui->label_32->setVisible(true);
             break;
         case 4:
             ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
+            ui->label_42->setVisible(true);
             break;
         case 5:
             ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid blue;}");
+            ui->label_39->setVisible(true);
             break;
         case 6:
             ui->ctcss->setStyleSheet("border: 1px solid blue;");
