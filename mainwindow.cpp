@@ -6,6 +6,16 @@
 #include <QtMultimedia>
 #include <iostream>
 
+/*
+
+PA - pay attention
+TODO - need to do
+Warning - warning (lmao)
+    ::DS - will be deprecated soon (WDS)
+    ::D - deprecated (WD)
+
+*/
+
 inline void delay(int millisecondsWait)
 {
     QEventLoop loop;
@@ -58,7 +68,9 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->menu_list->addItem(item);        
     }
 
-    selected_items["menu_list"] = menu_list_item[0];
+    // PA
+    //selected_items["menu_list"] = menu_list_item[0];
+    ui->menu_list->setCurrentItem(menu_list_item[0]);
 
     service_menu_list_item[0] = new QListWidgetItem(QIcon(""), "RS-485. Прием.");
     service_menu_list_item[1] = new QListWidgetItem(QIcon(""), "RS-485. Передача.");
@@ -74,7 +86,9 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->service_menu_list->addItem(item);
     }
 
-    selected_items["service_menu_list"] = service_menu_list_item[0];
+    // PA
+    //selected_items["service_menu_list"] = service_menu_list_item[0];
+    ui->service_menu_list->setCurrentItem(service_menu_list_item[0]);
 
     data_editor_list_item[0] = new QListWidgetItem(QIcon(""), "Общие параметры");
     data_editor_list_item[1] = new QListWidgetItem(QIcon(""), "Направления");
@@ -90,7 +104,9 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->data_editor_list->addItem(item);
     }
 
-    selected_items["data_editor_list"] = data_editor_list_item[0];
+    // PA
+    //selected_items["data_editor_list"] = data_editor_list_item[0];
+    ui->data_editor_list->setCurrentItem(data_editor_list_item[0]);
 
     //
     channel_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
@@ -101,7 +117,9 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->channel_popup_menu_list->addItem(item);
     }
 
-    selected_items["channel_popup_menu_list"] = channel_popup_menu_list_item[0];
+    // PA
+    //selected_items["channel_popup_menu_list"] = channel_popup_menu_list_item[0];
+    ui->channel_popup_menu_list->setCurrentItem(channel_popup_menu_list_item[0]);
 
     ui->channel_popup_menu->setEnabled(false);
     ui->channel_popup_menu->setVisible(false);
@@ -114,8 +132,9 @@ MainWindow::MainWindow(QWidget *parent) :
     for(QListWidgetItem* item : direction_popup_menu_list_item){
         ui->direction_popup_menu_list->addItem(item);
     }
-
-    selected_items["direction_popup_menu_list"] = direction_popup_menu_list_item[0];
+    // PA
+    //selected_items["direction_popup_menu_list"] = direction_popup_menu_list_item[0];
+    ui->direction_popup_menu_list->setCurrentItem(direction_popup_menu_list_item[0]);
 
     ui->direction_popup_menu->setEnabled(false);
     ui->direction_popup_menu->setVisible(false);
@@ -261,13 +280,14 @@ void MainWindow::main_screen()
 void MainWindow::menu_screen()
 {
     ui->mainPages->setCurrentWidget(ui->menu_page);
-    ui->menu_list->setCurrentItem(selected_items["menu_list"]);
+    //WD
+    //ui->menu_list->setCurrentItem(selected_items["menu_list"]);
 }
 
 void MainWindow::service_menu_screen()
 {
     ui->mainPages->setCurrentWidget(ui->service_menu_page);
-    ui->service_menu_list->setCurrentItem(selected_items["service_menu_list"]);
+    //ui->service_menu_list->setCurrentItem(selected_items["service_menu_list"]);
 }
 
 void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
@@ -279,8 +299,10 @@ void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
 
 void MainWindow::on_menu_list_itemSelectionChanged()
 {
-    selected_items["menu_list"]->setBackground(QColor(255, 255, 255));
-    selected_items["menu_list"]->setTextColor(QColor(133, 165, 200));
+    if(selected_items["menu_list"]){
+        selected_items["menu_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["menu_list"]->setTextColor(QColor(133, 165, 200));
+    }
 
     selected_items["menu_list"] = ui->menu_list->currentItem();
 
@@ -290,8 +312,10 @@ void MainWindow::on_menu_list_itemSelectionChanged()
 
 void MainWindow::on_service_menu_list_itemSelectionChanged()
 {
-    selected_items["service_menu_list"]->setBackground(QColor(255, 255, 255));
-    selected_items["service_menu_list"]->setTextColor(QColor(133, 165, 200));
+    if(selected_items["service_menu_list"]){
+        selected_items["service_menu_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["service_menu_list"]->setTextColor(QColor(133, 165, 200));
+    }
 
     selected_items["service_menu_list"] = ui->service_menu_list->currentItem();
 
@@ -301,8 +325,10 @@ void MainWindow::on_service_menu_list_itemSelectionChanged()
 
 void MainWindow::on_data_editor_list_itemSelectionChanged()
 {
-    selected_items["data_editor_list"]->setBackground(QColor(255, 255, 255));
-    selected_items["data_editor_list"]->setTextColor(QColor(133, 165, 200));
+    if(selected_items["data_editor_list"]){
+        selected_items["data_editor_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["data_editor_list"]->setTextColor(QColor(133, 165, 200));
+    }
 
     selected_items["data_editor_list"] = ui->data_editor_list->currentItem();
 
@@ -312,8 +338,10 @@ void MainWindow::on_data_editor_list_itemSelectionChanged()
 
 void MainWindow::on_channel_popup_menu_list_itemSelectionChanged()
 {
-    selected_items["channel_popup_menu_list"]->setBackground(QColor(255, 255, 255));
-    selected_items["channel_popup_menu_list"]->setTextColor(QColor(133, 165, 200));
+    if(selected_items["channel_popup_menu_list"]){
+        selected_items["channel_popup_menu_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["channel_popup_menu_list"]->setTextColor(QColor(133, 165, 200));
+    }
 
     selected_items["channel_popup_menu_list"] = ui->channel_popup_menu_list->currentItem();
 
@@ -323,8 +351,10 @@ void MainWindow::on_channel_popup_menu_list_itemSelectionChanged()
 
 void MainWindow::on_direction_popup_menu_list_itemSelectionChanged()
 {
-    selected_items["direction_popup_menu_list"]->setBackground(QColor(255, 255, 255));
-    selected_items["direction_popup_menu_list"]->setTextColor(QColor(133, 165, 200));
+    if(selected_items["direction_popup_menu_list"]){
+        selected_items["direction_popup_menu_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["direction_popup_menu_list"]->setTextColor(QColor(133, 165, 200));
+    }
 
     selected_items["direction_popup_menu_list"] = ui->direction_popup_menu_list->currentItem();
 
@@ -334,8 +364,10 @@ void MainWindow::on_direction_popup_menu_list_itemSelectionChanged()
 
 void MainWindow::on_direction_selection_list_itemSelectionChanged()
 {
-    selected_items["direction_selection_list"]->setBackground(QColor(255, 255, 255));
-    selected_items["direction_selection_list"]->setTextColor(QColor(133, 165, 200));
+    if(selected_items["direction_selection_list"]){
+        selected_items["direction_selection_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["direction_selection_list"]->setTextColor(QColor(133, 165, 200));
+    }
 
     selected_items["direction_selection_list"] = ui->direction_selection_list->currentItem();
 
@@ -345,8 +377,10 @@ void MainWindow::on_direction_selection_list_itemSelectionChanged()
 
 void MainWindow::on_channel_list_itemSelectionChanged()
 {
-    selected_items["channel_list"]->setBackground(QColor(255, 255, 255));
-    selected_items["channel_list"]->setTextColor(QColor(133, 165, 200));
+    if(selected_items["channel_list"]){
+        selected_items["channel_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["channel_list"]->setTextColor(QColor(133, 165, 200));
+    }
 
     selected_items["channel_list"] = ui->channel_list->currentItem();
 
@@ -364,7 +398,8 @@ void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 void MainWindow::data_editor_screen()
 {
     ui->mainPages->setCurrentWidget(ui->data_editor_page);
-    ui->data_editor_list->setCurrentItem(selected_items["data_editor_list"]);
+    //WD
+    //ui->data_editor_list->setCurrentItem(selected_items["data_editor_list"]);
 }
 
 void MainWindow::update_channel_list_screen()
@@ -388,14 +423,16 @@ void MainWindow::channel_list_screen()
 {
     ui->mainPages->setCurrentWidget(ui->channel_list_page);
     update_channel_list_screen();
-    ui->channel_list->setCurrentItem(selected_items["channel_list"]);
+    // WD
+    //ui->channel_list->setCurrentItem(selected_items["channel_list"]);
 }
 
 void MainWindow::direction_list_screen()
 {
     ui->mainPages->setCurrentWidget(ui->direction_list_page);
     update_direction_list_screen();
-    ui->direction_list->setCurrentItem(selected_items["direction_list"]);
+    //WD
+    //ui->direction_list->setCurrentItem(selected_items["direction_list"]);
 }
 
 void MainWindow::on_data_editor_list_itemDoubleClicked(QListWidgetItem *item)
@@ -492,7 +529,12 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
         // for directions
         ui->channel_choice_list->addItem(ref2);
 
-        selected_items["channel_list"] = ref;
+        // PA: when we work with QLists, we don't use selected_items[""] anymore, cause
+        // use triggers on item selection changing. [check on_..._itemSelectionChanged() upper]
+        // the triggers help with right selections
+
+        //selected_items["channel_list"] = ref;
+        ui->channel_list->setCurrentItem(ref);
 
         ui->channel_popup_menu->setEnabled(false);
         ui->channel_popup_menu->setVisible(false);
@@ -513,7 +555,10 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
             delete channel_map[selected_items["channel_list"]].ref2;
             channel_map.erase(selected_items["channel_list"]);
             delete selected_items["channel_list"];
-            selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
+
+            // PA
+            //selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
+            ui->channel_list->setCurrentItem(channel_map.empty() ? nullptr : channel_map.begin()->first);
 
             ui->channel_popup_menu->setEnabled(false);
             ui->channel_popup_menu->setVisible(false);
@@ -564,7 +609,8 @@ void MainWindow::on_channel_editor_left_clicked()
     //TODO
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
     curr->state = ui->channel_editor_state->currentIndex();
-    if(curr->state == 0){     
+    if(curr->state == 0){
+        //actually curr->state is enough here
         curr->PRD = false;
         curr->dualfreq = false;
         curr->freq = 0;
@@ -602,6 +648,7 @@ void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
 
 void MainWindow::on_channel_list_itemClicked(QListWidgetItem *item)
 {
+    //WDS we will disable this functionality soon. I mean cursor actions on the screen
     selected_items["channel_list"] = item;
 }
 
@@ -642,7 +689,10 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
         ui->direction_list->addItem(ref);
         ui->direction_selection_list->addItem(ref2);
 
-        selected_items["direction_list"] = ref;
+        // PA
+        //selected_items["direction_list"] = ref;
+        ui->direction_list->setCurrentItem(ref);
+
         ui->direction_popup_menu->setEnabled(false);
         ui->direction_popup_menu->setVisible(false);
         ui->direction_list_left->setText("Меню");
@@ -662,7 +712,11 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
             delete direction_map[selected_items["direction_list"]].ref2;
             direction_map.erase(selected_items["direction_list"]);
             delete selected_items["direction_list"];
-            selected_items["direction_list"] = direction_map.empty() ? nullptr : direction_map.begin()->first;
+
+            // PA
+            //selected_items["direction_list"] = direction_map.empty() ? nullptr : direction_map.begin()->first;
+            ui->direction_list->setCurrentItem(direction_map.empty() ? nullptr : direction_map.begin()->first);
+
             ui->direction_popup_menu->setEnabled(false);
             ui->direction_popup_menu->setVisible(false);
             ui->direction_list_left->setText("Меню");
@@ -754,11 +808,13 @@ void MainWindow::on_channel_in_dir_name_clicked()
 
 void MainWindow::on_channel_choice_list_itemClicked(QListWidgetItem *item)
 {
+    // WDS
     selected_items["channel_choice_list"] = item;
 }
 
 void MainWindow::on_direction_list_itemClicked(QListWidgetItem *item)
 {
+    // WDS
     selected_items["direction_list"] = item;
 }
 
@@ -804,17 +860,21 @@ void MainWindow::direction_selection_screen()
     ui->mainPages->setCurrentWidget(ui->direction_selection_page);
     if(selected_items["direction_selection_list"] == nullptr){
         if(direction_map_d.empty()){
-                selected_items["direction_selection_list"] = nullptr;
+            // PA
+            //selected_items["direction_selection_list"] = nullptr;
+            ui->direction_selection_list->setCurrentItem(nullptr);
         }
         else{
-            selected_items["direction_selection_list"] = direction_map_d.begin()->first;
-            ui->direction_selection_list->setCurrentItem(selected_items["direction_selection_list"]);
+            // PA
+            //selected_items["direction_selection_list"] = direction_map_d.begin()->first;
+            ui->direction_selection_list->setCurrentItem(direction_map_d.begin()->first);
         }
     }
 }
 
 void MainWindow::on_direction_selection_list_itemClicked(QListWidgetItem *item)
 {
+    //WDS
     selected_items["direction_selection_list"] = item;
 }
 
@@ -925,7 +985,7 @@ inline int MainWindow::getFreq(){
     if(current_direction == nullptr || current_direction->ch == nullptr) return 0;
     return (int)current_direction->ch->freq;
 }
-// Warning: where is it from??? mb main_right_clicked() ?
+// WD where is it from??? mb main_right_clicked() ?
 /*
 void MainWindow::on_direction_button_clicked()
 {
