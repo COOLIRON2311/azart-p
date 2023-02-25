@@ -538,7 +538,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -653,6 +653,7 @@ QPushButtonl {
               <widget class="QPushButton" name="service_menu_left">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -685,6 +686,7 @@ text-align:left;</string>
               <widget class="QPushButton" name="service_menu_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -789,6 +791,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
           </item>
           <item>
            <widget class="QLabel" name="empty_channel_list_label">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Пустой список</string>
             </property>
@@ -902,6 +909,7 @@ QLabel {
                </property>
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -919,6 +927,7 @@ text-align:left;</string>
               <widget class="QPushButton" name="channel_list_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -1065,6 +1074,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                 </property>
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_7">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Режим:</string>
                   </property>
@@ -1072,6 +1086,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                 </item>
                 <item row="0" column="1">
                  <widget class="QComboBox" name="channel_editor_state">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                   </font>
+                  </property>
                   <property name="currentText">
                    <string>Не задано</string>
                   </property>
@@ -1166,6 +1185,9 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  </sizepolicy>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_20">
+                 <property name="spacing">
+                  <number>1</number>
+                 </property>
                  <property name="leftMargin">
                   <number>0</number>
                  </property>
@@ -1190,6 +1212,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="text">
                       <string>Запрет ПРД:</string>
@@ -1223,6 +1250,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="text">
                       <string>Двухчастотный:</string>
@@ -1267,6 +1299,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                         <verstretch>0</verstretch>
                        </sizepolicy>
                       </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Частота:</string>
                       </property>
@@ -1300,7 +1337,13 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                         <number>1</number>
                        </property>
                        <item>
-                        <widget class="QLineEdit" name="channel_freq"/>
+                        <widget class="QLineEdit" name="channel_freq">
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                        </widget>
                        </item>
                        <item>
                         <widget class="QLabel" name="label_32">
@@ -1309,6 +1352,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                            <horstretch>0</horstretch>
                            <verstretch>0</verstretch>
                           </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
                          </property>
                          <property name="text">
                           <string>Гц</string>
@@ -1347,6 +1395,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                         <verstretch>0</verstretch>
                        </sizepolicy>
                       </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>ПРМ:</string>
                       </property>
@@ -1381,6 +1434,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        </property>
                        <item>
                         <widget class="QLineEdit" name="channel_prm_freq">
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
                          <property name="frame">
                           <bool>false</bool>
                          </property>
@@ -1393,6 +1451,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                            <horstretch>0</horstretch>
                            <verstretch>0</verstretch>
                           </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
                          </property>
                          <property name="text">
                           <string>Гц</string>
@@ -1431,6 +1494,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                         <verstretch>0</verstretch>
                        </sizepolicy>
                       </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>ПРД:</string>
                       </property>
@@ -1461,7 +1529,13 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                         <number>1</number>
                        </property>
                        <item>
-                        <widget class="QLineEdit" name="channel_prd_freq"/>
+                        <widget class="QLineEdit" name="channel_prd_freq">
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                        </widget>
                        </item>
                        <item>
                         <widget class="QLabel" name="label_39">
@@ -1470,6 +1544,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                            <horstretch>0</horstretch>
                            <verstretch>0</verstretch>
                           </sizepolicy>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
                          </property>
                          <property name="text">
                           <string>Гц</string>
@@ -1495,6 +1574,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>CTCSS:</string>
                      </property>
@@ -1513,6 +1597,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        <width>137</width>
                        <height>16777215</height>
                       </size>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="sizeAdjustPolicy">
                       <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
@@ -1554,6 +1643,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="text">
                       <string>Имя:</string>
@@ -1629,6 +1723,7 @@ QLabel {
               <widget class="QPushButton" name="channel_editor_left">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -1646,6 +1741,7 @@ text-align:left;</string>
               <widget class="QPushButton" name="channel_editor_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -1768,6 +1864,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>Канал:</string>
                </property>
@@ -1775,6 +1876,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              </item>
              <item>
               <widget class="QPushButton" name="channel_in_dir_name">
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="styleSheet">
                 <string notr="true">text-align: left;</string>
                </property>
@@ -1818,6 +1924,9 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     <property name="horizontalSpacing">
                      <number>12</number>
                     </property>
+                    <property name="verticalSpacing">
+                     <number>1</number>
+                    </property>
                     <property name="leftMargin">
                      <number>0</number>
                     </property>
@@ -1832,6 +1941,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </property>
                     <item row="0" column="0">
                      <widget class="QLabel" name="label_24">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Запрет ПРД:</string>
                       </property>
@@ -1839,6 +1953,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </item>
                     <item row="1" column="0">
                      <widget class="QLabel" name="label_25">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Тон.вызов:</string>
                       </property>
@@ -1846,6 +1965,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </item>
                     <item row="2" column="0">
                      <widget class="QLabel" name="label_26">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Список скан-я:</string>
                       </property>
@@ -1853,6 +1977,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </item>
                     <item row="3" column="0">
                      <widget class="QLabel" name="label_33">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Экономайзер:</string>
                       </property>
@@ -1860,6 +1989,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </item>
                     <item row="4" column="0">
                      <widget class="QLabel" name="label_34">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>200ms / 2000ms</string>
                       </property>
@@ -1880,10 +2014,22 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                      </widget>
                     </item>
                     <item row="2" column="1">
-                     <widget class="QComboBox" name="scan_list"/>
+                     <widget class="QComboBox" name="scan_list">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
                     </item>
                     <item row="3" column="1">
-                     <widget class="QComboBox" name="economizer"/>
+                     <widget class="QComboBox" name="economizer">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </widget>
@@ -1908,6 +2054,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </property>
                     <item row="0" column="0">
                      <widget class="QLabel" name="label_35">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Имя:</string>
                       </property>
@@ -1915,13 +2066,24 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </item>
                     <item row="1" column="0">
                      <widget class="QLabel" name="label_36">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="text">
                        <string>Фон:</string>
                       </property>
                      </widget>
                     </item>
                     <item row="0" column="1">
-                     <widget class="QLineEdit" name="name_d"/>
+                     <widget class="QLineEdit" name="name_d">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                     </widget>
                     </item>
                     <item row="1" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -1945,6 +2107,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <pointsize>10</pointsize>
+                         </font>
                         </property>
                        </widget>
                       </item>
@@ -2021,6 +2188,7 @@ QPushButtonl {
                </property>
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -2038,6 +2206,7 @@ text-align:left;</string>
               <widget class="QPushButton" name="direction_editor_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -2199,6 +2368,7 @@ QLabel {
               <widget class="QPushButton" name="data_editor_left">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -2231,6 +2401,7 @@ text-align: left;</string>
               <widget class="QPushButton" name="data_editor_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -2438,6 +2609,7 @@ QLabel {
               <widget class="QPushButton" name="direction_list_left">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -2455,6 +2627,7 @@ text-align:left;</string>
               <widget class="QPushButton" name="direction_list_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -2803,6 +2976,7 @@ QLabel {
                <widget class="QPushButton" name="menu_left">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -2835,6 +3009,7 @@ text-align:left;</string>
                <widget class="QPushButton" name="menu_right">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -2968,6 +3143,7 @@ QLabel {
               <widget class="QPushButton" name="direction_selection_left">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -3000,6 +3176,7 @@ text-align:left;</string>
               <widget class="QPushButton" name="direction_selection_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -3372,6 +3549,7 @@ QLabel {
               <widget class="QPushButton" name="main_left">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -3404,6 +3582,7 @@ text-align:left;</string>
               <widget class="QPushButton" name="main_right">
                <property name="font">
                 <font>
+                 <pointsize>10</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -3493,6 +3672,7 @@ text-align:right;</string>
              </property>
              <property name="font">
               <font>
+               <pointsize>10</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -3527,6 +3707,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_CPU">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3543,6 +3724,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_CPU_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3562,6 +3744,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_MPU">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3578,6 +3761,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_MPU_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3597,6 +3781,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_DSP">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3613,6 +3798,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_DSP_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3632,6 +3818,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_CRAM">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3648,6 +3835,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_CRAM_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3667,6 +3855,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_PRAM">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3683,6 +3872,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_PRAM_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3702,6 +3892,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_SDRAM">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3718,6 +3909,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_SDRAM_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3737,6 +3929,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_FLASH">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3753,6 +3946,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_FLASH_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3772,6 +3966,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Klapan">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3788,6 +3983,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Klapan_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3807,6 +4003,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Dostup">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3823,6 +4020,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Dostup_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3842,6 +4040,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Zagruz4ik">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3858,6 +4057,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Zagruz4ik_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3877,6 +4077,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Program">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3893,6 +4094,7 @@ text-align:right;</string>
                <widget class="QLabel" name="label_Program_r">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
@@ -3952,6 +4154,7 @@ text-align:right;</string>
              </property>
              <property name="font">
               <font>
+               <pointsize>10</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
@@ -4012,6 +4215,7 @@ text-align:right;</string>
                    </property>
                    <property name="font">
                     <font>
+                     <pointsize>10</pointsize>
                      <weight>50</weight>
                      <bold>false</bold>
                     </font>
@@ -4037,6 +4241,7 @@ text-align:right;</string>
                    </property>
                    <property name="font">
                     <font>
+                     <pointsize>10</pointsize>
                      <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
@@ -4081,6 +4286,7 @@ text-align:right;</string>
                      <widget class="QLabel" name="label_18">
                       <property name="font">
                        <font>
+                        <pointsize>10</pointsize>
                         <weight>50</weight>
                         <bold>false</bold>
                        </font>
@@ -4094,6 +4300,7 @@ text-align:right;</string>
                      <widget class="QLabel" name="label_17">
                       <property name="font">
                        <font>
+                        <pointsize>10</pointsize>
                         <weight>50</weight>
                         <bold>false</bold>
                        </font>
@@ -4134,6 +4341,7 @@ text-align:right;</string>
                      <widget class="QLabel" name="label_19">
                       <property name="font">
                        <font>
+                        <pointsize>10</pointsize>
                         <weight>50</weight>
                         <bold>false</bold>
                        </font>
@@ -4150,6 +4358,7 @@ text-align:right;</string>
                      <widget class="QLabel" name="label_20">
                       <property name="font">
                        <font>
+                        <pointsize>10</pointsize>
                         <weight>50</weight>
                         <bold>false</bold>
                        </font>
