@@ -151,12 +151,49 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->background_dir_picture->addItem(QString::number(i));
     }
 
+    //                0       1      2      3      4       5        6        7      8
+    channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
     //                         0
     editor_fields["none"] = { "type" };
     curr_editor_field["none"] = 0;
-    //                          0                      1      2        3       4           5           6        7
-    editor_fields["chm25"] = { "merely a dummy cell", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
+    //                          0       1      2        3       4           5           6        7
+    editor_fields["chm25"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
     curr_editor_field["chm25"] = 0;
+
+    //channel_editor_state
+    ui->channel_editor_state->setProperty("chosen", 0);
+    channel_editor_state_popup = new QListWidget(this);
+    QLabel* temp = ui->channel_editor_state;
+    channel_editor_state_popup->move(temp->mapToGlobal(QPoint(0, temp->height())));
+    channel_editor_state_popup->resize(temp->width(), temp->height() * 4);
+    channel_editor_state_popup->setVisible(false);
+
+    channel_editor_state_popup_item[0] = new QListWidgetItem(QIcon(""), "Не задано");
+    channel_editor_state_popup_item[1] = new QListWidgetItem(QIcon(""), "TETRA DMO");
+    channel_editor_state_popup_item[2] = new QListWidgetItem(QIcon(""), "TETRA TMO");
+    channel_editor_state_popup_item[3] = new QListWidgetItem(QIcon(""), "ВПД");
+    channel_editor_state_popup_item[4] = new QListWidgetItem(QIcon(""), "АМ25");
+    channel_editor_state_popup_item[5] = new QListWidgetItem(QIcon(""), "ЧМ25");
+    channel_editor_state_popup_item[6] = new QListWidgetItem(QIcon(""), "ЧМ50");
+    channel_editor_state_popup_item[7] = new QListWidgetItem(QIcon(""), "ОБП");
+    channel_editor_state_popup_item[8] = new QListWidgetItem(QIcon(""), "FM радио");
+
+    for (int i = 0; i < 9; i++) {
+        channel_editor_state_popup->addItem(channel_editor_state_popup_item[i]);
+    }
+
+    connect(channel_editor_state_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_state_popup_itemSelectionChanged);
+    channel_editor_state_popup->setCurrentItem(channel_editor_state_popup_item[0]);
+
+    channel_editor_ctcss_popup = new QListWidget(this);
+    temp = ui->ctcss;
+    channel_editor_ctcss_popup->move(temp->mapToGlobal(QPoint(0, temp->height())));
+    channel_editor_ctcss_popup->resize(temp->width(), temp->height() * 4);
+    channel_editor_ctcss_popup->setVisible(false);
+
+    for (int i = 0; i < 40; i++) {
+        channel_editor_ctcss_popup->addItem(QString::number(54.9 + 3.6 * i));
+    }
 
     broadcast_init();
 }
@@ -388,6 +425,19 @@ void MainWindow::on_channel_list_itemSelectionChanged()
     selected_items["channel_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
+void MainWindow::_on_channel_editor_state_popup_itemSelectionChanged()
+{
+    if(selected_items["channel_editor_state_popup"]){
+        selected_items["channel_editor_state_popup"]->setBackground(QColor(255, 255, 255));
+        selected_items["channel_editor_state_popup"]->setTextColor(QColor(133, 165, 200));
+    }
+
+    selected_items["channel_editor_state_popup"] = channel_editor_state_popup->currentItem();
+
+    selected_items["channel_editor_state_popup"]->setBackground(QColor(56, 82, 130));
+    selected_items["channel_editor_state_popup"]->setTextColor(QColor(255, 255 ,255));
+}
+
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     if(item == service_menu_list_item[7]){
@@ -575,7 +625,8 @@ void MainWindow::channel_editor_screen()
 
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
 
-    ui->channel_editor_state->setCurrentIndex(curr->state);
+    // REFACTOR
+    channel_editor_state_popup->setCurrentRow(curr->state);
 
     if(curr->state == 0){
         ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
@@ -591,7 +642,8 @@ void MainWindow::channel_editor_screen()
     ui->channel_freq->setText(QString::number(curr->freq));
     ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
     ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
-    ui->ctcss->setCurrentIndex(curr->ctcss);
+    // REFACTOR
+    channel_editor_ctcss_popup->setCurrentRow(curr->ctcss);
     ui->channel_name->setText(curr->name);
 
     update_channel_editor_page();
@@ -599,23 +651,77 @@ void MainWindow::channel_editor_screen()
 
 void MainWindow::on_channel_editor_right_clicked()
 {
-    //channel_list_screen();
     //TODO
+
+    // types
+    if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
+        if(channel_editor_state_popup->isVisible()){            
+            channel_editor_state_popup->setVisible(false);
+        }
+        else{
+            channel_editor_state_popup->setVisible(true);
+        }
+        update_channel_editor_page();
+        return;
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 0){
+        return;
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 5){
+        switch (curr_editor_field["chm25"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        default:
+            qCritical("crit: on_channel_editor_right_clicked");
+            return;
+        }
+        update_channel_editor_page();
+        return;
+    }
+
 }
 
-// channel saving
 void MainWindow::on_channel_editor_left_clicked()
 {
-    //TODO
+    if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
+        if(channel_editor_state_popup->isVisible()){
+            //Выбрать
+            ui->channel_editor_state->setText(selected_items["channel_editor_state_popup"]->text());
+            ui->channel_editor_state->setProperty("chosen", channel_editor_state_popup->currentRow());
+            channel_editor_state_popup->setVisible(false);
+            update_channel_editor_page();
+            return;
+        }
+    }
+
+    // channel saving
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
-    curr->state = ui->channel_editor_state->currentIndex();
+    // REFACTOR
+    curr->state = ui->channel_editor_state->property("chosen").toInt();
     if(curr->state == 0){
         //actually curr->state is enough here
         curr->PRD = false;
         curr->dualfreq = false;
         curr->freq = 0;
         curr->prm_freq = 0;
-        curr->prm_freq = 0;
+        curr->prm_freq = 0;        
         curr->ctcss = 0;
         curr->name = "";
         selected_items["channel_list"]->setText("");
@@ -627,23 +733,13 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->freq = (uint32_t)ui->channel_freq->text().toInt();
         curr->prm_freq = (uint32_t)ui->channel_prm_freq->text().toInt();
         curr->prd_freq = (uint32_t)ui->channel_prd_freq->text().toInt();
-        curr->ctcss = ui->ctcss->currentIndex();
+        // REFACTOR
+        curr->ctcss = channel_editor_ctcss_popup->currentRow();
         curr->name = ui->channel_name->text();
         selected_items["channel_list"]->setText(curr->name);
         channel_map[selected_items["channel_list"]].ref2->setText(curr->name);
     }
     channel_list_screen();
-}
-
-void MainWindow::on_channel_editor_state_currentIndexChanged(int index)
-{
-    if(index == 5){
-        ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
-    }
-    else {
-        ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
-    }
-    update_channel_editor_page();
 }
 
 void MainWindow::on_channel_list_itemClicked(QListWidgetItem *item)
@@ -1152,40 +1248,122 @@ void MainWindow::clear_chm25_fields(){
 void MainWindow::update_channel_editor_page(){
     //it will be hard...
 
-    // none
-    if(ui->channel_editor_state->currentIndex() == 0){
-        ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+    // swap page if necessary
+    switch (ui->channel_editor_state->property("chosen").toInt()) {
+    case 0:
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    case 1:
+        // TODO: CHANGE
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    case 2:
+        // TODO: CHANGE
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    case 3:
+        // TODO: CHANGE
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    case 4:
+        // TODO: CHANGE
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    case 5:
+        if(ui->channel_editor_states->currentWidget() != ui->CHM25_page)
+            ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
+        break;
+    case 6:
+        // TODO: CHANGE
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    case 7:
+        // TODO: CHANGE
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    case 8:
+        // TODO: CHANGE
+        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
+            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        break;
+    default:
+        qCritical("crit: update_channel_editor_page: channel_editor_state");
     }
+
+    // change buttons at type changing
+    if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
+        clear_chm25_fields();
+        ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+        if(channel_editor_state_popup->isVisible()){
+            ui->channel_editor_left->setText("Выбрать");
+            ui->channel_editor_right->setText("Назад");
+        }
+        else{
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+        }
+        //return;
+    }
+
+    // change buttons for chosen type
+    // none
+    if(ui->channel_editor_state->property("chosen") == 0){
+        // was upper
+        return;
+    }
+
     // chm25
-    if(ui->channel_editor_state->currentIndex() == 5){
+    if(ui->channel_editor_state->property("chosen") == 5){
         clear_chm25_fields();
         switch (curr_editor_field["chm25"]) {
         case 0:
+            // was upper
             ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
             break;
         case 1:
             ui->is_forbidden_prd->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
             break;
         case 2:
             ui->dualfreq->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
             break;
         case 3:
             ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid blue;}");
             ui->label_32->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
             ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
             ui->label_42->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
             ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid blue;}");
             ui->label_39->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
             break;
         case 6:
             ui->ctcss->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
             break;
         case 7:
             ui->channel_name->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
             break;
         default:
             qCritical("chm25: update_channel_editor_page: no way");
@@ -1282,10 +1460,21 @@ void MainWindow::on_up_arrow_clicked()
         return;
     }
     if(curr == ui->channel_editor_page){
-        // TODO
+
+        if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
+            if(channel_editor_state_popup->isVisible()){
+                go_up(channel_editor_state_popup, 9);
+                return;
+            }
+        }
+
+        // none
+        if(ui->channel_editor_state->property("chosen") == 0){
+            return;
+        }
 
         // chm25
-        if(ui->channel_editor_state->currentIndex() == 5){
+        if(ui->channel_editor_state->property("chosen") == 5){
             uint sz = editor_fields["chm25"].size();
             curr_editor_field["chm25"] = (curr_editor_field["chm25"] - 1 + sz) % sz;
             if(ui->dualfreq->isChecked()){
@@ -1376,10 +1565,21 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
     if(curr == ui->channel_editor_page){
-        // TODO
+        if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
+            if(channel_editor_state_popup->isVisible()){
+                go_down(channel_editor_state_popup, 9);
+                return;
+            }
+        }
+
+        // none
+        if(ui->channel_editor_state->property("chosen") == 0){
+            return;
+        }
 
         // chm25
-        if(ui->channel_editor_state->currentIndex() == 5){
+        // REFACTOR
+        if(ui->channel_editor_state->property("chosen") == 5){
             uint sz = editor_fields["chm25"].size();
             curr_editor_field["chm25"] = (curr_editor_field["chm25"] + 1) % sz;
             if(ui->dualfreq->isChecked()){

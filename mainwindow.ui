@@ -538,7 +538,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1053,13 +1053,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
-               <layout class="QFormLayout" name="formLayout_2">
-                <property name="horizontalSpacing">
-                 <number>20</number>
-                </property>
-                <property name="verticalSpacing">
-                 <number>0</number>
-                </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_21">
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
@@ -1072,7 +1066,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                 <property name="bottomMargin">
                  <number>0</number>
                 </property>
-                <item row="0" column="0">
+                <item>
                  <widget class="QLabel" name="label_7">
                   <property name="font">
                    <font>
@@ -1084,64 +1078,16 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
-                 <widget class="QComboBox" name="channel_editor_state">
+                <item>
+                 <widget class="QLabel" name="channel_editor_state">
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
                    </font>
                   </property>
-                  <property name="currentText">
+                  <property name="text">
                    <string>Не задано</string>
                   </property>
-                  <property name="frame">
-                   <bool>false</bool>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>Не задано</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>TETRA DMO</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>TETRA TMO</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>ВПД</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>АМ25</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>ЧМ25</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>ЧМ50</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>ОБП</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>FM радио</string>
-                   </property>
-                  </item>
                  </widget>
                 </item>
                </layout>
@@ -1569,10 +1515,16 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                    <item>
                     <widget class="QLabel" name="label_30">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>48</width>
+                       <height>0</height>
+                      </size>
                      </property>
                      <property name="font">
                       <font>
@@ -1585,48 +1537,15 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </widget>
                    </item>
                    <item>
-                    <widget class="QComboBox" name="ctcss">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>137</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
+                    <widget class="QLabel" name="ctcss">
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
                       </font>
                      </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QComboBox::AdjustToContentsOnFirstShow</enum>
+                     <property name="text">
+                      <string>Нет</string>
                      </property>
-                     <property name="duplicatesEnabled">
-                      <bool>false</bool>
-                     </property>
-                     <property name="frame">
-                      <bool>false</bool>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Нет</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>54.9</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>56.8</string>
-                      </property>
-                     </item>
                     </widget>
                    </item>
                   </layout>

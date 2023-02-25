@@ -98,8 +98,6 @@ private slots:
     void on_channel_editor_left_clicked(); //
     void on_channel_editor_right_clicked(); //
 
-    void on_channel_editor_state_currentIndexChanged(int index);
-
     void on_channel_list_itemClicked(QListWidgetItem *item);
 
     void on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
@@ -163,6 +161,8 @@ private slots:
 
     void on_channel_list_itemSelectionChanged();
 
+    void _on_channel_editor_state_popup_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
@@ -183,6 +183,8 @@ private:
     std::map<QString, uint> curr_editor_field;
     // fields
     std::map<QString, std::vector<QString>> editor_fields;
+    // types
+    std::vector<QString> channel_types;
 
     bool is_open_communication = true;
 
@@ -220,6 +222,12 @@ private:
     QTimer time_timer;
 
     Direction* current_direction = nullptr;
+
+    QListWidget* channel_editor_state_popup;
+    QListWidget* channel_editor_ctcss_popup;
+
+    QListWidgetItem* channel_editor_state_popup_item[9];
+    //QListWidgetItem* channel_editor_ctcss_popup_item[40];
 
 
     QUdpSocket udpSocket;
