@@ -191,8 +191,76 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_editor_ctcss_popup->resize(temp->width(), temp->height() * 4);
     channel_editor_ctcss_popup->setVisible(false);
 
-    for (int i = 0; i < 40; i++) {
-        channel_editor_ctcss_popup->addItem(QString::number(54.9 + 3.6 * i));
+    channel_editor_ctcss_popup->addItem("Нет");
+
+    channel_editor_ctcss_popup_item[0] = new QListWidgetItem(QIcon(""), "Нет");
+    channel_editor_ctcss_popup_item[1] = new QListWidgetItem(QIcon(""), "33.0");
+    channel_editor_ctcss_popup_item[2] = new QListWidgetItem(QIcon(""), "35.4");
+    channel_editor_ctcss_popup_item[3] = new QListWidgetItem(QIcon(""), "36.6");
+    channel_editor_ctcss_popup_item[4] = new QListWidgetItem(QIcon(""), "37.9");
+    channel_editor_ctcss_popup_item[5] = new QListWidgetItem(QIcon(""), "39.6");
+    channel_editor_ctcss_popup_item[6] = new QListWidgetItem(QIcon(""), "44.4");
+    channel_editor_ctcss_popup_item[7] = new QListWidgetItem(QIcon(""), "47.5");
+    channel_editor_ctcss_popup_item[8] = new QListWidgetItem(QIcon(""), "49.2");
+    channel_editor_ctcss_popup_item[9] = new QListWidgetItem(QIcon(""), "51.2");
+    channel_editor_ctcss_popup_item[10] = new QListWidgetItem(QIcon(""), "53.0");
+    channel_editor_ctcss_popup_item[11] = new QListWidgetItem(QIcon(""), "54.9");
+    channel_editor_ctcss_popup_item[12] = new QListWidgetItem(QIcon(""), "56.8");
+    channel_editor_ctcss_popup_item[13] = new QListWidgetItem(QIcon(""), "58.8");
+    channel_editor_ctcss_popup_item[14] = new QListWidgetItem(QIcon(""), "63.0");
+    channel_editor_ctcss_popup_item[15] = new QListWidgetItem(QIcon(""), "67.0");
+    channel_editor_ctcss_popup_item[16] = new QListWidgetItem(QIcon(""), "69.4");
+    channel_editor_ctcss_popup_item[17] = new QListWidgetItem(QIcon(""), "71.9");
+    channel_editor_ctcss_popup_item[18] = new QListWidgetItem(QIcon(""), "74.4");
+    channel_editor_ctcss_popup_item[19] = new QListWidgetItem(QIcon(""), "77.0");
+    channel_editor_ctcss_popup_item[20] = new QListWidgetItem(QIcon(""), "79.7");
+    channel_editor_ctcss_popup_item[21] = new QListWidgetItem(QIcon(""), "82.5");
+    channel_editor_ctcss_popup_item[22] = new QListWidgetItem(QIcon(""), "85.4");
+    channel_editor_ctcss_popup_item[23] = new QListWidgetItem(QIcon(""), "88.5");
+    channel_editor_ctcss_popup_item[24] = new QListWidgetItem(QIcon(""), "91.5");
+    channel_editor_ctcss_popup_item[25] = new QListWidgetItem(QIcon(""), "94.8");
+    channel_editor_ctcss_popup_item[26] = new QListWidgetItem(QIcon(""), "97.4");
+    channel_editor_ctcss_popup_item[27] = new QListWidgetItem(QIcon(""), "100.0");
+    channel_editor_ctcss_popup_item[28] = new QListWidgetItem(QIcon(""), "103.5");
+    channel_editor_ctcss_popup_item[29] = new QListWidgetItem(QIcon(""), "107.2");
+    channel_editor_ctcss_popup_item[30] = new QListWidgetItem(QIcon(""), "110.9");
+    channel_editor_ctcss_popup_item[31] = new QListWidgetItem(QIcon(""), "114.8");
+    channel_editor_ctcss_popup_item[32] = new QListWidgetItem(QIcon(""), "118.8");
+    channel_editor_ctcss_popup_item[33] = new QListWidgetItem(QIcon(""), "123.0");
+    channel_editor_ctcss_popup_item[34] = new QListWidgetItem(QIcon(""), "127.3");
+    channel_editor_ctcss_popup_item[35] = new QListWidgetItem(QIcon(""), "131.8");
+    channel_editor_ctcss_popup_item[36] = new QListWidgetItem(QIcon(""), "136.5");
+    channel_editor_ctcss_popup_item[37] = new QListWidgetItem(QIcon(""), "141.3");
+    channel_editor_ctcss_popup_item[38] = new QListWidgetItem(QIcon(""), "146.2");
+    channel_editor_ctcss_popup_item[39] = new QListWidgetItem(QIcon(""), "151.4");
+    channel_editor_ctcss_popup_item[40] = new QListWidgetItem(QIcon(""), "156.7");
+    channel_editor_ctcss_popup_item[41] = new QListWidgetItem(QIcon(""), "159.8");
+    channel_editor_ctcss_popup_item[42] = new QListWidgetItem(QIcon(""), "162.2");
+    channel_editor_ctcss_popup_item[43] = new QListWidgetItem(QIcon(""), "165.5");
+    channel_editor_ctcss_popup_item[44] = new QListWidgetItem(QIcon(""), "167.9");
+    channel_editor_ctcss_popup_item[45] = new QListWidgetItem(QIcon(""), "171.3");
+    channel_editor_ctcss_popup_item[46] = new QListWidgetItem(QIcon(""), "173.8");
+    channel_editor_ctcss_popup_item[47] = new QListWidgetItem(QIcon(""), "177.3");
+    channel_editor_ctcss_popup_item[48] = new QListWidgetItem(QIcon(""), "179.9");
+    channel_editor_ctcss_popup_item[49] = new QListWidgetItem(QIcon(""), "183.5");
+    channel_editor_ctcss_popup_item[50] = new QListWidgetItem(QIcon(""), "186.2");
+    channel_editor_ctcss_popup_item[51] = new QListWidgetItem(QIcon(""), "189.9");
+    channel_editor_ctcss_popup_item[52] = new QListWidgetItem(QIcon(""), "192.8");
+    channel_editor_ctcss_popup_item[53] = new QListWidgetItem(QIcon(""), "196.6");
+    channel_editor_ctcss_popup_item[54] = new QListWidgetItem(QIcon(""), "199.5");
+    channel_editor_ctcss_popup_item[55] = new QListWidgetItem(QIcon(""), "203.5");
+    channel_editor_ctcss_popup_item[56] = new QListWidgetItem(QIcon(""), "206.5");
+    channel_editor_ctcss_popup_item[57] = new QListWidgetItem(QIcon(""), "210.7");
+    channel_editor_ctcss_popup_item[58] = new QListWidgetItem(QIcon(""), "218.1");
+    channel_editor_ctcss_popup_item[59] = new QListWidgetItem(QIcon(""), "225.7");
+    channel_editor_ctcss_popup_item[60] = new QListWidgetItem(QIcon(""), "229.1");
+    channel_editor_ctcss_popup_item[61] = new QListWidgetItem(QIcon(""), "233.6");
+    channel_editor_ctcss_popup_item[62] = new QListWidgetItem(QIcon(""), "241.8");
+    channel_editor_ctcss_popup_item[63] = new QListWidgetItem(QIcon(""), "250.3");
+    channel_editor_ctcss_popup_item[64] = new QListWidgetItem(QIcon(""), "254.1");
+
+    for (int i = 0; i < 64; i++) {
+        channel_editor_ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
     }
 
     connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
@@ -1557,7 +1625,7 @@ void MainWindow::on_up_arrow_clicked()
         if(ui->channel_editor_state->property("chosen") == 5){
             if(curr_editor_field["chm25"] == 6){
                 if(channel_editor_ctcss_popup->isVisible()){
-                    go_up(channel_editor_ctcss_popup, 40);
+                    go_up(channel_editor_ctcss_popup, 65);
                     return;
                 }
             }
@@ -1670,7 +1738,7 @@ void MainWindow::on_down_arrow_clicked()
 
             if(curr_editor_field["chm25"] == 6){
                 if(channel_editor_ctcss_popup->isVisible()){
-                    go_down(channel_editor_ctcss_popup, 40);
+                    go_down(channel_editor_ctcss_popup, 65);
                     return;
                 }
             }

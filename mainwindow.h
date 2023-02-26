@@ -229,7 +229,7 @@ private:
     QListWidget* channel_editor_ctcss_popup;
 
     QListWidgetItem* channel_editor_state_popup_item[9];
-    //QListWidgetItem* channel_editor_ctcss_popup_item[40];
+    QListWidgetItem* channel_editor_ctcss_popup_item[65];
 
 
     QUdpSocket udpSocket;
