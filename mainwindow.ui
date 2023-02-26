@@ -538,7 +538,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1580,6 +1580,11 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="styleSheet">
                       <string notr="true"/>

@@ -163,6 +163,8 @@ private slots:
 
     void _on_channel_editor_state_popup_itemSelectionChanged();
 
+    void _on_channel_editor_ctcss_popup_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();

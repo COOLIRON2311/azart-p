@@ -195,6 +195,8 @@ MainWindow::MainWindow(QWidget *parent) :
         channel_editor_ctcss_popup->addItem(QString::number(54.9 + 3.6 * i));
     }
 
+    connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
+
     broadcast_init();
 }
 
@@ -438,6 +440,19 @@ void MainWindow::_on_channel_editor_state_popup_itemSelectionChanged()
     selected_items["channel_editor_state_popup"]->setTextColor(QColor(255, 255 ,255));
 }
 
+void MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged()
+{
+    if(selected_items["channel_editor_ctcss_popup"]){
+        selected_items["channel_editor_ctcss_popup"]->setBackground(QColor(255, 255, 255));
+        selected_items["channel_editor_ctcss_popup"]->setTextColor(QColor(133, 165, 200));
+    }
+
+    selected_items["channel_editor_ctcss_popup"] = channel_editor_ctcss_popup->currentItem();
+
+    selected_items["channel_editor_ctcss_popup"]->setBackground(QColor(56, 82, 130));
+    selected_items["channel_editor_ctcss_popup"]->setTextColor(QColor(255, 255 ,255));
+}
+
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     if(item == service_menu_list_item[7]){
@@ -675,18 +690,30 @@ void MainWindow::on_channel_editor_right_clicked()
             // skip
             break;
         case 1:
+            ui->is_forbidden_prd->toggle();
             break;
         case 2:
+            ui->dualfreq->toggle();
             break;
         case 3:
+            ui->channel_freq->del();
             break;
         case 4:
+            ui->channel_prm_freq->del();
             break;
         case 5:
+            ui->channel_prd_freq->del();
             break;
         case 6:
+            if(channel_editor_ctcss_popup->isVisible()){
+                channel_editor_ctcss_popup->setVisible(false);
+            }
+            else{
+                channel_editor_ctcss_popup->setVisible(true);
+            }
             break;
         case 7:
+            ui->channel_name->del();
             break;
         default:
             qCritical("crit: on_channel_editor_right_clicked");
@@ -708,6 +735,19 @@ void MainWindow::on_channel_editor_left_clicked()
             channel_editor_state_popup->setVisible(false);
             update_channel_editor_page();
             return;
+        }
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 5){
+        if(curr_editor_field["chm25"] == 6){
+            if(channel_editor_ctcss_popup->isVisible()){
+                //Выбрать
+                ui->ctcss->setText(selected_items["channel_editor_ctcss_popup"]->text());
+                ui->ctcss->setProperty("chosen", channel_editor_ctcss_popup->currentRow());
+                channel_editor_ctcss_popup->setVisible(false);
+                update_channel_editor_page();
+                return;
+            }
         }
     }
 
@@ -1357,8 +1397,14 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 6:
             ui->ctcss->setStyleSheet("border: 1px solid blue;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            if(channel_editor_ctcss_popup->isVisible()){
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
+            else{
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
             break;
         case 7:
             ui->channel_name->setStyleSheet("border: 1px solid blue;");
@@ -1475,6 +1521,13 @@ void MainWindow::on_up_arrow_clicked()
 
         // chm25
         if(ui->channel_editor_state->property("chosen") == 5){
+            if(curr_editor_field["chm25"] == 6){
+                if(channel_editor_ctcss_popup->isVisible()){
+                    go_up(channel_editor_ctcss_popup, 40);
+                    return;
+                }
+            }
+
             uint sz = editor_fields["chm25"].size();
             curr_editor_field["chm25"] = (curr_editor_field["chm25"] - 1 + sz) % sz;
             if(ui->dualfreq->isChecked()){
@@ -1483,9 +1536,9 @@ void MainWindow::on_up_arrow_clicked()
             else{
                 if(curr_editor_field["chm25"] == 5) curr_editor_field["chm25"] -= 2;
             }
+            update_channel_editor_page();
+            return;
         }
-        update_channel_editor_page();
-        return;
     }
 }
 
@@ -1580,6 +1633,14 @@ void MainWindow::on_down_arrow_clicked()
         // chm25
         // REFACTOR
         if(ui->channel_editor_state->property("chosen") == 5){
+
+            if(curr_editor_field["chm25"] == 6){
+                if(channel_editor_ctcss_popup->isVisible()){
+                    go_down(channel_editor_ctcss_popup, 40);
+                    return;
+                }
+            }
+
             uint sz = editor_fields["chm25"].size();
             curr_editor_field["chm25"] = (curr_editor_field["chm25"] + 1) % sz;
             if(ui->dualfreq->isChecked()){
@@ -1588,9 +1649,10 @@ void MainWindow::on_down_arrow_clicked()
             else{
                 if(curr_editor_field["chm25"] == 4) curr_editor_field["chm25"] += 2;
             }
+
+            update_channel_editor_page();
+            return;
         }
-        update_channel_editor_page();
-        return;
     }
 }
 
