@@ -1264,7 +1264,41 @@ void MainWindow::on_number_0_clicked()
 void MainWindow::on_number_i_clicked(int i)
 {
     auto curr = ui->mainPages->currentWidget();
-    // TODO: ..
+    if(curr == ui->channel_editor_page){
+        //chm25
+        if(ui->channel_editor_state->property("chosen") == 5){
+            switch (curr_editor_field["chm25"]) {
+            case 3:
+                ui->channel_freq->setText(ui->channel_freq->text() + QString::number(i));
+                break;
+            case 4:
+                ui->channel_prm_freq->setText(ui->channel_prm_freq->text() + QString::number(i));
+                break;
+            case 5:
+                ui->channel_prd_freq->setText(ui->channel_prd_freq->text() + QString::number(i));
+                break;
+            case 7:
+                /* letters!
+                ' ' 1
+                А Б В 2
+                Г Д Е Ё 3
+                Ж З И Й 4
+                К Л М Н 5
+                О П Р С 6
+                Т У Ф Х 7
+                Ц Ч Ш 8
+                Щ Ъ Ы 9
+                Ь Э Ю Я 0
+                */
+                // TODO
+
+                break;
+            default:
+                ;
+            }
+            return;
+        }
+    }
 }
 
 void go_up(QListWidget* qlw, uint size){
