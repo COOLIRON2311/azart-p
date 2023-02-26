@@ -66,8 +66,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     menu_list_item[0] = new QListWidgetItem(QIcon(":/resources/settings32.png"), "Шумоподавление");
     menu_list_item[1] = new QListWidgetItem(QIcon(":/resources/settings32.png"), "Громкость");
-    menu_list_item[2] = new QListWidgetItem(QIcon(":/resources/picture32.png"), "Навигация");
-    menu_list_item[3] = new QListWidgetItem(QIcon(":/resources/download32.png"), "Принятые сообщения");
+    menu_list_item[2] = new QListWidgetItem(QIcon(":/resources/nav32.png"), "Навигация");
+    menu_list_item[3] = new QListWidgetItem(QIcon(":/resources/inbox32.png"), "Принятые сообщения");
     menu_list_item[4] = new QListWidgetItem(QIcon(":/resources/settings32.png"), "Настройки");
     menu_list_item[5] = new QListWidgetItem(QIcon(":/resources/settings32.png"), "Сервисное меню");
     menu_list_item[6] = new QListWidgetItem(QIcon(":/resources/battery32.png"), "Батарея");
@@ -1013,9 +1013,9 @@ void MainWindow::on_direction_editor_left_clicked()
     curr->name = ui->name_d->text();
     curr->background = ui->background_dir_picture->currentIndex();
     selected_items["direction_list"]->setText(curr->name + "\n" + curr->ch->name);
-    selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
+    selected_items["direction_list"]->setIcon(QIcon(":/resources/nav32.png"));
     direction_map[selected_items["direction_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
-    direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
+    direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/nav32.png"));
     direction_list_screen();
 }
 
