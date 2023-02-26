@@ -28,6 +28,7 @@ public slots:
 
 public Q_SLOTS:
 
+    void setup();
     void selfcontrol_screen();
     void loading_screen();
     void main_screen();
@@ -169,6 +170,7 @@ private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
     void update_channel_editor_page();
+    QPoint global_pos(QWidget*);
 
 private:
     struct Channel;

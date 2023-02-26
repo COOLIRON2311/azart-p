@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QtMultimedia>
 #include <iostream>
+#include <QScrollBar>
 
 /*
 
@@ -40,6 +41,13 @@ void MainWindow::change_global_time()
     ui->seconds_2->setText(s);
 
     ui->data_label->setText(QDate::currentDate().toString("dd.MM.yyyy"));
+}
+
+QPoint MainWindow::global_pos(QWidget* w){
+    while(w != this){
+        return global_pos(w->parentWidget()) + w->pos();
+    }
+    return QPoint(0, 0);
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -164,8 +172,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->channel_editor_state->setProperty("chosen", 0);
     channel_editor_state_popup = new QListWidget(this);
     QLabel* temp = ui->channel_editor_state;
-    channel_editor_state_popup->move(temp->mapToGlobal(QPoint(0, temp->height())));
-    channel_editor_state_popup->resize(temp->width(), temp->height() * 4);
+    channel_editor_state_popup->resize(94, 176);
+    channel_editor_state_popup->move(temp->mapToGlobal(temp->rect().bottomLeft()) + QPoint(100, -10));
+    channel_editor_state_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
+    channel_editor_state_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     channel_editor_state_popup->setVisible(false);
 
     channel_editor_state_popup_item[0] = new QListWidgetItem(QIcon(""), "Не задано");
@@ -186,13 +196,13 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_editor_state_popup->setCurrentItem(channel_editor_state_popup_item[0]);
 
     channel_editor_ctcss_popup = new QListWidget(this);
-    temp = ui->ctcss;
-    channel_editor_ctcss_popup->move(temp->mapToGlobal(QPoint(0, temp->height())));
-    channel_editor_ctcss_popup->resize(temp->width(), temp->height() * 4);
+    channel_editor_ctcss_popup->resize(50, 220);
+    channel_editor_ctcss_popup->move(ui->widget->mapToGlobal(ui->widget->rect().topRight()) + QPoint(-495, -5));
+    channel_editor_ctcss_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
+    channel_editor_ctcss_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     channel_editor_ctcss_popup->setVisible(false);
 
-    channel_editor_ctcss_popup->addItem("Нет");
-
+{
     channel_editor_ctcss_popup_item[0] = new QListWidgetItem(QIcon(""), "Нет");
     channel_editor_ctcss_popup_item[1] = new QListWidgetItem(QIcon(""), "33.0");
     channel_editor_ctcss_popup_item[2] = new QListWidgetItem(QIcon(""), "35.4");
@@ -258,14 +268,18 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_editor_ctcss_popup_item[62] = new QListWidgetItem(QIcon(""), "241.8");
     channel_editor_ctcss_popup_item[63] = new QListWidgetItem(QIcon(""), "250.3");
     channel_editor_ctcss_popup_item[64] = new QListWidgetItem(QIcon(""), "254.1");
-
-    for (int i = 0; i < 64; i++) {
+}
+    for (int i = 0; i < 65; i++) {
         channel_editor_ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
     }
 
     connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
 
     broadcast_init();
+}
+
+void MainWindow::setup(){
+
 }
 
 MainWindow::~MainWindow()
