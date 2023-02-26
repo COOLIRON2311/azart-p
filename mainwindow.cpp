@@ -778,13 +778,13 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->dualfreq->toggle();
             break;
         case 3:
-            ui->channel_freq->del();
+            ui->channel_freq->backspace();
             break;
         case 4:
-            ui->channel_prm_freq->del();
+            ui->channel_prm_freq->backspace();
             break;
         case 5:
-            ui->channel_prd_freq->del();
+            ui->channel_prd_freq->backspace();
             break;
         case 6:
             if(channel_editor_ctcss_popup->isVisible()){
@@ -795,7 +795,7 @@ void MainWindow::on_channel_editor_right_clicked()
             }
             break;
         case 7:
-            ui->channel_name->del();
+            ui->channel_name->backspace();
             break;
         default:
             qCritical("crit: on_channel_editor_right_clicked");
