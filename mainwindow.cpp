@@ -505,8 +505,10 @@ void MainWindow::on_channel_list_itemSelectionChanged()
 
     selected_items["channel_list"] = ui->channel_list->currentItem();
 
-    selected_items["channel_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["channel_list"]->setTextColor(QColor(255, 255 ,255));
+    if(selected_items["channel_list"]){
+        selected_items["channel_list"]->setBackground(QColor(56, 82, 130));
+        selected_items["channel_list"]->setTextColor(QColor(255, 255 ,255));
+    }
 }
 
 void MainWindow::_on_channel_editor_state_popup_itemSelectionChanged()
@@ -701,11 +703,16 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
             delete channel_map[selected_items["channel_list"]].channel;
             delete channel_map[selected_items["channel_list"]].ref2;
             channel_map.erase(selected_items["channel_list"]);
+
+            // PA: we dont do it cause qt does it by itself and even better
+            // selected_items["channel_list"] = nullptr;
+            // delete a chosen item causes item Selection automatically from available items
+
             delete selected_items["channel_list"];
 
-            // PA
-            //selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
-            ui->channel_list->setCurrentItem(channel_map.empty() ? nullptr : channel_map.begin()->first);
+            // PA: a few lines above
+            // selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
+            // ui->channel_list->setCurrentItem(channel_map.empty() ? nullptr : channel_map.begin()->first);
 
             ui->channel_popup_menu->setEnabled(false);
             ui->channel_popup_menu->setVisible(false);
@@ -715,6 +722,27 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     }
 }
 
+void MainWindow::set_default_channel_fields(){
+    // dmo
+    // tmo
+    // vpd
+    // am25
+    // chm25
+
+    ui->is_forbidden_prd->setCheckState(Qt::Unchecked);
+    ui->dualfreq->setCheckState(Qt::Unchecked);
+    ui->channel_freq->setText("");
+    ui->channel_prm_freq->setText("");
+    ui->channel_prd_freq->setText("");
+    channel_editor_ctcss_popup->setCurrentRow(0);
+    ui->ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
+    ui->channel_name->setText("");
+
+    // chm50
+    // obp
+    // fm
+}
+
 // channel loading
 void MainWindow::channel_editor_screen()
 {
@@ -722,26 +750,51 @@ void MainWindow::channel_editor_screen()
 
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
 
-    // REFACTOR
     channel_editor_state_popup->setCurrentRow(curr->state);
+    ui->channel_editor_state->setProperty("chosen", curr->state);
+    ui->channel_editor_state->setText(channel_editor_state_popup->currentItem()->text());
 
-    if(curr->state == 0){
-        ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
-        curr_editor_field["none"] = 0;
-    }
-    if(curr->state == 5){
-        ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
-        curr_editor_field["chm25"] = 0;
+    set_default_channel_fields();
+
+    switch (curr->state) {
+    case 0:
+
+        break;
+    case 1:
+
+        break;
+    case 2:
+
+        break;
+    case 3:
+
+        break;
+    case 4:
+
+        break;
+    case 5:
+        ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+        ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
+        ui->channel_freq->setText(QString::number(curr->freq));
+        ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
+        ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
+        channel_editor_ctcss_popup->setCurrentRow(curr->ctcss);
+        ui->ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
+        ui->channel_name->setText(curr->name);
+        break;
+    case 6:
+
+        break;
+    case 7:
+
+        break;
+    case 8:
+
+        break;
     }
 
-    ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
-    ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
-    ui->channel_freq->setText(QString::number(curr->freq));
-    ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
-    ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
-    // REFACTOR
-    channel_editor_ctcss_popup->setCurrentRow(curr->ctcss);
-    ui->channel_name->setText(curr->name);
+    // Always point to the first field first
+    curr_editor_field[channel_types[curr->state]] = 0;
 
     update_channel_editor_page();
 }
@@ -835,32 +888,45 @@ void MainWindow::on_channel_editor_left_clicked()
 
     // channel saving
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
+
+    // clearing before saving
+    curr->clear();
     // REFACTOR
     curr->state = ui->channel_editor_state->property("chosen").toInt();
-    if(curr->state == 0){
-        //actually curr->state is enough here
-        curr->PRD = false;
-        curr->dualfreq = false;
-        curr->freq = 0;
-        curr->prm_freq = 0;
-        curr->prm_freq = 0;        
-        curr->ctcss = 0;
-        curr->name = "";
-        selected_items["channel_list"]->setText("");
-        channel_map[selected_items["channel_list"]].ref2->setText("");
-    }
-    if(curr->state == 5){
+
+    switch (curr->state) {
+    case 0:
+        // skip
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    case 5:
         curr->PRD = ui->is_forbidden_prd->isChecked();
         curr->dualfreq = ui->dualfreq->isChecked();
         curr->freq = (uint32_t)ui->channel_freq->text().toInt();
         curr->prm_freq = (uint32_t)ui->channel_prm_freq->text().toInt();
         curr->prd_freq = (uint32_t)ui->channel_prd_freq->text().toInt();
         // REFACTOR
-        curr->ctcss = channel_editor_ctcss_popup->currentRow();
+        curr->ctcss = ui->ctcss->property("chosen").toInt(); //channel_editor_ctcss_popup->currentRow();
         curr->name = ui->channel_name->text();
-        selected_items["channel_list"]->setText(curr->name);
-        channel_map[selected_items["channel_list"]].ref2->setText(curr->name);
+        break;
+    case 6:
+        break;
+    case 7:
+        break;
+    case 8:
+        break;
+        return;
     }
+
+    selected_items["channel_list"]->setText(curr->name);
+    channel_map[selected_items["channel_list"]].ref2->setText(curr->name);
     channel_list_screen();
 }
 
@@ -929,11 +995,12 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
             delete direction_map[selected_items["direction_list"]].direction;
             delete direction_map[selected_items["direction_list"]].ref2;
             direction_map.erase(selected_items["direction_list"]);
+
             delete selected_items["direction_list"];
 
-            // PA
-            //selected_items["direction_list"] = direction_map.empty() ? nullptr : direction_map.begin()->first;
-            ui->direction_list->setCurrentItem(direction_map.empty() ? nullptr : direction_map.begin()->first);
+            // PA: the same in channel actions
+            // selected_items["direction_list"] = direction_map.empty() ? nullptr : direction_map.begin()->first;
+            // ui->direction_list->setCurrentItem(direction_map.empty() ? nullptr : direction_map.begin()->first);
 
             ui->direction_popup_menu->setEnabled(false);
             ui->direction_popup_menu->setVisible(false);

@@ -171,6 +171,7 @@ private:
     void clear_chm25_fields();
     void update_channel_editor_page();
     QPoint global_pos(QWidget*);
+    void set_default_channel_fields();
 
 private:
     struct Channel;
@@ -264,6 +265,28 @@ struct MainWindow::Channel
     quint32 prd_freq = 0;
     quint32 ctcss = 0;
     QString name = "";
+
+    // set default all fields
+    void clear(){
+        // dmo
+        // tmo
+        // am25
+        // vpd
+        // chm25
+
+        state = 0; //"Не задано"
+        PRD = false;
+        dualfreq = false;
+        freq = 0;
+        prm_freq = 0;
+        prd_freq = 0;
+        ctcss = 0;
+        name = "";
+
+        // chm50
+        // obp
+        // fm
+    }
 };
 
 struct MainWindow::Direction
