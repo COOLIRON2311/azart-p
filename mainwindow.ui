@@ -538,7 +538,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>9</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">

@@ -11,5 +11,6 @@
         <file>resources/Kremlin.png</file>
         <file>resources/front.png</file>
         <file>resources/left.png</file>
+        <file>resources/static.mp3</file>
     </qresource>
 </RCC>
