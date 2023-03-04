@@ -147,11 +147,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->direction_popup_menu->setEnabled(false);
     ui->direction_popup_menu->setVisible(false);
 
-    ui->scan_list->addItem("Нет");
-    for (int i = 1; i < 33; i++) {
-        ui->scan_list->addItem(QString::number(i));
-    }
-
     for (int i = 0; i < 4; i++) {
         ui->economizer->addItem(QString::number(i));
     }
@@ -161,6 +156,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //                0       1      2      3      4       5        6        7      8
     channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
+    //                0       1      2      3      4       5        6        7      8
+    direction_types = {"none_d", "dmo_d", "tmo_d", "vpd_d", "am25_d", "chm25_d", "chm50_d", "obp_d", "fm_d"};
     //                         0
     editor_fields["none"] = { "type" };
     curr_editor_field["none"] = 0;
@@ -173,7 +170,7 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_editor_state_popup = new QListWidget(this);
     QLabel* temp = ui->channel_editor_state;
     channel_editor_state_popup->resize(94, 176);
-    channel_editor_state_popup->move(temp->mapToGlobal(temp->rect().bottomLeft()) + QPoint(100, -10));
+    channel_editor_state_popup->move(temp->mapToGlobal(temp->rect().bottomLeft()) + QPoint(100, 5));
     channel_editor_state_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     channel_editor_state_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     channel_editor_state_popup->setVisible(false);
@@ -195,9 +192,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(channel_editor_state_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_state_popup_itemSelectionChanged);
     channel_editor_state_popup->setCurrentItem(channel_editor_state_popup_item[0]);
 
+    ui->ctcss->setProperty("chosen", 0);
     channel_editor_ctcss_popup = new QListWidget(this);
     channel_editor_ctcss_popup->resize(50, 220);
-    channel_editor_ctcss_popup->move(ui->widget->mapToGlobal(ui->widget->rect().topRight()) + QPoint(-495, -5));
+    channel_editor_ctcss_popup->move(ui->widget->mapToGlobal(ui->widget->rect().topRight()) + QPoint(45, 5)); // QPoint(-495, -5)
     channel_editor_ctcss_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     channel_editor_ctcss_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     channel_editor_ctcss_popup->setVisible(false);
@@ -274,6 +272,21 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
+
+    ui->scan->setProperty("chosen", 0);
+    direction_editor_scan_popup = new QListWidget(this);
+    direction_editor_scan_popup->resize(50, 220);
+    direction_editor_scan_popup->move(0, 0);
+    direction_editor_scan_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
+    direction_editor_scan_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
+    direction_editor_scan_popup->setVisible(false);
+
+    direction_editor_scan_popup->addItem("Нет");
+    for(int i = 1; i <= 32; i++){
+        direction_editor_scan_popup->addItem(QString::number(i));
+    }
+
+    connect(direction_editor_scan_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged);
 
     broadcast_init();
 }
@@ -536,6 +549,32 @@ void MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged()
     selected_items["channel_editor_ctcss_popup"]->setBackground(QColor(56, 82, 130));
     selected_items["channel_editor_ctcss_popup"]->setTextColor(QColor(255, 255 ,255));
 }
+void MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged()
+{
+    if(selected_items["direction_editor_scan_popup"]){
+        selected_items["direction_editor_scan_popup"]->setBackground(QColor(255, 255, 255));
+        selected_items["direction_editor_scan_popup"]->setTextColor(QColor(133, 165, 200));
+    }
+
+    selected_items["direction_editor_scan_popup"] = direction_editor_scan_popup->currentItem();
+
+    selected_items["direction_editor_scan_popup"]->setBackground(QColor(56, 82, 130));
+    selected_items["direction_editor_scan_popup"]->setTextColor(QColor(255, 255 ,255));
+}
+
+void MainWindow::on_direction_list_itemSelectionChanged()
+{
+    if(selected_items["direction_list"]){
+        selected_items["direction_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["direction_list"]->setTextColor(QColor(133, 165, 200));
+    }
+
+    selected_items["direction_list"] = ui->direction_list->currentItem();
+
+    selected_items["direction_list"]->setBackground(QColor(56, 82, 130));
+    selected_items["direction_list"]->setTextColor(QColor(255, 255 ,255));
+}
+
 
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
@@ -778,6 +817,7 @@ void MainWindow::channel_editor_screen()
         ui->channel_freq->setText(QString::number(curr->freq));
         ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
         ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
+        ui->ctcss->setProperty("chosen", curr->ctcss);
         channel_editor_ctcss_popup->setCurrentRow(curr->ctcss);
         ui->ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
         ui->channel_name->setText(curr->name);
@@ -1010,6 +1050,27 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
     }
 }
 
+void MainWindow::set_default_direction_fields(){
+    // dmo
+    // tmo
+    // vpd
+    // am25
+    // chm25
+
+    ui->is_forbidden_prd_d->setCheckState(Qt::Unchecked);
+    ui->is_tone_call->setCheckState(Qt::Unchecked);
+    ui->scan->setProperty("chosen", 0);
+    direction_editor_scan_popup->setCurrentRow(0);
+    ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
+    ui->economizer->setCurrentIndex(0);
+    ui->name_d->setText("");
+    ui->background_dir_picture->setCurrentIndex(0);
+
+    // chm50
+    // obp
+    // fm
+}
+
 // direction loading
 void MainWindow::direction_editor_screen()
 {
@@ -1017,28 +1078,66 @@ void MainWindow::direction_editor_screen()
 
     Direction* curr = direction_map[selected_items["direction_list"]].direction;
 
+    set_default_direction_fields();
+
     if(curr->ch == nullptr){
         ui->channel_in_dir_name->setText("Не задано(Idle)");
-        ui->channel_choice_list->setCurrentRow(-1);
+        ui->channel_choice_list->setCurrentRow(0);
         ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-    }
-    else{
-        ui->channel_in_dir_name->setText(curr->ch->name);
-        for(const auto& p : channel_map_d){
-            if(p.second == curr->ch){
-                ui->channel_choice_list->setCurrentItem(p.first);
-                break;
-            }
-        }
-        ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
+        return;
     }
 
-    ui->is_forbidden_prd_d->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
-    ui->is_tone_call->setCheckState(curr->tone_call ? Qt::Checked : Qt::Unchecked);
-    ui->scan_list->setCurrentIndex(curr->scan_list);
-    ui->economizer->setCurrentIndex(curr->economizer);
-    ui->name_d->setText(curr->name);
-    ui->background_dir_picture->setCurrentIndex(curr->background);
+    ui->channel_in_dir_name->setText(curr->ch->name);
+    for(const auto& p : channel_map_d){
+        if(p.second == curr->ch){
+            ui->channel_choice_list->setCurrentItem(p.first);
+            break;
+        }
+    }
+    ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
+
+
+
+    switch (curr->ch->state) {
+    case 0:
+
+        break;
+    case 1:
+
+        break;
+    case 2:
+
+        break;
+    case 3:
+
+        break;
+    case 4:
+
+        break;
+    case 5:
+        ui->is_forbidden_prd_d->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+        ui->is_tone_call->setCheckState(curr->tone_call ? Qt::Checked : Qt::Unchecked);
+        ui->scan->setProperty("chosen", curr->scan_list);
+        direction_editor_scan_popup->setCurrentRow(curr->scan_list);
+        ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
+        ui->economizer->setCurrentIndex(curr->economizer);
+        ui->name_d->setText(curr->name);
+        ui->background_dir_picture->setCurrentIndex(curr->background);
+        break;
+    case 6:
+
+        break;
+    case 7:
+
+        break;
+    case 8:
+
+        break;
+    }
+
+    // Always point to the first field first
+    // REFACTOR
+    curr_editor_field[direction_types[curr->ch->state]] = 0;
 }
 
 void MainWindow::on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item)
@@ -1075,7 +1174,7 @@ void MainWindow::on_direction_editor_left_clicked()
 
     curr->PRD = ui->is_forbidden_prd_d->isChecked();
     curr->tone_call = ui->is_tone_call->isChecked();
-    curr->scan_list = ui->scan_list->currentIndex();
+    curr->scan_list = ui->scan->property("chosen").toInt();
     curr->economizer = ui->economizer->currentIndex();
     curr->name = ui->name_d->text();
     curr->background = ui->background_dir_picture->currentIndex();
@@ -1518,6 +1617,154 @@ void MainWindow::update_channel_editor_page(){
         break;
     default:
         qCritical("crit: update_channel_editor_page: channel_editor_state");
+    }
+
+    // change buttons at type changing
+    if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
+        clear_chm25_fields();
+        ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+        if(channel_editor_state_popup->isVisible()){
+            ui->channel_editor_left->setText("Выбрать");
+            ui->channel_editor_right->setText("Назад");
+        }
+        else{
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+        }
+        //return;
+    }
+
+    // change buttons for chosen type
+    // none
+    if(ui->channel_editor_state->property("chosen") == 0){
+        // was upper
+        return;
+    }
+
+    // chm25
+    if(ui->channel_editor_state->property("chosen") == 5){
+        clear_chm25_fields();
+        switch (curr_editor_field["chm25"]) {
+        case 0:
+            // was upper
+            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            break;
+        case 1:
+            ui->is_forbidden_prd->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 2:
+            ui->dualfreq->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 3:
+            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid blue;}");
+            ui->label_32->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 4:
+            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
+            ui->label_42->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 5:
+            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid blue;}");
+            ui->label_39->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 6:
+            ui->ctcss->setStyleSheet("border: 1px solid blue;");
+            if(channel_editor_ctcss_popup->isVisible()){
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
+            else{
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            break;
+        case 7:
+            ui->channel_name->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        default:
+            qCritical("chm25: update_channel_editor_page: no way");
+        }
+
+        if(ui->dualfreq->isChecked()){
+            ui->widget_6->setVisible(true);
+            ui->widget_6->setEnabled(true);
+            ui->widget_9->setVisible(true);
+            ui->widget_9->setEnabled(true);
+            ui->widget_4->setVisible(false);
+            ui->widget_4->setEnabled(false);
+        }
+        else{
+            ui->widget_6->setVisible(false);
+            ui->widget_6->setEnabled(false);
+            ui->widget_9->setVisible(false);
+            ui->widget_9->setEnabled(false);
+            ui->widget_4->setVisible(true);
+            ui->widget_4->setEnabled(true);
+        }
+        return;
+    }
+}
+
+void MainWindow::update_direction_editor_page(){
+    // swap tunner page if necessary
+    switch (channel_map_d[selected_items["channel_choice_list"]]->state) {
+    case 0:
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    case 1:
+        // TODO: CHANGE
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    case 2:
+        // TODO: CHANGE
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    case 3:
+        // TODO: CHANGE
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    case 4:
+        // TODO: CHANGE
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    case 5:
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->direction_tuner_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
+        break;
+    case 6:
+        // TODO: CHANGE
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    case 7:
+        // TODO: CHANGE
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    case 8:
+        // TODO: CHANGE
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        break;
+    default:
+        qCritical("crit: update_direction_editor_page: direction_editor_stackedWidget");
     }
 
     // change buttons at type changing

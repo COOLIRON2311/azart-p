@@ -166,12 +166,18 @@ private slots:
 
     void _on_channel_editor_ctcss_popup_itemSelectionChanged();
 
+    void _on_direction_editor_scan_popup_itemSelectionChanged();
+
+    void on_direction_list_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
     void update_channel_editor_page();
+    void update_direction_editor_page();
     QPoint global_pos(QWidget*);
     void set_default_channel_fields();
+    void set_default_direction_fields();
 
 private:
     struct Channel;
@@ -190,6 +196,8 @@ private:
     std::map<QString, std::vector<QString>> editor_fields;
     // types
     std::vector<QString> channel_types;
+
+    std::vector<QString> direction_types;
 
     bool is_open_communication = true;
 
@@ -230,9 +238,11 @@ private:
 
     QListWidget* channel_editor_state_popup;
     QListWidget* channel_editor_ctcss_popup;
+    QListWidget* direction_editor_scan_popup;
 
     QListWidgetItem* channel_editor_state_popup_item[9];
     QListWidgetItem* channel_editor_ctcss_popup_item[65];
+    //QListWidgetItem* direction_editor_economizer_scan_item[33];
 
 
     QUdpSocket udpSocket;
@@ -298,6 +308,17 @@ struct MainWindow::Direction
     quint32 economizer = 0; //4
     QString name = "";
     quint32 background = 0; //?
+
+    // set default all fields
+    void clear(){
+        ch = nullptr;
+        PRD = false;
+        tone_call = false;
+        scan_list = 0;
+        economizer = 0;
+        name = "";
+        background = 0;
+    }
 };
 
 #endif // MAINWINDOW_H

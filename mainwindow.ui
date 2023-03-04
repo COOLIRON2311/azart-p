@@ -538,7 +538,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1937,8 +1937,8 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="1">
-                     <widget class="QComboBox" name="scan_list">
+                    <item row="3" column="1">
+                     <widget class="QComboBox" name="economizer">
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
@@ -1946,12 +1946,15 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="1">
-                     <widget class="QComboBox" name="economizer">
+                    <item row="2" column="1">
+                     <widget class="QLabel" name="scan">
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
                        </font>
+                      </property>
+                      <property name="text">
+                       <string>Нет</string>
                       </property>
                      </widget>
                     </item>
