@@ -1,6 +1,12 @@
 #include "mainwindow.h"
 #include <QApplication>
 
+inline void bootstrap(MainWindow& w)
+{
+    w.selfcontrol_screen();
+    w.loading_screen();
+}
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -8,8 +14,7 @@ int main(int argc, char *argv[])
     w.show();
 
     w.setup();
-    w.selfcontrol_screen();
-    //w.channel_list_screen();
+    bootstrap(w);
 
     return a.exec();
 }

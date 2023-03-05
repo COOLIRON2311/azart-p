@@ -538,7 +538,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>9</number>
+       <number>8</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -612,8 +612,14 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
             <property name="autoScroll">
              <bool>true</bool>
             </property>
+            <property name="showDropIndicator" stdset="0">
+             <bool>true</bool>
+            </property>
             <property name="viewMode">
              <enum>QListView::ListMode</enum>
+            </property>
+            <property name="selectionRectVisible">
+             <bool>false</bool>
             </property>
            </widget>
           </item>

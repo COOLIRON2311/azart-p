@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++20
 
 SOURCES += \
+        fonts.cpp \
         main.cpp \
         mainwindow.cpp
 

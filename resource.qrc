@@ -12,5 +12,7 @@
         <file>resources/front.png</file>
         <file>resources/left.png</file>
         <file>resources/static.mp3</file>
+        <file>resources/Nokia Sans Wide.ttf</file>
+        <file>resources/Nokia Sans Wide Bold.ttf</file>
     </qresource>
 </RCC>

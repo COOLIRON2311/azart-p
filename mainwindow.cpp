@@ -35,10 +35,10 @@ void MainWindow::change_global_time()
     s.sprintf("%02d", time.second());
 
     ui->hours_minutes->setText(hm);
-    ui->seconds->setText(s);
+    ui->seconds->setText(":" + s);
 
     ui->hours_minutes_2->setText(hm);
-    ui->seconds_2->setText(s);
+    ui->seconds_2->setText(":" + s);
 
     ui->data_label->setText(QDate::currentDate().toString("dd.MM.yyyy"));
 }
@@ -272,6 +272,8 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i = 0; i < 65; i++) {
         channel_editor_ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
     }
+
+    set_fonts();
 
     connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
 
