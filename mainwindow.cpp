@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menu_list_item[6] = new QListWidgetItem(QIcon(":/resources/battery32.png"), "Батарея");
 
     for(QListWidgetItem* item : menu_list_item){
-        ui->menu_list->addItem(item);        
+        ui->menu_list->addItem(item);
     }
 
     // PA
@@ -422,121 +422,47 @@ void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
 
 void MainWindow::on_menu_list_itemSelectionChanged()
 {
-    if(selected_items["menu_list"]){
-        selected_items["menu_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["menu_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["menu_list"] = ui->menu_list->currentItem();
-
-    selected_items["menu_list"]->setBackground(QColor(0, 64, 190));
-    selected_items["menu_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_service_menu_list_itemSelectionChanged()
 {
-    if(selected_items["service_menu_list"]){
-        selected_items["service_menu_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["service_menu_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["service_menu_list"] = ui->service_menu_list->currentItem();
-
-    selected_items["service_menu_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["service_menu_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_data_editor_list_itemSelectionChanged()
 {
-    if(selected_items["data_editor_list"]){
-        selected_items["data_editor_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["data_editor_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["data_editor_list"] = ui->data_editor_list->currentItem();
-
-    selected_items["data_editor_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["data_editor_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_channel_popup_menu_list_itemSelectionChanged()
 {
-    if(selected_items["channel_popup_menu_list"]){
-        selected_items["channel_popup_menu_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["channel_popup_menu_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["channel_popup_menu_list"] = ui->channel_popup_menu_list->currentItem();
-
-    selected_items["channel_popup_menu_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["channel_popup_menu_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_direction_popup_menu_list_itemSelectionChanged()
 {
-    if(selected_items["direction_popup_menu_list"]){
-        selected_items["direction_popup_menu_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["direction_popup_menu_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["direction_popup_menu_list"] = ui->direction_popup_menu_list->currentItem();
-
-    selected_items["direction_popup_menu_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["direction_popup_menu_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_direction_selection_list_itemSelectionChanged()
 {
-    if(selected_items["direction_selection_list"]){
-        selected_items["direction_selection_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["direction_selection_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["direction_selection_list"] = ui->direction_selection_list->currentItem();
-
-    selected_items["direction_selection_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["direction_selection_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_channel_list_itemSelectionChanged()
 {
-    if(selected_items["channel_list"]){
-        selected_items["channel_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["channel_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["channel_list"] = ui->channel_list->currentItem();
-
-    if(selected_items["channel_list"]){
-        selected_items["channel_list"]->setBackground(QColor(56, 82, 130));
-        selected_items["channel_list"]->setTextColor(QColor(255, 255 ,255));
-    }
 }
 
 void MainWindow::_on_channel_editor_state_popup_itemSelectionChanged()
 {
-    if(selected_items["channel_editor_state_popup"]){
-        selected_items["channel_editor_state_popup"]->setBackground(QColor(255, 255, 255));
-        selected_items["channel_editor_state_popup"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["channel_editor_state_popup"] = channel_editor_state_popup->currentItem();
-
-    selected_items["channel_editor_state_popup"]->setBackground(QColor(56, 82, 130));
-    selected_items["channel_editor_state_popup"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged()
 {
-    if(selected_items["channel_editor_ctcss_popup"]){
-        selected_items["channel_editor_ctcss_popup"]->setBackground(QColor(255, 255, 255));
-        selected_items["channel_editor_ctcss_popup"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["channel_editor_ctcss_popup"] = channel_editor_ctcss_popup->currentItem();
-
-    selected_items["channel_editor_ctcss_popup"]->setBackground(QColor(56, 82, 130));
-    selected_items["channel_editor_ctcss_popup"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
@@ -807,7 +733,7 @@ void MainWindow::on_channel_editor_right_clicked()
 
     // types
     if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
-        if(channel_editor_state_popup->isVisible()){            
+        if(channel_editor_state_popup->isVisible()){
             channel_editor_state_popup->setVisible(false);
         }
         else{
@@ -1310,7 +1236,7 @@ void MainWindow::on_left_arrow_clicked()
         ui->data_editor_left->click();
         return;
     }
-    if(curr == ui->channel_list_page){      
+    if(curr == ui->channel_list_page){
         ui->channel_list_left->click();
         return;
     }
