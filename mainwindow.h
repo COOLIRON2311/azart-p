@@ -314,7 +314,7 @@ struct MainWindow::Direction
     bool PRD = false;
     bool tone_call = false;
     quint32 scan_list = 0; //32
-    quint32 economizer = 0; //4
+    quint32 economizer = 3; //4
     QString name = "";
     quint32 background = 0; //?
 
@@ -324,7 +324,7 @@ struct MainWindow::Direction
         PRD = false;
         tone_call = false;
         scan_list = 0;
-        economizer = 0;
+        economizer = 3;
         name = "";
         background = 0;
     }

@@ -856,7 +856,7 @@ QListView::item:selected:!active {
           <item>
            <widget class="QWidget" name="channel_popup_menu" native="true">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -882,6 +882,9 @@ QListView::item:selected:!active {
              </property>
              <item>
               <widget class="QListWidget" name="channel_popup_menu_list">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
                  <horstretch>0</horstretch>
@@ -905,6 +908,9 @@ QListView::item:selected:!active {
 	color: #FFFFFF;
 }
 </string>
+               </property>
+               <property name="selectionRectVisible">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -1982,6 +1988,32 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                         <pointsize>10</pointsize>
                        </font>
                       </property>
+                      <property name="currentText">
+                       <string>3</string>
+                      </property>
+                      <property name="currentIndex">
+                       <number>3</number>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>1</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>2</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>3</string>
+                       </property>
+                      </item>
                      </widget>
                     </item>
                     <item row="2" column="1">

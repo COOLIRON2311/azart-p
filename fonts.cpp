@@ -13,8 +13,8 @@ void MainWindow::set_fonts()
 
     QFontDatabase::addApplicationFont(":/resources/Nokia Sans Wide.ttf");
     QFontDatabase::addApplicationFont(":/resources/Nokia Sans Wide Bold.ttf");
-    QFont f("Nokia Sans Wide", 12 / scale, QFont::Normal);
-    QFont fb("Nokia Sans Wide", 12 / scale, QFont::Bold);
+    QFont f("Nokia Sans Wide", 10 / scale, QFont::Normal);
+    QFont fb("Nokia Sans Wide", 10 / scale, QFont::Bold);
     QFont scsf("Nokia Sans Wide", 10 / scale, QFont::Bold);
     QFont lsf("Nokia Sans Wide", 10 / scale, QFont::Normal);
     // QFont minf("Nokia Sans Wide", 20 / scale, QFont::Bold);
