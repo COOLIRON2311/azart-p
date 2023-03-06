@@ -2,14 +2,17 @@
     <qresource prefix="/">
         <file>resources/battery16.png</file>
         <file>resources/battery32.png</file>
-        <file>resources/download16.png</file>
-        <file>resources/download32.png</file>
-        <file>resources/picture16.png</file>
-        <file>resources/picture32.png</file>
+        <file>resources/inbox16.png</file>
+        <file>resources/inbox32.png</file>
+        <file>resources/nav16.png</file>
+        <file>resources/nav32.png</file>
         <file>resources/settings16.png</file>
         <file>resources/settings32.png</file>
         <file>resources/Kremlin.png</file>
         <file>resources/front.png</file>
         <file>resources/left.png</file>
+        <file>resources/static.mp3</file>
+        <file>resources/Nokia Sans Wide.ttf</file>
+        <file>resources/Nokia Sans Wide Bold.ttf</file>
     </qresource>
 </RCC>

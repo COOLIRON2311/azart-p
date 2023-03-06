@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++20
 
 SOURCES += \
+        fonts.cpp \
         main.cpp \
         mainwindow.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+        protocol.h
 
 FORMS += \
         mainwindow.ui

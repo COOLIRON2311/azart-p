@@ -609,11 +609,29 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
+</string>
+            </property>
             <property name="autoScroll">
+             <bool>true</bool>
+            </property>
+            <property name="showDropIndicator" stdset="0">
              <bool>true</bool>
             </property>
             <property name="viewMode">
              <enum>QListView::ListMode</enum>
+            </property>
+            <property name="selectionRectVisible">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -822,7 +840,15 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: rgb(133, 165, 200);
+             <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
 </string>
             </property>
            </widget>
@@ -867,6 +893,18 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  <width>16777215</width>
                  <height>52</height>
                 </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
+</string>
                </property>
               </widget>
              </item>
@@ -2067,7 +2105,20 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QListWidget" name="channel_choice_list"/>
+                  <widget class="QListWidget" name="channel_choice_list">
+                   <property name="styleSheet">
+                    <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
+</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -2257,7 +2308,15 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: rgb(133, 165, 200);
+             <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
 </string>
             </property>
            </widget>
@@ -2455,7 +2514,15 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true">color: rgb(133, 165, 200);
+             <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
 </string>
             </property>
            </widget>
@@ -2497,6 +2564,18 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  <width>16777215</width>
                  <height>52</height>
                 </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
+</string>
                </property>
               </widget>
              </item>
@@ -2823,8 +2902,15 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgb(133, 165, 200);
-</string>
+              <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}</string>
              </property>
              <property name="lineWidth">
               <number>1</number>
@@ -3035,7 +3121,19 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="direction_selection_list"/>
+           <widget class="QListWidget" name="direction_selection_list">
+            <property name="styleSheet">
+             <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QWidget" name="horizontalWidget_10" native="true">
