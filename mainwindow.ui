@@ -538,7 +538,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2149,7 +2149,7 @@ text-align:left;</string>
 text-align:right;</string>
                </property>
                <property name="text">
-                <string>Назад</string>
+                <string>Выбрать</string>
                </property>
                <property name="autoDefault">
                 <bool>false</bool>

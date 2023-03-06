@@ -161,9 +161,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //                         0
     editor_fields["none"] = { "type" };
     curr_editor_field["none"] = 0;
+    //                         0
+    editor_fields["none_d"] = { "type" };
+    curr_editor_field["none_d"] = 0;
     //                          0       1      2        3       4           5           6        7
     editor_fields["chm25"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
     curr_editor_field["chm25"] = 0;
+    //                            0          1      2       3       4             5       6
+    editor_fields["chm25_d"] = { "channel", "prd", "tone", "scan", "economizer", "name", "background" };
+    curr_editor_field["chm25_d"] = 0;
 
     //channel_editor_state
     ui->channel_editor_state->setProperty("chosen", 0);
@@ -575,6 +581,18 @@ void MainWindow::on_direction_list_itemSelectionChanged()
     selected_items["direction_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
+void MainWindow::on_channel_choice_list_itemSelectionChanged()
+{
+    if(selected_items["channel_choice_list"]){
+        selected_items["channel_choice_list"]->setBackground(QColor(255, 255, 255));
+        selected_items["channel_choice_list"]->setTextColor(QColor(133, 165, 200));
+    }
+
+    selected_items["channel_choice_list"] = ui->channel_choice_list->currentItem();
+
+    selected_items["channel_choice_list"]->setBackground(QColor(56, 82, 130));
+    selected_items["channel_choice_list"]->setTextColor(QColor(255, 255 ,255));
+}
 
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
@@ -1170,19 +1188,130 @@ void MainWindow::on_economizer_currentIndexChanged(int index)
 // direction saving
 void MainWindow::on_direction_editor_left_clicked()
 {
+    if(chosen_ref_d == 0 || curr_editor_field[direction_types[channel_map_d[chosen_ref_d]->state]] == 0){
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
+            //Выбрать
+            chosen_ref_d = selected_items["channel_choice_list"];
+            ui->channel_in_dir_name->setText(channel_map_d[chosen_ref_d]->name);
+            swap_direction_page();
+            update_direction_editor_page();
+            return;
+        }
+    }
+
+    Channel* channel = channel_map_d[chosen_ref_d];
+    if(channel->state == 5){
+        if(curr_editor_field["chm25_d"] == 3){
+            if(direction_editor_scan_popup->isVisible()){
+                //Выбрать
+                ui->scan->setText(selected_items["direction_editor_scan_popup"]->text());
+                ui->scan->setProperty("chosen", direction_editor_scan_popup->currentRow());
+                direction_editor_scan_popup->setVisible(false);
+                update_direction_editor_page();
+                return;
+            }
+        }
+    }
+
+    // direction saving
     Direction* curr = direction_map[selected_items["direction_list"]].direction;
 
-    curr->PRD = ui->is_forbidden_prd_d->isChecked();
-    curr->tone_call = ui->is_tone_call->isChecked();
-    curr->scan_list = ui->scan->property("chosen").toInt();
-    curr->economizer = ui->economizer->currentIndex();
-    curr->name = ui->name_d->text();
-    curr->background = ui->background_dir_picture->currentIndex();
-    selected_items["direction_list"]->setText(curr->name + "\n" + curr->ch->name);
-    selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
-    direction_map[selected_items["direction_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
-    direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
+    // clearing before saving
+    curr->clear();
+    // REFACTOR
+    curr->ch = channel; //channel_map_d[selected_items["channel_choice_list"]];
+
+    if(curr->ch){
+        switch (curr->ch->state) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            curr->PRD = ui->is_forbidden_prd_d->isChecked();
+            curr->tone_call = ui->is_tone_call->isChecked();
+            curr->scan_list = ui->scan->property("chosen").toInt();
+            curr->economizer = ui->economizer->currentIndex();
+            curr->name = ui->name_d->text();
+            curr->background = ui->background_dir_picture->currentIndex();
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        }
+
+        selected_items["direction_list"]->setText(curr->name + "\n" + curr->ch->name);
+        selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
+        direction_map[selected_items["direction_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
+        direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
+    }
     direction_list_screen();
+}
+
+void MainWindow::on_direction_editor_right_clicked()
+{
+    if(chosen_ref_d == 0 || curr_editor_field[direction_types[channel_map_d[chosen_ref_d]->state]] == 0){
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
+            //Назад
+            if(chosen_ref_d) ui->channel_choice_list->setCurrentItem(chosen_ref_d);
+            swap_direction_page();
+            update_direction_editor_page();
+            return;
+        }
+        else{
+            //Выбрать
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);
+            update_direction_editor_page();
+            return;
+        }
+    }
+
+    if(channel_map_d[chosen_ref_d]->state == 5){
+        switch (curr_editor_field["chm25_d"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 2:
+            ui->is_tone_call->toggle();
+            break;
+        case 3:
+            if(direction_editor_scan_popup->isVisible()){
+                direction_editor_scan_popup->setVisible(false);
+            }
+            else{
+                direction_editor_scan_popup->setVisible(true);
+            }
+            break;
+        case 4:
+            ui->economizer->setCurrentIndex(ui->economizer->currentIndex() + 1 % ui->economizer->count());
+            break;
+        case 5:
+            ui->name_d->backspace();
+            break;
+        case 6:
+            ui->background_dir_picture->setCurrentIndex(ui->economizer->currentIndex() + 1 % ui->background_dir_picture->count());
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
+
 }
 
 void MainWindow::on_channel_in_dir_name_clicked()
@@ -1423,6 +1552,10 @@ void MainWindow::on_left_arrow_clicked()
         ui->channel_editor_left->click();
         return;
     }
+    if(curr == ui->direction_editor_page){
+        ui->direction_editor_left->click();
+        return;
+    }
 }
 
 /*
@@ -1464,6 +1597,10 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->channel_editor_page){
         ui->channel_editor_right->click();
+        return;
+    }
+    if(curr == ui->direction_editor_page){
+        ui->direction_editor_right->click();
         return;
     }
 }
@@ -1565,6 +1702,18 @@ void MainWindow::clear_chm25_fields(){
     ui->label_32->setVisible(false);
     ui->label_42->setVisible(false);
     ui->label_39->setVisible(false);
+}
+
+void MainWindow::clear_chm25_d_fields(){
+    ui->channel_in_dir_name->setStyleSheet("");
+
+    ui->is_forbidden_prd_d->setStyleSheet("");
+    ui->is_tone_call->setStyleSheet("");
+    ui->scan->setStyleSheet("");
+    ui->economizer->setStyleSheet("");
+
+    ui->name_d->setStyleSheet("");
+    ui->background_dir_picture->setStyleSheet("");
 }
 
 void MainWindow::update_channel_editor_page(){
@@ -1717,9 +1866,14 @@ void MainWindow::update_channel_editor_page(){
     }
 }
 
-void MainWindow::update_direction_editor_page(){
-    // swap tunner page if necessary
-    switch (channel_map_d[selected_items["channel_choice_list"]]->state) {
+void MainWindow::swap_direction_page(){
+    if(chosen_ref_d == 0){
+        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        return;
+    }
+
+    switch (channel_map_d[chosen_ref_d]->state) {
     case 0:
         if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
             ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
@@ -1764,102 +1918,81 @@ void MainWindow::update_direction_editor_page(){
             ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
         break;
     default:
-        qCritical("crit: update_direction_editor_page: direction_editor_stackedWidget");
+        qCritical("crit: direction_editor_stackedWidget");
     }
+}
 
-    // change buttons at type changing
-    if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
-        clear_chm25_fields();
-        ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
-        if(channel_editor_state_popup->isVisible()){
-            ui->channel_editor_left->setText("Выбрать");
-            ui->channel_editor_right->setText("Назад");
+void MainWindow::update_direction_editor_page(){
+    clear_chm25_d_fields();
+
+    if(chosen_ref_d == nullptr || curr_editor_field[direction_types[channel_map_d[chosen_ref_d]->state]] == 0){
+        ui->channel_in_dir_name->setStyleSheet("border: 1px solid blue;");
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
+            ui->direction_editor_left->setText("Выбрать");
+            ui->direction_editor_right->setText("Назад");
         }
         else{
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
         }
-        //return;
+        return;
     }
+
+    Channel* channel = channel_map_d[chosen_ref_d];
 
     // change buttons for chosen type
     // none
-    if(ui->channel_editor_state->property("chosen") == 0){
+    if(channel->state == 0){
         // was upper
         return;
     }
 
-    // chm25
-    if(ui->channel_editor_state->property("chosen") == 5){
-        clear_chm25_fields();
-        switch (curr_editor_field["chm25"]) {
+    // chm25_d
+    if(channel->state == 5){
+        clear_chm25_d_fields();
+        switch (curr_editor_field["chm25_d"]) {
         case 0:
             // was upper
-            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            ui->channel_in_dir_name->setStyleSheet("border: 1px solid blue;");
             break;
         case 1:
-            ui->is_forbidden_prd->setStyleSheet("border: 1px solid blue;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Изменить");
+            ui->is_forbidden_prd_d->setStyleSheet("border: 1px solid blue;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->dualfreq->setStyleSheet("border: 1px solid blue;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Изменить");
+            ui->is_tone_call->setStyleSheet("border: 1px solid blue;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid blue;}");
-            ui->label_32->setVisible(true);
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
-            break;
-        case 4:
-            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
-            ui->label_42->setVisible(true);
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
-            break;
-        case 5:
-            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid blue;}");
-            ui->label_39->setVisible(true);
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
-            break;
-        case 6:
-            ui->ctcss->setStyleSheet("border: 1px solid blue;");
-            if(channel_editor_ctcss_popup->isVisible()){
-                ui->channel_editor_left->setText("Выбрать");
-                ui->channel_editor_right->setText("Назад");
+            ui->scan->setStyleSheet("border: 1px solid blue;");
+            if(direction_editor_scan_popup->isVisible()){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
             }
             else{
-                ui->channel_editor_left->setText("Сохранить");
-                ui->channel_editor_right->setText("Выбрать");
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
             }
             break;
-        case 7:
-            ui->channel_name->setStyleSheet("border: 1px solid blue;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
+        case 4:
+            ui->economizer->setStyleSheet("border: 1px solid blue;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 5:
+            ui->name_d->setStyleSheet("border: 1px solid blue;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            break;
+        case 6:
+            ui->background_dir_picture->setStyleSheet("border: 1px solid blue;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
             break;
         default:
-            qCritical("chm25: update_channel_editor_page: no way");
-        }
-
-        if(ui->dualfreq->isChecked()){
-            ui->widget_6->setVisible(true);
-            ui->widget_6->setEnabled(true);
-            ui->widget_9->setVisible(true);
-            ui->widget_9->setEnabled(true);
-            ui->widget_4->setVisible(false);
-            ui->widget_4->setEnabled(false);
-        }
-        else{
-            ui->widget_6->setVisible(false);
-            ui->widget_6->setEnabled(false);
-            ui->widget_9->setVisible(false);
-            ui->widget_9->setEnabled(false);
-            ui->widget_4->setVisible(true);
-            ui->widget_4->setEnabled(true);
+            qCritical("chm25_d: update_direction_editor_page: no way");
         }
         return;
     }
@@ -1967,6 +2100,38 @@ void MainWindow::on_up_arrow_clicked()
                 if(curr_editor_field["chm25"] == 5) curr_editor_field["chm25"] -= 2;
             }
             update_channel_editor_page();
+            return;
+        }
+    }
+    if(curr == ui->direction_editor_page){
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->empty_direction_editor_page){
+            return;
+        }
+
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
+            go_up(ui->channel_choice_list, channel_map_d.size());
+            return;
+        }
+
+        Channel* channel = channel_map_d[chosen_ref_d];
+
+        // none
+        if(channel->state == 0){
+            return;
+        }
+
+        if(channel->state == 5){
+
+            if(curr_editor_field["chm25_d"] == 3){
+                if(direction_editor_scan_popup->isVisible()){
+                    go_up(direction_editor_scan_popup, 33);
+                }
+            }
+
+            uint sz = editor_fields["chm25_d"].size();
+            curr_editor_field["chm25_d"] = (curr_editor_field["chm25_d"] - 1 + sz) % sz;
+
+            update_direction_editor_page();
             return;
         }
     }
@@ -2081,6 +2246,38 @@ void MainWindow::on_down_arrow_clicked()
             }
 
             update_channel_editor_page();
+            return;
+        }
+    }
+    if(curr == ui->direction_editor_page){
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->empty_direction_editor_page){
+            return;
+        }
+
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
+            go_down(ui->channel_choice_list, channel_map_d.size());
+            return;
+        }
+
+        Channel* channel = channel_map_d[chosen_ref_d];
+
+        // none
+        if(channel->state == 0){
+            return;
+        }
+
+        if(channel->state == 5){
+
+            if(curr_editor_field["chm25_d"] == 3){
+                if(direction_editor_scan_popup->isVisible()){
+                    go_down(direction_editor_scan_popup, 33);
+                }
+            }
+
+            uint sz = editor_fields["chm25_d"].size();
+            curr_editor_field["chm25_d"] = (curr_editor_field["chm25_d"] + 1) % sz;
+
+            update_direction_editor_page();
             return;
         }
     }

@@ -107,7 +107,8 @@ private slots:
 
     void on_economizer_currentIndexChanged(int index);
 
-    void on_direction_editor_left_clicked();
+    void on_direction_editor_left_clicked(); //
+    void on_direction_editor_right_clicked(); //
 
     void on_channel_in_dir_name_clicked();
 
@@ -170,11 +171,15 @@ private slots:
 
     void on_direction_list_itemSelectionChanged();
 
+    void on_channel_choice_list_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
+    void clear_chm25_d_fields();
     void update_channel_editor_page();
     void update_direction_editor_page();
+    void swap_direction_page();
     QPoint global_pos(QWidget*);
     void set_default_channel_fields();
     void set_default_direction_fields();
@@ -243,6 +248,9 @@ private:
     QListWidgetItem* channel_editor_state_popup_item[9];
     QListWidgetItem* channel_editor_ctcss_popup_item[65];
     //QListWidgetItem* direction_editor_economizer_scan_item[33];
+
+    //kostil
+    ref chosen_ref_d = 0;
 
 
     QUdpSocket udpSocket;
