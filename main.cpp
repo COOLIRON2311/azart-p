@@ -4,7 +4,7 @@
 inline void bootstrap(MainWindow& w)
 {
     w.selfcontrol_screen();
-    w.loading_screen();
+   // w.loading_screen();
 }
 
 int main(int argc, char *argv[])
@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
     w.show();
 
     w.setup();
-    // bootstrap(w);
-    w.service_menu_screen();
+     bootstrap(w);
+    //w.service_menu_screen();
 
     return a.exec();
 }

@@ -55,7 +55,7 @@ void MainWindow::set_fonts()
     ui->label_26->setFont(f);
     ui->label_33->setFont(f);
     ui->label_34->setFont(f);
-    ui->scan_list->setFont(f);
+    ui->scan->setFont(f);
     ui->label_35->setFont(f);
     ui->label_36->setFont(f);
     ui->name_d->setFont(f);
