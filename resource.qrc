@@ -14,5 +14,7 @@
         <file>resources/static.mp3</file>
         <file>resources/Nokia Sans Wide.ttf</file>
         <file>resources/Nokia Sans Wide Bold.ttf</file>
+        <file>resources/sputnik16.png</file>
+        <file>resources/sputnik32.png</file>
     </qresource>
 </RCC>
