@@ -12,12 +12,12 @@ class ListWidgetItemDelegate: public QStyledItemDelegate
     QBrush b;
     QString indent;
 public:
-   ListWidgetItemDelegate(double width = 0.95, int indent = 2, QObject* parent = nullptr) : QStyledItemDelegate(parent)
+   ListWidgetItemDelegate(double width = 0.05, int indent = 2, QObject* parent = nullptr) : QStyledItemDelegate(parent)
    {
        this->indent = QString(" ").repeated(indent);
        b.setColor(QColor("#7597D9"));
        b.setStyle(Qt::Dense4Pattern);
-       w = width;
+       w = 1 - width;
    }
 
     void paint(QPainter* p, const QStyleOptionViewItem& o, const QModelIndex& idx) const override

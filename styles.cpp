@@ -135,5 +135,5 @@ void MainWindow::set_styles()
 
     // List styles
     ui->service_menu_list->setItemDelegate(new ListWidgetItemDelegate);
-    ui->menu_list->setItemDelegate(new ListWidgetItemDelegate(0.8, 0));
+    ui->menu_list->setItemDelegate(new ListWidgetItemDelegate(0.2, 0));
 }
