@@ -69,7 +69,7 @@ private:
 
 private slots:
 
-    void set_fonts();
+    void set_styles();
 
     void recieveDatagrams();
 

@@ -277,7 +277,7 @@ MainWindow::MainWindow(QWidget *parent) :
         channel_editor_ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
     }
 
-    set_fonts();
+    set_styles();
 
     connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
 
