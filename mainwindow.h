@@ -106,8 +106,6 @@ private slots:
 
     void on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item);
 
-    void on_economizer_currentIndexChanged(int index);
-
     void on_direction_editor_left_clicked(); //
     void on_direction_editor_right_clicked(); //
 
@@ -173,6 +171,8 @@ private slots:
     void on_direction_list_itemSelectionChanged();
 
     void on_channel_choice_list_itemSelectionChanged();
+
+    void on_economizer_numChanged();
 
 private:
     void on_number_i_clicked(int);
@@ -314,7 +314,7 @@ struct MainWindow::Direction
     bool PRD = false;
     bool tone_call = false;
     quint32 scan_list = 0; //32
-    quint32 economizer = 3; //4
+    qint32 economizer = 3; //4
     QString name = "";
     quint32 background = 0; //?
 

@@ -6,7 +6,7 @@
 #include <QtMultimedia>
 #include <iostream>
 #include <QScrollBar>
-
+#include <QLabel>
 /*
 
 PA - pay attention
@@ -147,10 +147,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->direction_popup_menu->setEnabled(false);
     ui->direction_popup_menu->setVisible(false);
 
-    //for (int i = 0; i < 3; i++) {
-    //    ui->economizer->addItem(QString::number(i));
-    //}
-    //ui->economizer->setCurrentIndex(0);
     for (int i = 0; i < 6; i++) {
         ui->background_dir_picture->addItem(QString::number(i));
     }
@@ -1011,7 +1007,9 @@ void MainWindow::set_default_direction_fields(){
     ui->scan->setProperty("chosen", 0);
     direction_editor_scan_popup->setCurrentRow(0);
     ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
-    ui->economizer->setCurrentIndex(3);
+    ui->economizer->setProperty("num", 3);
+    ui->economizer->setNum(3);
+    on_economizer_numChanged();
     ui->name_d->setText("");
     ui->background_dir_picture->setCurrentIndex(0);
 
@@ -1078,7 +1076,9 @@ void MainWindow::direction_editor_screen()
         ui->scan->setProperty("chosen", curr->scan_list);
         direction_editor_scan_popup->setCurrentRow(curr->scan_list);
         ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
-        ui->economizer->setCurrentIndex(curr->economizer);
+        ui->economizer->setProperty("num", curr->economizer);
+        ui->economizer->setNum(curr->economizer);
+        on_economizer_numChanged();
         ui->name_d->setText(curr->name);
         ui->background_dir_picture->setCurrentIndex(curr->background);
         break;
@@ -1104,9 +1104,9 @@ void MainWindow::on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item)
     ui->channel_in_dir_name->setText(channel_map_d[item]->name);
 }
 
-void MainWindow::on_economizer_currentIndexChanged(int index)
+void MainWindow::on_economizer_numChanged()
 {
-    switch (index) {
+    switch (ui->economizer->property("num").toInt()) {
     case 0:
         ui->label_34->setText("0ms / 0ms");
         break;
@@ -1194,7 +1194,7 @@ void MainWindow::on_direction_editor_left_clicked()
             curr->PRD = ui->is_forbidden_prd_d->isChecked();
             curr->tone_call = ui->is_tone_call->isChecked();
             curr->scan_list = ui->scan->property("chosen").toInt();
-            curr->economizer = ui->economizer->currentIndex();
+            curr->economizer = ui->economizer->property("num").toInt();
             curr->name = ui->name_d->text();
             curr->background = ui->background_dir_picture->currentIndex();
             break;
@@ -1255,7 +1255,9 @@ void MainWindow::on_direction_editor_right_clicked()
             }
             break;
         case 4:
-            ui->economizer->setCurrentIndex(ui->economizer->currentIndex() + 1 % ui->economizer->count());
+            ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
+            ui->economizer->setNum(ui->economizer->property("num").toInt());
+            on_economizer_numChanged();
             break;
         case 5:
             ui->name_d->backspace();
