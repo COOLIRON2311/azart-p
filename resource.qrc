@@ -16,5 +16,6 @@
         <file>resources/Nokia Sans Wide Bold.ttf</file>
         <file>resources/sputnik16.png</file>
         <file>resources/sputnik32.png</file>
+        <file>resources/star.png</file>
     </qresource>
 </RCC>
