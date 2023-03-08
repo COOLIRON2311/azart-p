@@ -172,7 +172,9 @@ private slots:
 
     void on_channel_choice_list_itemSelectionChanged();
 
-    void on_economizer_numChanged();
+    void _on_economizer_numChanged();
+
+    void _on_direction_background_numChanged();
 
 private:
     void on_number_i_clicked(int);
@@ -248,7 +250,6 @@ private:
 
     QListWidgetItem* channel_editor_state_popup_item[9];
     QListWidgetItem* channel_editor_ctcss_popup_item[65];
-    //QListWidgetItem* direction_editor_economizer_scan_item[33];
 
     //kostil
     ref chosen_ref_d = 0;

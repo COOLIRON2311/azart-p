@@ -8,11 +8,20 @@
         <file>resources/nav32.png</file>
         <file>resources/settings16.png</file>
         <file>resources/settings32.png</file>
-        <file>resources/Kremlin.png</file>
         <file>resources/front.png</file>
         <file>resources/left.png</file>
         <file>resources/static.mp3</file>
         <file>resources/Nokia Sans Wide.ttf</file>
         <file>resources/Nokia Sans Wide Bold.ttf</file>
+        <file>resources/back (0).png</file>
+        <file>resources/back (2).png</file>
+        <file>resources/back (1).png</file>
+        <file>resources/back (3).png</file>
+        <file>resources/back (4).png</file>
+        <file>resources/back (5).png</file>
+        <file>resources/back (6).png</file>
+        <file>resources/back (7).png</file>
+        <file>resources/back (8).png</file>
+        <file>resources/back (9).png</file>
     </qresource>
 </RCC>

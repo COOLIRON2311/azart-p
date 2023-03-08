@@ -147,11 +147,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->direction_popup_menu->setEnabled(false);
     ui->direction_popup_menu->setVisible(false);
 
-    for (int i = 0; i < 6; i++) {
-        ui->background_dir_picture->addItem(QString::number(i));
-    }
-    ui->background_dir_picture->setCurrentIndex(0);
-
     //                0       1      2      3      4       5        6        7      8
     channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
     //                0       1      2      3      4       5        6        7      8
@@ -406,7 +401,7 @@ void MainWindow::main_screen()
 
         ui->main_background->setStyleSheet(
             "#main_background {"
-            " border-image: url(:/resources/Kremlin.png)"
+            " border-image: url(:/resources/back (" + QString::number(current_direction->background) + ").png)"
             "}");
 
         ui->dejurnii_label->setText("Дежурный приём");
@@ -631,7 +626,6 @@ void MainWindow::on_channel_list_left_clicked()
         // menu activation
         //ui->channel_popup_menu->setEnabled(true);
         ui->channel_popup_menu->setVisible(true);
-        qDebug() << ui->channel_popup_menu->pos();
         ui->channel_popup_menu_list->setCurrentItem(selected_items["channel_popup_menu_list"]);
         ui->channel_list_left->setText("Выбрать");
     }
@@ -1009,9 +1003,11 @@ void MainWindow::set_default_direction_fields(){
     ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
     ui->economizer->setProperty("num", 3);
     ui->economizer->setNum(3);
-    on_economizer_numChanged();
+    _on_economizer_numChanged();
     ui->name_d->setText("");
-    ui->background_dir_picture->setCurrentIndex(0);
+    ui->background_dir_picture->setProperty("num", 0);
+    ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+    _on_direction_background_numChanged();
 
     // chm50
     // obp
@@ -1078,9 +1074,11 @@ void MainWindow::direction_editor_screen()
         ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
         ui->economizer->setProperty("num", curr->economizer);
         ui->economizer->setNum(curr->economizer);
-        on_economizer_numChanged();
+        _on_economizer_numChanged();
         ui->name_d->setText(curr->name);
-        ui->background_dir_picture->setCurrentIndex(curr->background);
+        ui->background_dir_picture->setProperty("num", curr->background);
+        ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+        _on_direction_background_numChanged();
         break;
     case 6:
 
@@ -1104,7 +1102,7 @@ void MainWindow::on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item)
     ui->channel_in_dir_name->setText(channel_map_d[item]->name);
 }
 
-void MainWindow::on_economizer_numChanged()
+void MainWindow::_on_economizer_numChanged()
 {
     switch (ui->economizer->property("num").toInt()) {
     case 0:
@@ -1122,6 +1120,11 @@ void MainWindow::on_economizer_numChanged()
     default:
         break;
     }
+}
+
+void MainWindow::_on_direction_background_numChanged()
+{
+    ui->label_37->setStyleSheet("border-image: url(:/resources/back (" + QString::number(ui->background_dir_picture->property("num").toInt()) + ").png);");
 }
 
 // direction saving
@@ -1196,7 +1199,7 @@ void MainWindow::on_direction_editor_left_clicked()
             curr->scan_list = ui->scan->property("chosen").toInt();
             curr->economizer = ui->economizer->property("num").toInt();
             curr->name = ui->name_d->text();
-            curr->background = ui->background_dir_picture->currentIndex();
+            curr->background = ui->background_dir_picture->property("num").toInt();
             break;
         case 6:
             break;
@@ -1257,13 +1260,15 @@ void MainWindow::on_direction_editor_right_clicked()
         case 4:
             ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
             ui->economizer->setNum(ui->economizer->property("num").toInt());
-            on_economizer_numChanged();
+            _on_economizer_numChanged();
             break;
         case 5:
             ui->name_d->backspace();
             break;
         case 6:
-            ui->background_dir_picture->setCurrentIndex(ui->background_dir_picture->currentIndex() + 1 % ui->background_dir_picture->count());
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
             break;
         default:
             qCritical("crit: on_direction_editor_right_clicked");
@@ -2099,6 +2104,7 @@ void MainWindow::on_up_arrow_clicked()
             if(curr_editor_field["chm25_d"] == 3){
                 if(direction_editor_scan_popup->isVisible()){
                     go_up(direction_editor_scan_popup, 33);
+                    return;
                 }
             }
 
@@ -2245,6 +2251,7 @@ void MainWindow::on_down_arrow_clicked()
             if(curr_editor_field["chm25_d"] == 3){
                 if(direction_editor_scan_popup->isVisible()){
                     go_down(direction_editor_scan_popup, 33);
+                    return;
                 }
             }
 
