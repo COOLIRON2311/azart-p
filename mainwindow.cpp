@@ -281,8 +281,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->scan->setProperty("chosen", 0);
     direction_editor_scan_popup = new QListWidget(this);
-    direction_editor_scan_popup->resize(50, 220);
-    direction_editor_scan_popup->move(0, 0);
+    direction_editor_scan_popup->resize(95, 125);
+    direction_editor_scan_popup->move(ui->scan->mapToGlobal(ui->scan->rect().bottomLeft()) + QPoint(100, 55));
     direction_editor_scan_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     direction_editor_scan_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     direction_editor_scan_popup->setVisible(false);

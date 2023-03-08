@@ -1983,6 +1983,12 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                     </item>
                     <item row="4" column="0">
                      <widget class="QLabel" name="label_34">
+                      <property name="minimumSize">
+                       <size>
+                        <width>100</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="font">
                        <font>
                         <pointsize>10</pointsize>
