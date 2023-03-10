@@ -542,7 +542,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -2140,7 +2140,10 @@ QListView::item:selected:!active {
                                 stop: 0 #385282, stop: 1 #7597D9);
 	color: #FFFFFF;
 }
-</string>
+
+QListView  {
+	border: 3px solid gray;
+}</string>
                    </property>
                   </widget>
                  </item>
