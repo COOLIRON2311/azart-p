@@ -2,8 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QFontDatabase>
 #include <QScreen>
+#include "listviewdelegate.h"
 
-void MainWindow::set_fonts()
+void MainWindow::set_styles()
 {
     double scale = 1.0;
 
@@ -131,4 +132,8 @@ void MainWindow::set_fonts()
     ui->label_18->setFont(lsf);
     ui->label_19->setFont(lsf);
     ui->label_20->setFont(lsf);
+
+    // List styles
+    ui->service_menu_list->setItemDelegate(new ListWidgetItemDelegate);
+    ui->menu_list->setItemDelegate(new ListWidgetItemDelegate(0.2, 0));
 }

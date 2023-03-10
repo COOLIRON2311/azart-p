@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 
     w.setup();
      bootstrap(w);
-    //w.service_menu_screen();
+//     w.service_menu_screen();
 
     return a.exec();
 }
