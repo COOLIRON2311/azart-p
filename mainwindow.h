@@ -180,6 +180,7 @@ private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
     void clear_chm25_d_fields();
+    void clear_chm50_fields();
     void update_channel_editor_page();
     void update_direction_editor_page();
     void swap_direction_page();
@@ -293,6 +294,7 @@ struct MainWindow::Channel
         // am25
         // vpd
         // chm25
+        // chm50
 
         state = 0; //"Не задано"
         PRD = false;
@@ -303,7 +305,6 @@ struct MainWindow::Channel
         ctcss = 0;
         name = "";
 
-        // chm50
         // obp
         // fm
     }
