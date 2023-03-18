@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Р-187-П1</string>
+   <string>Р-187П1</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
@@ -4438,6 +4438,16 @@ text-align:right;</string>
      </widget>
     </widget>
    </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>515</width>
+     <height>25</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

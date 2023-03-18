@@ -289,11 +289,38 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(direction_editor_scan_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged);
 
+    show3d = new QAction("3D", this);
+    connect(show3d, &QAction::triggered, this, &MainWindow::show_3d);
+    ui->menuBar->addAction(show3d);
+
+    showrd = new QAction("Радиоданные", this);
+    connect(showrd, &QAction::triggered, this, &MainWindow::show_radiodata);
+    ui->menuBar->addAction(showrd);
+
+    shownorm = new QAction("Норматив", this);
+    connect(shownorm, &QAction::triggered, this, &MainWindow::show_normative);
+    ui->menuBar->addAction(shownorm);
+
     broadcast_init();
 }
 
 void MainWindow::setup(){
 
+}
+
+void MainWindow::show_3d()
+{
+    qDebug() << "3d";
+}
+
+void MainWindow::show_radiodata()
+{
+    qDebug() << "rd";
+}
+
+void MainWindow::show_normative()
+{
+    qDebug() << "norm";
 }
 
 MainWindow::~MainWindow()

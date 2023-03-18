@@ -50,6 +50,10 @@ public Q_SLOTS:
     void broadcast_init();
 
 private:
+    QAction *show3d;
+    QAction *showrd;
+    QAction *shownorm;
+
     void sendDatagrams();
     void playSamples();
 
@@ -68,6 +72,12 @@ private:
     }
 
 private slots:
+
+    void show_3d();
+
+    void show_radiodata();
+
+    void show_normative();
 
     void set_styles();
 
