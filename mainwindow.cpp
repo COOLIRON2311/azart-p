@@ -166,6 +166,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //                              0       1      2      3      4       5       6       7
     editor_fields["tetra_tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
     curr_editor_field["tetra_tmo"] = 0;
+    //                        0       1      2      3       4       5
+    editor_fields["vpd"] = { "type", "mcc", "mnc", "gssi", "freq", "name" };
+    curr_editor_field["vpd"] = 0;
     //                            0          1      2       3       4             5       6
     editor_fields["chm25_d"] = { "channel", "prd", "tone", "scan", "economizer", "name", "background" };
     curr_editor_field["chm25_d"] = 0;
@@ -1804,6 +1807,17 @@ void MainWindow::clear_tetra_tmo_fields(){
     ui->tmo_vesh->setStyleSheet("");
 }
 
+void MainWindow::clear_vpd_fields(){
+    ui->channel_editor_state->setStyleSheet("");
+    ui->vpd_mcc->setStyleSheet("");
+    ui->vpd_mnc->setStyleSheet("");
+    ui->vpd_gssi->setStyleSheet("");
+    ui->vpd_freq->setStyleSheet("");
+    ui->vpd_freq_full->setStyleSheet("");
+    ui->vpd_name->setStyleSheet("");
+    ui->label_69->setVisible(false);
+}
+
 void MainWindow::update_channel_editor_page(){
     //it will be hard...
 
@@ -1824,8 +1838,8 @@ void MainWindow::update_channel_editor_page(){
         break;
     case 3:
         // TODO: CHANGE
-        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
-            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        if(ui->channel_editor_states->currentWidget() != ui->VPD_page)
+            ui->channel_editor_states->setCurrentWidget(ui->VPD_page);
         break;
     case 4:
         // TODO: CHANGE
@@ -2072,6 +2086,53 @@ void MainWindow::update_channel_editor_page(){
             break;
         default:
             qCritical("tmo: update_channel_editor_page: no way");
+        }
+
+        return;
+    }
+
+    // vpd
+    if(ui->channel_editor_state->property("chosen") == 3){
+        clear_vpd_fields();
+        switch (curr_editor_field["vpd"]) {
+        case 0:
+            // was upper
+            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            break;
+        case 1:
+            ui->vpd_mcc->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 2:
+            ui->vpd_mnc->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 3:
+            ui->vpd_gssi->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 4:
+            ui->vpd_freq_full->setStyleSheet("#vpd_freq_full{ border: 1px solid blue;}");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 5:
+            ui->vpd_name->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        default:
+            qCritical("vpd: update_channel_editor_page: no way");
+        }
+
+        if(curr_editor_field["vpd"] == 4){
+            ui->label_69->setVisible(true);
+        }
+        else{
+            ui->label_69->setVisible(false);
         }
 
         return;
@@ -2357,6 +2418,15 @@ void MainWindow::on_up_arrow_clicked()
             update_channel_editor_page();
             return;
         }
+
+        // vpd
+        if(ui->channel_editor_state->property("chosen") == 3){
+            uint sz = editor_fields["vpd"].size();
+            curr_editor_field["vpd"] = (curr_editor_field["vpd"] - 1 + sz) % sz;
+
+            update_channel_editor_page();
+            return;
+        }
     }
     if(curr == ui->direction_editor_page){
         if(ui->direction_editor_stackedWidget->currentWidget() == ui->empty_direction_editor_page){
@@ -2532,6 +2602,15 @@ void MainWindow::on_down_arrow_clicked()
         if(ui->channel_editor_state->property("chosen") == 2){
             uint sz = editor_fields["tetra_tmo"].size();
             curr_editor_field["tetra_tmo"] = (curr_editor_field["tetra_tmo"] + 1) % sz;
+
+            update_channel_editor_page();
+            return;
+        }
+
+        // vpd
+        if(ui->channel_editor_state->property("chosen") == 3){
+            uint sz = editor_fields["vpd"].size();
+            curr_editor_field["vpd"] = (curr_editor_field["vpd"] + 1) % sz;
 
             update_channel_editor_page();
             return;
