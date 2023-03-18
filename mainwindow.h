@@ -181,6 +181,7 @@ private:
     void clear_chm25_fields();
     void clear_chm25_d_fields();
     void clear_chm50_fields();
+    void clear_tetra_tmo_fields();
     void update_channel_editor_page();
     void update_direction_editor_page();
     void swap_direction_page();

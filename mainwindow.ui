@@ -1652,7 +1652,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  </item>
                 </layout>
                </widget>
-               <widget class="QWidget" name="CHM50_page">
+               <widget class="QWidget" name="TETRA_TMO_page">
                 <layout class="QVBoxLayout" name="verticalLayout_23">
                  <property name="spacing">
                   <number>1</number>
@@ -1669,122 +1669,6 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_25">
-                   <property name="spacing">
-                    <number>6</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="label_46">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Имя:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="channel_name_2">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_27">
-                   <property name="spacing">
-                    <number>6</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="label_48">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Двухчастотный:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QCheckBox" name="dualfreq_2">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_22">
-                   <property name="spacing">
-                    <number>6</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="label_43">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Запрет ПРД:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QCheckBox" name="is_forbidden_prd_2">
-                     <property name="text">
-                      <string/>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_26">
                    <property name="spacing">
@@ -1810,19 +1694,19 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                       </font>
                      </property>
                      <property name="text">
-                      <string>CTCSS:</string>
+                      <string>Сеть:</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="ctcss_2">
+                    <widget class="QLabel" name="tmo_net">
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
                       </font>
                      </property>
                      <property name="text">
-                      <string>Нет</string>
+                      <string>Не задана</string>
                      </property>
                     </widget>
                    </item>
@@ -1860,65 +1744,29 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        </font>
                       </property>
                       <property name="text">
-                       <string>Частота:</string>
+                       <string>MCC:</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="channel_freq_full_2" native="true">
+                     <widget class="QLineEdit" name="tmo_mcc">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
                       <property name="maximumSize">
                        <size>
-                        <width>139</width>
+                        <width>135</width>
                         <height>16777215</height>
                        </size>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true"/>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
                       </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_24">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>1</number>
-                       </property>
-                       <item>
-                        <widget class="QLineEdit" name="channel_freq_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_45">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Гц</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
                      </widget>
                     </item>
                    </layout>
@@ -1956,68 +1804,26 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        </font>
                       </property>
                       <property name="text">
-                       <string>ПРМ:</string>
+                       <string>MNC:</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="channel_prm_freq_full_2" native="true">
+                     <widget class="QLineEdit" name="tmo_mnc">
                       <property name="maximumSize">
                        <size>
-                        <width>139</width>
+                        <width>135</width>
                         <height>16777215</height>
                        </size>
                       </property>
-                      <property name="styleSheet">
-                       <string notr="true"/>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
                       </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_29">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>1</number>
-                       </property>
-                       <item>
-                        <widget class="QLineEdit" name="channel_prm_freq_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="frame">
-                          <bool>false</bool>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_50">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Гц</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
+                      <property name="frame">
+                       <bool>false</bool>
+                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -2055,66 +1861,149 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                        </font>
                       </property>
                       <property name="text">
-                       <string>ПРД:</string>
+                       <string>GSSI:</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="channel_prd_freq_full_2" native="true">
+                     <widget class="QLineEdit" name="tmo_gssi">
                       <property name="maximumSize">
                        <size>
-                        <width>139</width>
+                        <width>135</width>
                         <height>16777215</height>
                        </size>
                       </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_31">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>1</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>1</number>
-                       </property>
-                       <item>
-                        <widget class="QLineEdit" name="channel_prd_freq_2">
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label_52">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="font">
-                          <font>
-                           <pointsize>10</pointsize>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>Гц</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                      </widget>
                     </item>
                    </layout>
                   </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_27">
+                   <property name="spacing">
+                    <number>6</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_48">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Вещательный:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="tmo_vesh">
+                     <property name="maximumSize">
+                      <size>
+                       <width>64</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_22">
+                   <property name="spacing">
+                    <number>6</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_43">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Абон.маскирование:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="tmo_mask">
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_25">
+                   <property name="spacing">
+                    <number>6</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_46">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Имя:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="tmo_name">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
                   <spacer name="verticalSpacer_3">
@@ -2124,7 +2013,7 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
                    <property name="sizeHint" stdset="0">
                     <size>
                      <width>20</width>
-                     <height>54</height>
+                     <height>60</height>
                     </size>
                    </property>
                   </spacer>

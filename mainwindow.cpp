@@ -147,8 +147,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->direction_popup_menu->setEnabled(false);
     ui->direction_popup_menu->setVisible(false);
 
-    //                0       1      2      3      4       5        6        7      8
-    channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
+    //                0       1      2            3      4       5        6        7      8
+    channel_types = {"none", "dmo", "tetra_tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
     //                0       1      2      3      4       5        6        7      8
     direction_types = {"none_d", "dmo_d", "tmo_d", "vpd_d", "am25_d", "chm25_d", "chm50_d", "obp_d", "fm_d"};
     //                         0
@@ -163,6 +163,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //                          0       1      2        3       4           5           6        7
     editor_fields["chm50"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
     curr_editor_field["chm50"] = 0;
+    //                              0       1      2      3      4       5       6       7
+    editor_fields["tetra_tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
+    curr_editor_field["tetra_tmo"] = 0;
     //                            0          1      2       3       4             5       6
     editor_fields["chm25_d"] = { "channel", "prd", "tone", "scan", "economizer", "name", "background" };
     curr_editor_field["chm25_d"] = 0;
@@ -1790,6 +1793,17 @@ void MainWindow::clear_chm50_fields(){
     ui->label_39->setVisible(false);
 }
 
+void MainWindow::clear_tetra_tmo_fields(){
+    ui->channel_editor_state->setStyleSheet("");
+    ui->tmo_net->setStyleSheet("");
+    ui->tmo_mcc->setStyleSheet("");
+    ui->tmo_mnc->setStyleSheet("");
+    ui->tmo_gssi->setStyleSheet("");
+    ui->tmo_mask->setStyleSheet("");
+    ui->tmo_name->setStyleSheet("");
+    ui->tmo_vesh->setStyleSheet("");
+}
+
 void MainWindow::update_channel_editor_page(){
     //it will be hard...
 
@@ -1805,9 +1819,8 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
         break;
     case 2:
-        // TODO: CHANGE
-        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
-            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        if(ui->channel_editor_states->currentWidget() != ui->TETRA_TMO_page)
+            ui->channel_editor_states->setCurrentWidget(ui->TETRA_TMO_page);
         break;
     case 3:
         // TODO: CHANGE
@@ -2011,6 +2024,56 @@ void MainWindow::update_channel_editor_page(){
             ui->widget_4->setVisible(true);
             //ui->widget_4->setEnabled(true);
         }
+        return;
+    }
+
+    // tetra tmo
+    if(ui->channel_editor_state->property("chosen") == 2){
+        clear_tetra_tmo_fields();
+        switch (curr_editor_field["tetra_tmo"]) {
+        case 0:
+            // was upper
+            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            break;
+        case 1:
+            ui->tmo_net->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            break;
+        case 2:
+            ui->tmo_mcc->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 3:
+            ui->tmo_mnc->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 4:
+            ui->tmo_gssi->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 5:
+            ui->tmo_vesh->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 6:
+            ui->tmo_mask->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 7:
+            ui->tmo_name->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        default:
+            qCritical("tmo: update_channel_editor_page: no way");
+        }
+
         return;
     }
 }
@@ -2285,6 +2348,15 @@ void MainWindow::on_up_arrow_clicked()
             update_channel_editor_page();
             return;
         }
+
+        // tetra tmo
+        if(ui->channel_editor_state->property("chosen") == 2){
+            uint sz = editor_fields["tetra_tmo"].size();
+            curr_editor_field["tetra_tmo"] = (curr_editor_field["tetra_tmo"] - 1 + sz) % sz;
+
+            update_channel_editor_page();
+            return;
+        }
     }
     if(curr == ui->direction_editor_page){
         if(ui->direction_editor_stackedWidget->currentWidget() == ui->empty_direction_editor_page){
@@ -2451,6 +2523,15 @@ void MainWindow::on_down_arrow_clicked()
             else{
                 if(curr_editor_field["chm50"] == 4) curr_editor_field["chm50"] += 2;
             }
+
+            update_channel_editor_page();
+            return;
+        }
+
+        // tetra tmo
+        if(ui->channel_editor_state->property("chosen") == 2){
+            uint sz = editor_fields["tetra_tmo"].size();
+            curr_editor_field["tetra_tmo"] = (curr_editor_field["tetra_tmo"] + 1) % sz;
 
             update_channel_editor_page();
             return;
