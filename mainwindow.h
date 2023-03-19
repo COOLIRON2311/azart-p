@@ -10,6 +10,7 @@
 #include <QAudioInput>
 #include <QAudioOutput>
 #include <qbuffer.h>
+#include "modalwindowrd.h"
 
 namespace Ui {
     class MainWindow;
@@ -22,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    ModalWindowRD rdwin;
 
 public slots:
     void change_global_time();

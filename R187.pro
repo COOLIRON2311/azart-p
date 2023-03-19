@@ -27,15 +27,21 @@ CONFIG += c++20 resources_big
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+        modalwindow3d.cpp \
+        modalwindowrd.cpp \
         styles.cpp
 
 HEADERS += \
         listviewdelegate.h \
         mainwindow.h \
+        modalwindow3d.h \
+        modalwindowrd.h \
         protocol.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        modalwindow3d.ui \
+        modalwindowrd.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -56,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    auto _sz = MainWindow::size();
+    setMinimumSize(_sz);
+    setMaximumSize(_sz);
 
     time_timer.setInterval(1000);
     time_timer.connect(&time_timer, &QTimer::timeout, this, &MainWindow::change_global_time);
@@ -315,7 +318,7 @@ void MainWindow::show_3d()
 
 void MainWindow::show_radiodata()
 {
-    qDebug() << "rd";
+    rdwin.show();
 }
 
 void MainWindow::show_normative()
