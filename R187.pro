@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia network
+QT       += core gui multimedia network 3dcore 3drender 3dextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -40,7 +40,6 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui \
-        modalwindow3d.ui \
         modalwindowrd.ui
 
 # Default rules for deployment.

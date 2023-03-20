@@ -313,7 +313,7 @@ void MainWindow::setup(){
 
 void MainWindow::show_3d()
 {
-    qDebug() << "3d";
+    _3dwin.show();
 }
 
 void MainWindow::show_radiodata()
@@ -331,10 +331,6 @@ MainWindow::~MainWindow()
     delete ui;
     udpSocket.leaveMulticastGroup(QHostAddress(ADDR));
     outpDev->close();
-    delete inpt;
-    delete outp;
-    delete inptDev;
-    delete outpDev;
 }
 
 void MainWindow::selfcontrol_screen()
