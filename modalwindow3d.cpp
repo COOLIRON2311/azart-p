@@ -26,7 +26,7 @@ void ModalWindow3D::setup()
     hLayout = new QHBoxLayout(widget);
     hLayout->addWidget(container, 1);
 
-    widget->setWindowTitle("3D просмотр");
+    widget->setWindowTitle("Загрузка...");
     widget->setWindowIcon(QIcon(":/resources/star.png"));
 
     // Root entity
@@ -66,6 +66,7 @@ void ModalWindow3D::setup()
 
 ModalWindow3D::ModalWindow3D(QObject *parent) : QObject(parent)
 {
+    timer = new QTimer(this);
     model = QUrl(QStringLiteral("qrc:/resources/mesh.obj"));
     texture = QUrl(QStringLiteral("qrc:/resources/base.tga"));
     setup();
@@ -75,6 +76,8 @@ void ModalWindow3D::show()
 {
     // TODO: Dirty hack here. Fix memory leak ASAP!
     setup();
+    timer->start(100);
+    connect(timer, SIGNAL(timeout()), this, SLOT(loading()));
     widget->show();
 }
 
@@ -191,5 +194,15 @@ bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
 //       return true;
 //    }
     return false;
+}
+
+void ModalWindow3D::loading()
+{
+    if (loader->status() == Qt3DRender::QTextureLoader::Ready)
+    {
+        timer->stop();
+        widget->setWindowTitle("3D Просмотр");
+        disconnect(this, SLOT(loading()));
+    }
 }
 

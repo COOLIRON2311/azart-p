@@ -36,6 +36,7 @@
 #include <QMesh>
 #include <QKeyEvent>
 #include <QCloseEvent>
+#include <QTimer>
 
 class ModalWindow3D : public QObject
 {
@@ -53,6 +54,7 @@ class ModalWindow3D : public QObject
     Qt3DRender::QTextureLoader *loader;
     // TODO: use QMetalRoughMaterial
     Qt3DExtras::QTextureMaterial *mat;
+    QTimer *timer;
 
     Qt3DCore::QTransform *trans;
     int rx = 0, ry = 180, rz = 0;
@@ -68,6 +70,7 @@ public:
 
 public slots:
     bool eventFilter(QObject *watched, QEvent *event) override;
+    void loading();
 signals:
 
 };
