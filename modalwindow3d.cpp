@@ -2,7 +2,6 @@
 
 void ModalWindow3D::setup()
 {
-
     mesh = new Qt3DRender::QMesh();
     mesh->setSource(model);
     mat = new  Qt3DExtras::QTextureMaterial();
@@ -19,15 +18,12 @@ void ModalWindow3D::setup()
     view->defaultFrameGraph()->setClearColor(QColor(QRgb(0x4d4d4f)));
     container = QWidget::createWindowContainer(view);
     QSize sz = view->screen()->size();
-    container->setMinimumSize(QSize(200, 100));
-    container->setMaximumSize(sz);
+    this->setCentralWidget(QWidget::createWindowContainer(view));
+    this->centralWidget()->setMinimumSize(QSize(200, 100));
+    this->centralWidget()->setMaximumSize(sz);
 
-    widget = new QWidget;
-    hLayout = new QHBoxLayout(widget);
-    hLayout->addWidget(container, 1);
-
-    widget->setWindowTitle("Загрузка...");
-    widget->setWindowIcon(QIcon(":/resources/star.png"));
+    this->setWindowTitle("Загрузка...");
+    this->setWindowIcon(QIcon(":/resources/star.png"));
 
     // Root entity
     rootEntity = new Qt3DCore::QEntity();
@@ -61,29 +57,32 @@ void ModalWindow3D::setup()
 
     // Set root object of the scene
     view->setRootEntity(rootEntity);
-    widget->resize(1200, 800);
+    this->resize(1200, 800);
 }
 
-ModalWindow3D::ModalWindow3D(QObject *parent) : QObject(parent)
+ModalWindow3D::ModalWindow3D() : QMainWindow()
 {
     timer = new QTimer(this);
     model = QUrl(QStringLiteral("qrc:/resources/mesh.obj"));
     texture = QUrl(QStringLiteral("qrc:/resources/base.tga"));
-    setup();
+    //setup();
 }
 
 void ModalWindow3D::show()
 {
-    // TODO: Dirty hack here. Fix memory leak ASAP!
     setup();
     timer->start(100);
     connect(timer, SIGNAL(timeout()), this, SLOT(loading()));
-    widget->show();
+    QMainWindow::show();
+}
+
+void ModalWindow3D::closeEvent(QEvent* event){
+    this->hide();
 }
 
 bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
 {
-    Q_UNUSED(watched);
+    //Q_UNUSED(watched);
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
@@ -201,7 +200,7 @@ void ModalWindow3D::loading()
     if (loader->status() == Qt3DRender::QTextureLoader::Ready)
     {
         timer->stop();
-        widget->setWindowTitle("3D Просмотр");
+        this->setWindowTitle("3D Просмотр");
         disconnect(this, SLOT(loading()));
     }
 }

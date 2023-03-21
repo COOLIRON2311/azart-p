@@ -37,8 +37,9 @@
 #include <QKeyEvent>
 #include <QCloseEvent>
 #include <QTimer>
+#include <QMainWindow>
 
-class ModalWindow3D : public QObject
+class ModalWindow3D : public QMainWindow
 {
     Q_OBJECT
     Qt3DExtras::Qt3DWindow *view;
@@ -49,7 +50,7 @@ class ModalWindow3D : public QObject
     Qt3DCore::QEntity *lightEntity;
     Qt3DRender::QPointLight *light;
     Qt3DCore::QTransform *lightTransform;
-    Qt3DRender::QMesh *mesh;
+    Qt3DRender::QMesh *mesh = 0;
     Qt3DCore::QEntity *mesh_Entity;
     Qt3DRender::QTextureLoader *loader;
     // TODO: use QMetalRoughMaterial
@@ -64,9 +65,9 @@ class ModalWindow3D : public QObject
     void setup();
 
 public:
-    QWidget *widget;
-    explicit ModalWindow3D(QObject *parent = nullptr);
+    explicit ModalWindow3D();
     void show();
+    void closeEvent(QEvent* event);
 
 public slots:
     bool eventFilter(QObject *watched, QEvent *event) override;
