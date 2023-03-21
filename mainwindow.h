@@ -10,6 +10,8 @@
 #include <QAudioInput>
 #include <QAudioOutput>
 #include <qbuffer.h>
+#include "modalwindowrd.h"
+#include "modalwindow3d.h"
 
 namespace Ui {
     class MainWindow;
@@ -22,6 +24,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    ModalWindowRD rdwin;
+    ModalWindow3D _3dwin;
 
 public slots:
     void change_global_time();
@@ -50,6 +54,10 @@ public Q_SLOTS:
     void broadcast_init();
 
 private:
+    QAction *show3d;
+    QAction *showrd;
+    QAction *shownorm;
+
     void sendDatagrams();
     void playSamples();
 
@@ -68,6 +76,12 @@ private:
     }
 
 private slots:
+
+    void show_3d();
+
+    void show_radiodata();
+
+    void show_normative();
 
     void set_styles();
 

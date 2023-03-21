@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia network
+QT       += core gui multimedia network 3dcore 3drender 3dextras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,15 +27,20 @@ CONFIG += c++20 resources_big
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+        modalwindow3d.cpp \
+        modalwindowrd.cpp \
         styles.cpp
 
 HEADERS += \
         listviewdelegate.h \
         mainwindow.h \
+        modalwindow3d.h \
+        modalwindowrd.h \
         protocol.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        modalwindowrd.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

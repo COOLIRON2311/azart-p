@@ -27,5 +27,8 @@
         <file>resources/sputnik32.png</file>
         <file>resources/star.png</file>
         <file>resources/battery64.png</file>
+        <file>resources/rdblank.png</file>
+        <file>resources/mesh.obj</file>
+        <file>resources/base.tga</file>
     </qresource>
 </RCC>
