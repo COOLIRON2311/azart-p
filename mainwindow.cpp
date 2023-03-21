@@ -1760,14 +1760,14 @@ void go_up(QListWidget* qlw, uint size){
 }
 
 void MainWindow::clear_chm25_fields(){
-    ui->channel_editor_state->setStyleSheet("");
-    ui->is_forbidden_prd->setStyleSheet("");
-    ui->dualfreq->setStyleSheet("");
-    ui->channel_freq_full->setStyleSheet("");
-    ui->channel_prm_freq_full->setStyleSheet("");
-    ui->channel_prd_freq_full->setStyleSheet("");
-    ui->ctcss->setStyleSheet("");
-    ui->channel_name->setStyleSheet("");
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->is_forbidden_prd->setStyleSheet("background: white;");
+    ui->dualfreq->setStyleSheet("background: white;");
+    ui->channel_freq_full->setStyleSheet("background: white;");
+    ui->channel_prm_freq_full->setStyleSheet("background: white;");
+    ui->channel_prd_freq_full->setStyleSheet("background: white;");
+    ui->ctcss->setStyleSheet("background: white;");
+    ui->channel_name->setStyleSheet("background: white;");
     ui->label_32->setVisible(false);
     ui->label_42->setVisible(false);
     ui->label_39->setVisible(false);
@@ -1776,48 +1776,47 @@ void MainWindow::clear_chm25_fields(){
 void MainWindow::clear_chm25_d_fields(){
     ui->channel_in_dir_name->setStyleSheet("text-align: left;");
 
-    ui->is_forbidden_prd_d->setStyleSheet("");
-    ui->is_tone_call->setStyleSheet("");
-    ui->scan->setStyleSheet("");
-    ui->economizer->setStyleSheet("");
+    ui->is_forbidden_prd_d->setStyleSheet("background: white;");
+    ui->is_tone_call->setStyleSheet("background: white;");
+    ui->scan->setStyleSheet("background: white;");
+    ui->economizer->setStyleSheet("background: white;");
 
-    ui->name_d->setStyleSheet("");
+    ui->name_d->setStyleSheet("background: white;");
     ui->background_dir_picture->setStyleSheet("");
 }
 
 void MainWindow::clear_chm50_fields(){
-    ui->channel_editor_state->setStyleSheet("");
-    ui->is_forbidden_prd->setStyleSheet("");
-    ui->dualfreq->setStyleSheet("");
-    ui->channel_freq_full->setStyleSheet("");
-    ui->channel_prm_freq_full->setStyleSheet("");
-    ui->channel_prd_freq_full->setStyleSheet("");
-    ui->ctcss->setStyleSheet("");
-    ui->channel_name->setStyleSheet("");
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->is_forbidden_prd->setStyleSheet("background: white;");
+    ui->dualfreq->setStyleSheet("background: white;");
+    ui->channel_freq_full->setStyleSheet("background: white;");
+    ui->channel_prm_freq_full->setStyleSheet("background: white;");
+    ui->channel_prd_freq_full->setStyleSheet("background: white;");
+    ui->ctcss->setStyleSheet("background: white;");
+    ui->channel_name->setStyleSheet("background: white;");
     ui->label_32->setVisible(false);
     ui->label_42->setVisible(false);
     ui->label_39->setVisible(false);
 }
 
 void MainWindow::clear_tetra_tmo_fields(){
-    ui->channel_editor_state->setStyleSheet("");
-    ui->tmo_net->setStyleSheet("");
-    ui->tmo_mcc->setStyleSheet("");
-    ui->tmo_mnc->setStyleSheet("");
-    ui->tmo_gssi->setStyleSheet("");
-    ui->tmo_mask->setStyleSheet("");
-    ui->tmo_name->setStyleSheet("");
-    ui->tmo_vesh->setStyleSheet("");
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->tmo_net->setStyleSheet("background: white;");
+    ui->tmo_mcc->setStyleSheet("background: white;");
+    ui->tmo_mnc->setStyleSheet("background: white;");
+    ui->tmo_gssi->setStyleSheet("background: white;");
+    ui->tmo_mask->setStyleSheet("background: white;");
+    ui->tmo_name->setStyleSheet("background: white;");
+    ui->tmo_vesh->setStyleSheet("background: white;");
 }
 
 void MainWindow::clear_vpd_fields(){
-    ui->channel_editor_state->setStyleSheet("");
-    ui->vpd_mcc->setStyleSheet("");
-    ui->vpd_mnc->setStyleSheet("");
-    ui->vpd_gssi->setStyleSheet("");
-    ui->vpd_freq->setStyleSheet("");
-    ui->vpd_freq_full->setStyleSheet("");
-    ui->vpd_name->setStyleSheet("");
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->vpd_mcc->setStyleSheet("background: white;");
+    ui->vpd_mnc->setStyleSheet("background: white;");
+    ui->vpd_gssi->setStyleSheet("background: white;");
+    ui->vpd_freq_full->setStyleSheet("background: white;");
+    ui->vpd_name->setStyleSheet("background: white;");
     ui->label_69->setVisible(false);
 }
 
@@ -1875,7 +1874,7 @@ void MainWindow::update_channel_editor_page(){
     if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
         clear_chm25_fields();
         // clear_chm50_fields();
-        ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+        ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
         if(channel_editor_state_popup->isVisible()){
             ui->channel_editor_left->setText("Выбрать");
             ui->channel_editor_right->setText("Назад");
@@ -1900,38 +1899,38 @@ void MainWindow::update_channel_editor_page(){
         switch (curr_editor_field["chm25"]) {
         case 0:
             // was upper
-            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->is_forbidden_prd->setStyleSheet("border: 1px solid blue;");
+            ui->is_forbidden_prd->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->dualfreq->setStyleSheet("border: 1px solid blue;");
+            ui->dualfreq->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid blue;}");
+            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid black; background: white;}");
             ui->label_32->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
+            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid black; background: white;}");
             ui->label_42->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
-            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid blue;}");
+            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid black; background: white;}");
             ui->label_39->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 6:
-            ui->ctcss->setStyleSheet("border: 1px solid blue;");
+            ui->ctcss->setStyleSheet("border: 1px solid black; background: white;");
             if(channel_editor_ctcss_popup->isVisible()){
                 ui->channel_editor_left->setText("Выбрать");
                 ui->channel_editor_right->setText("Назад");
@@ -1942,7 +1941,7 @@ void MainWindow::update_channel_editor_page(){
             }
             break;
         case 7:
-            ui->channel_name->setStyleSheet("border: 1px solid blue;");
+            ui->channel_name->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
@@ -1975,38 +1974,38 @@ void MainWindow::update_channel_editor_page(){
         switch (curr_editor_field["chm50"]) {
         case 0:
             // was upper
-            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->is_forbidden_prd->setStyleSheet("border: 1px solid blue;");
+            ui->is_forbidden_prd->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->dualfreq->setStyleSheet("border: 1px solid blue;");
+            ui->dualfreq->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid blue;}");
+            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid black; background: white;}");
             ui->label_32->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid blue;}");
+            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid black; background: white;}");
             ui->label_42->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
-            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid blue;}");
+            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid black; background: white;}");
             ui->label_39->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 6:
-            ui->ctcss->setStyleSheet("border: 1px solid blue;");
+            ui->ctcss->setStyleSheet("border: 1px solid black; background: white;");
             if(channel_editor_ctcss_popup->isVisible()){
                 ui->channel_editor_left->setText("Выбрать");
                 ui->channel_editor_right->setText("Назад");
@@ -2017,7 +2016,7 @@ void MainWindow::update_channel_editor_page(){
             }
             break;
         case 7:
-            ui->channel_name->setStyleSheet("border: 1px solid blue;");
+            ui->channel_name->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
@@ -2050,40 +2049,40 @@ void MainWindow::update_channel_editor_page(){
         switch (curr_editor_field["tetra_tmo"]) {
         case 0:
             // was upper
-            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->tmo_net->setStyleSheet("border: 1px solid blue;");
+            ui->tmo_net->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Выбрать");
             break;
         case 2:
-            ui->tmo_mcc->setStyleSheet("border: 1px solid blue;");
+            ui->tmo_mcc->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 3:
-            ui->tmo_mnc->setStyleSheet("border: 1px solid blue;");
+            ui->tmo_mnc->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->tmo_gssi->setStyleSheet("border: 1px solid blue;");
+            ui->tmo_gssi->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
-            ui->tmo_vesh->setStyleSheet("border: 1px solid blue;");
+            ui->tmo_vesh->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 6:
-            ui->tmo_mask->setStyleSheet("border: 1px solid blue;");
+            ui->tmo_mask->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 7:
-            ui->tmo_name->setStyleSheet("border: 1px solid blue;");
+            ui->tmo_name->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
@@ -2100,30 +2099,30 @@ void MainWindow::update_channel_editor_page(){
         switch (curr_editor_field["vpd"]) {
         case 0:
             // was upper
-            ui->channel_editor_state->setStyleSheet("border: 1px solid blue;");
+            ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->vpd_mcc->setStyleSheet("border: 1px solid blue;");
+            ui->vpd_mcc->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 2:
-            ui->vpd_mnc->setStyleSheet("border: 1px solid blue;");
+            ui->vpd_mnc->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 3:
-            ui->vpd_gssi->setStyleSheet("border: 1px solid blue;");
+            ui->vpd_gssi->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->vpd_freq_full->setStyleSheet("#vpd_freq_full{ border: 1px solid blue;}");
+            ui->vpd_freq_full->setStyleSheet("#vpd_freq_full{ border: 1px solid black; background: white;}");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
-            ui->vpd_name->setStyleSheet("border: 1px solid blue;");
+            ui->vpd_name->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
@@ -2203,7 +2202,7 @@ void MainWindow::update_direction_editor_page(){
 
     if(chosen_ref_d == nullptr || curr_editor_field[direction_types[channel_map_d[chosen_ref_d]->state]] == 0){
         if(chosen_ref_d){
-            ui->channel_in_dir_name->setStyleSheet("border: 1px solid blue; text-align: left;");
+            ui->channel_in_dir_name->setStyleSheet("border: 1px solid black; background: white; text-align: left;");
         }
         else{
             ui->channel_in_dir_name->setStyleSheet("text-align: left;");
@@ -2242,20 +2241,20 @@ void MainWindow::update_direction_editor_page(){
         switch (curr_editor_field["chm25_d"]) {
         case 0:
             // was upper
-            //ui->channel_in_dir_name->setStyleSheet("border: 1px solid blue; text-align: left;");
+            //ui->channel_in_dir_name->setStyleSheet("border: 1px solid black; background: white; text-align: left;");
             break;
         case 1:
-            ui->is_forbidden_prd_d->setStyleSheet("border: 1px solid blue;");
+            ui->is_forbidden_prd_d->setStyleSheet("border: 1px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->is_tone_call->setStyleSheet("border: 1px solid blue;");
+            ui->is_tone_call->setStyleSheet("border: 1px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->scan->setStyleSheet("border: 1px solid blue;");
+            ui->scan->setStyleSheet("border: 1px solid black; background: white;");
             if(direction_editor_scan_popup->isVisible()){
                 ui->direction_editor_left->setText("Выбрать");
                 ui->direction_editor_right->setText("Назад");
@@ -2266,17 +2265,17 @@ void MainWindow::update_direction_editor_page(){
             }
             break;
         case 4:
-            ui->economizer->setStyleSheet("border: 1px solid blue;");
+            ui->economizer->setStyleSheet("border: 1px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Выбрать");
             break;
         case 5:
-            ui->name_d->setStyleSheet("border: 1px solid blue;");
+            ui->name_d->setStyleSheet("border: 1px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Стереть");
             break;
         case 6:
-            ui->background_dir_picture->setStyleSheet("border: 1px solid blue;");
+            ui->background_dir_picture->setStyleSheet("border: 1px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Выбрать");
             break;
