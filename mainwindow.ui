@@ -572,7 +572,7 @@ background: rgb(250, 250, 250)</string>
           <item>
            <widget class="QWidget" name="horizontalWidget" native="true">
             <property name="styleSheet">
-             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255))</string>
+             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_22">
              <property name="spacing">
@@ -582,13 +582,13 @@ background: rgb(250, 250, 250)</string>
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <item>
               <widget class="QLabel" name="label_4">
@@ -622,7 +622,7 @@ background: rgb(250, 250, 250)</string>
 background: none;</string>
                </property>
                <property name="text">
-                <string>Дежурный приём</string>
+                <string>Сервисное меню</string>
                </property>
                <property name="scaledContents">
                 <bool>false</bool>
@@ -656,7 +656,8 @@ background: none;</string>
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">border-image: url(:/resources/battery64.png);</string>
+                <string notr="true">border-image: url(:/resources/battery64.png);
+background: none;</string>
                </property>
                <property name="text">
                 <string/>
@@ -713,7 +714,8 @@ QListView::item:selected:!active {
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
@@ -723,6 +725,9 @@ QPushButtonl {
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -733,7 +738,7 @@ QPushButtonl {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="service_menu_left">
@@ -839,7 +844,7 @@ text-align:right;</string>
           <item>
            <widget class="QWidget" name="horizontalWidget" native="true">
             <property name="styleSheet">
-             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_24">
              <property name="spacing">
@@ -849,13 +854,13 @@ text-align:right;</string>
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <item>
               <widget class="QLabel" name="label_8">
@@ -1057,13 +1062,17 @@ QListView::item:selected:!active {
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -1074,7 +1083,7 @@ QLabel {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="channel_list_left">
@@ -1165,7 +1174,7 @@ text-align:right;</string>
           <item>
            <widget class="QWidget" name="horizontalWidget" native="true">
             <property name="styleSheet">
-             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_25">
              <property name="spacing">
@@ -1175,13 +1184,13 @@ text-align:right;</string>
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <item>
               <widget class="QLabel" name="label_6">
@@ -2617,13 +2626,17 @@ background: none;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -2634,7 +2647,7 @@ QLabel {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="channel_editor_left">
@@ -2722,7 +2735,7 @@ text-align:right;</string>
           <item>
            <widget class="QWidget" name="horizontalWidget" native="true">
             <property name="styleSheet">
-             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_26">
              <property name="spacing">
@@ -2732,13 +2745,13 @@ text-align:right;</string>
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <item>
               <widget class="QLabel" name="label_11">
@@ -3168,7 +3181,8 @@ QListView  {
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
@@ -3178,6 +3192,9 @@ QPushButtonl {
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -3188,7 +3205,7 @@ QPushButtonl {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="direction_editor_left">
@@ -3282,7 +3299,7 @@ text-align:right;</string>
           <item>
            <widget class="QWidget" name="horizontalWidget" native="true">
             <property name="styleSheet">
-             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_27">
              <property name="spacing">
@@ -3292,13 +3309,13 @@ text-align:right;</string>
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <item>
               <widget class="QLabel" name="label_5">
@@ -3424,13 +3441,17 @@ QListView::item:selected:!active {
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -3441,7 +3462,7 @@ QLabel {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="data_editor_left">
@@ -3544,7 +3565,7 @@ text-align:right;</string>
           <item>
            <widget class="QWidget" name="horizontalWidget" native="true">
             <property name="styleSheet">
-             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
+             <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_28">
              <property name="spacing">
@@ -3554,13 +3575,13 @@ text-align:right;</string>
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>1</number>
              </property>
              <item>
               <widget class="QLabel" name="label_9">
@@ -3747,13 +3768,17 @@ QListView::item:selected:!active {
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -3764,7 +3789,7 @@ QLabel {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="direction_list_left">
@@ -4058,7 +4083,7 @@ background: none;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">color: rgb(255, 255, 255);
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255))</string>
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
              </property>
              <property name="text">
               <string>Дежурный приём</string>
@@ -4153,13 +4178,18 @@ QListView::item:selected:!active {
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">QWidget {	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+              <string notr="true">QWidget {
+		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
 }</string>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <property name="leftMargin">
                <number>2</number>
               </property>
@@ -4170,7 +4200,7 @@ QLabel {
                <number>2</number>
               </property>
               <property name="bottomMargin">
-               <number>2</number>
+               <number>0</number>
               </property>
               <item>
                <widget class="QPushButton" name="menu_left">
@@ -4269,42 +4299,66 @@ text-align:right;</string>
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="label_40">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="sizeIncrement">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="baseSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
+           <widget class="QWidget" name="widget_16" native="true">
             <property name="styleSheet">
              <string notr="true">color: rgb(255, 255, 255);
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255))</string>
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
-            <property name="text">
-             <string>Выбор направления</string>
-            </property>
-            <property name="scaledContents">
-             <bool>false</bool>
-            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_31">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>1</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>1</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_40">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="sizeIncrement">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>Выбор направления</string>
+               </property>
+               <property name="scaledContents">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -4332,13 +4386,17 @@ QListView::item:selected:!active {
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_11">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -4349,7 +4407,7 @@ QLabel {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="direction_selection_left">
@@ -4616,7 +4674,7 @@ background: none;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">color: rgb(255, 255, 255);
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255))</string>
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.659091 rgba(89, 118, 173, 255), stop:1 rgba(173, 173, 173, 255));</string>
             </property>
             <property name="text">
              <string>Дежурный приём</string>
@@ -4770,13 +4828,17 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rg
             </property>
             <property name="styleSheet">
              <string notr="true">QWidget {
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255))
+		background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.659091 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid black;
 }
 QLabel {
 	color: rgb(255, 255, 255)
 }</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <property name="leftMargin">
               <number>2</number>
              </property>
@@ -4787,7 +4849,7 @@ QLabel {
               <number>2</number>
              </property>
              <property name="bottomMargin">
-              <number>2</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QPushButton" name="main_left">

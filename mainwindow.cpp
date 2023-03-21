@@ -182,7 +182,7 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_editor_state_popup = new QListWidget(this);
     QLabel* temp = ui->channel_editor_state;
     channel_editor_state_popup->resize(94, 176);
-    channel_editor_state_popup->move(temp->mapToGlobal(temp->rect().bottomLeft()) + QPoint(100, 5));
+    channel_editor_state_popup->move(temp->mapToGlobal(temp->rect().bottomLeft()) + QPoint(100, 30));
     channel_editor_state_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     channel_editor_state_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     channel_editor_state_popup->setVisible(false);
@@ -206,8 +206,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->ctcss->setProperty("chosen", 0);
     channel_editor_ctcss_popup = new QListWidget(this);
-    channel_editor_ctcss_popup->resize(50, 220);
-    channel_editor_ctcss_popup->move(ui->widget->mapToGlobal(ui->widget->rect().topRight()) + QPoint(45, 5)); // QPoint(-495, -5)
+    channel_editor_ctcss_popup->resize(50, 200);
+    channel_editor_ctcss_popup->move(ui->widget->mapToGlobal(ui->widget->rect().topRight()) + QPoint(45, 40)); // QPoint(-495, -5)
     channel_editor_ctcss_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     channel_editor_ctcss_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     channel_editor_ctcss_popup->setVisible(false);
@@ -289,8 +289,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->scan->setProperty("chosen", 0);
     direction_editor_scan_popup = new QListWidget(this);
-    direction_editor_scan_popup->resize(95, 125);
-    direction_editor_scan_popup->move(ui->scan->mapToGlobal(ui->scan->rect().bottomLeft()) + QPoint(100, 55));
+    direction_editor_scan_popup->resize(95, 120);
+    direction_editor_scan_popup->move(ui->scan->mapToGlobal(ui->scan->rect().bottomLeft()) + QPoint(100, 100));
     direction_editor_scan_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     direction_editor_scan_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
     direction_editor_scan_popup->setVisible(false);
