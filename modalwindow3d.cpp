@@ -2,7 +2,6 @@
 
 void ModalWindow3D::setup()
 {
-
     mesh = new Qt3DRender::QMesh();
     mesh->setSource(model);
     mat = new  Qt3DExtras::QTextureMaterial();
@@ -69,7 +68,7 @@ ModalWindow3D::ModalWindow3D(QObject *parent) : QObject(parent)
     timer = new QTimer(this);
     model = QUrl(QStringLiteral("qrc:/resources/mesh.obj"));
     texture = QUrl(QStringLiteral("qrc:/resources/base.tga"));
-    setup();
+//    setup();
 }
 
 void ModalWindow3D::show()
@@ -172,27 +171,9 @@ bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
 
             return true;
         }
-
         else
             return false;
     }
-//    else if (event->type() == QEvent::Hide)
-//    {
-//       delete view;
-//       delete container;
-//       delete hLayout;
-//       delete vLayout;
-//       delete rootEntity;
-//       delete cameraEntity;
-//       delete lightEntity;
-//       delete light;
-//       delete lightTransform;
-//       delete mesh;
-//       delete mesh_Entity;
-//       delete mat;
-//       delete trans;
-//       return true;
-//    }
     return false;
 }
 
