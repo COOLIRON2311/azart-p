@@ -542,7 +542,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>10</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -842,6 +842,21 @@ text-align:right;</string>
              <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_24">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_8">
                <property name="sizePolicy">
@@ -905,7 +920,8 @@ background: none;</string>
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">border-image: url(:/resources/battery64.png);</string>
+                <string notr="true">border-image: url(:/resources/battery64.png);
+background: none;</string>
                </property>
                <property name="text">
                 <string/>
@@ -1152,6 +1168,21 @@ text-align:right;</string>
              <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_25">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_6">
                <property name="sizePolicy">
@@ -1215,7 +1246,8 @@ background: none;</string>
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">border-image: url(:/resources/battery64.png);</string>
+                <string notr="true">border-image: url(:/resources/battery64.png);
+background: none;</string>
                </property>
                <property name="text">
                 <string/>
@@ -1936,6 +1968,21 @@ text-align:right;</string>
              <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_26">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_11">
                <property name="sizePolicy">
@@ -1999,7 +2046,8 @@ background: none;</string>
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">border-image: url(:/resources/battery64.png);</string>
+                <string notr="true">border-image: url(:/resources/battery64.png);
+background: none;</string>
                </property>
                <property name="text">
                 <string/>
@@ -2480,6 +2528,21 @@ text-align:right;</string>
              <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_27">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_5">
                <property name="sizePolicy">
@@ -2543,7 +2606,8 @@ background: none;</string>
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">border-image: url(:/resources/battery64.png);</string>
+                <string notr="true">border-image: url(:/resources/battery64.png);
+background: none;</string>
                </property>
                <property name="text">
                 <string/>
@@ -2726,6 +2790,21 @@ text-align:right;</string>
              <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.755682 rgba(89, 118, 173, 255), stop:1 rgba(255, 255, 255, 255));</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_28">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_9">
                <property name="sizePolicy">
@@ -2789,7 +2868,8 @@ background: none;</string>
                 <enum>Qt::LeftToRight</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">border-image: url(:/resources/battery64.png);</string>
+                <string notr="true">border-image: url(:/resources/battery64.png);
+background: none;</string>
                </property>
                <property name="text">
                 <string/>
