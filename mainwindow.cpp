@@ -280,7 +280,7 @@ MainWindow::MainWindow(QWidget *parent) :
         channel_editor_ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
     }
 
-    set_fonts();
+    set_styles();
 
     connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
 
@@ -488,41 +488,18 @@ void MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged()
 }
 void MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged()
 {
-    if(selected_items["direction_editor_scan_popup"]){
-        selected_items["direction_editor_scan_popup"]->setBackground(QColor(255, 255, 255));
-        selected_items["direction_editor_scan_popup"]->setTextColor(QColor(133, 165, 200));
-    }
 
     selected_items["direction_editor_scan_popup"] = direction_editor_scan_popup->currentItem();
-
-    selected_items["direction_editor_scan_popup"]->setBackground(QColor(56, 82, 130));
-    selected_items["direction_editor_scan_popup"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_direction_list_itemSelectionChanged()
 {
-    if(selected_items["direction_list"]){
-        selected_items["direction_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["direction_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["direction_list"] = ui->direction_list->currentItem();
-
-    selected_items["direction_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["direction_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_channel_choice_list_itemSelectionChanged()
 {
-    if(selected_items["channel_choice_list"]){
-        selected_items["channel_choice_list"]->setBackground(QColor(255, 255, 255));
-        selected_items["channel_choice_list"]->setTextColor(QColor(133, 165, 200));
-    }
-
     selected_items["channel_choice_list"] = ui->channel_choice_list->currentItem();
-
-    selected_items["channel_choice_list"]->setBackground(QColor(56, 82, 130));
-    selected_items["channel_choice_list"]->setTextColor(QColor(255, 255 ,255));
 }
 
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)

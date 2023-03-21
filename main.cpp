@@ -8,8 +8,7 @@ int main(int argc, char *argv[])
     w.show();
 
     w.setup();
-    w.channel_list_screen();
-    //w.selfcontrol_screen();
+    w.selfcontrol_screen();
 
     return a.exec();
 }

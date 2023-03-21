@@ -23,5 +23,9 @@
         <file>resources/back (7).png</file>
         <file>resources/back (8).png</file>
         <file>resources/back (9).png</file>
+        <file>resources/sputnik16.png</file>
+        <file>resources/sputnik32.png</file>
+        <file>resources/star.png</file>
+        <file>resources/battery64.png</file>
     </qresource>
 </RCC>

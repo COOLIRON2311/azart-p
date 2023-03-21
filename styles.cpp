@@ -2,8 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QFontDatabase>
 #include <QScreen>
+#include "listviewdelegate.h"
 
-void MainWindow::set_fonts()
+void MainWindow::set_styles()
 {
     double scale = 1.0;
 
@@ -13,10 +14,11 @@ void MainWindow::set_fonts()
 
     QFontDatabase::addApplicationFont(":/resources/Nokia Sans Wide.ttf");
     QFontDatabase::addApplicationFont(":/resources/Nokia Sans Wide Bold.ttf");
-    QFont f("Nokia Sans Wide", 8 / scale, QFont::Normal);
-    QFont fb("Nokia Sans Wide", 10 / scale, QFont::Bold);
+    QFont f("Nokia Sans Wide", 12 / scale, QFont::Normal);
+    QFont fb("Nokia Sans Wide", 12 / scale, QFont::Bold);
     QFont scsf("Nokia Sans Wide", 10 / scale, QFont::Bold);
     QFont lsf("Nokia Sans Wide", 10 / scale, QFont::Normal);
+    QFont fpop("Nokia Sans Wide", 9 / scale, QFont::Normal);
     // QFont minf("Nokia Sans Wide", 20 / scale, QFont::Bold);
     // QFont secf("Nokia Sans Wide", 10 / scale, QFont::Bold);
 
@@ -30,7 +32,7 @@ void MainWindow::set_fonts()
     ui->label_8->setFont(fb);
     ui->channel_list->setFont(f);
     ui->channel_popup_menu_list->setFont(f);
-    ui->empty_channel_list_label->setFont(fb);
+    ui->empty_channel_list_label->setFont(f);
     ui->channel_list_left->setFont(fb);
     ui->channel_list_right->setFont(fb);
     ui->label_8->setFont(fb);
@@ -40,8 +42,8 @@ void MainWindow::set_fonts()
     ui->channel_list->setFont(f);
     ui->channel_list_left->setFont(fb);
     ui->channel_list_right->setFont(fb);
-    ui->channel_popup_menu_list->setFont(f);
-    ui->empty_channel_list_label->setFont(fb);
+    ui->channel_popup_menu_list->setFont(fpop);
+    ui->empty_channel_list_label->setFont(f);
 
     // Direction editor page
     ui->label_11->setFont(fb);
@@ -72,7 +74,7 @@ void MainWindow::set_fonts()
     // Direction list page
     ui->label_9->setFont(fb);
     ui->direction_list->setFont(f);
-    ui->direction_popup_menu_list->setFont(f);
+    ui->direction_popup_menu_list->setFont(fpop);
     ui->direction_list_left->setFont(fb);
     ui->direction_list_right->setFont(fb);
 
@@ -131,4 +133,9 @@ void MainWindow::set_fonts()
     ui->label_18->setFont(lsf);
     ui->label_19->setFont(lsf);
     ui->label_20->setFont(lsf);
+
+    // List styles
+    ui->service_menu_list->setItemDelegate(new ListWidgetItemDelegate);
+    ui->menu_list->setItemDelegate(new ListWidgetItemDelegate(0.2, 0));
+    ui->data_editor_list->setItemDelegate(new ListWidgetItemDelegate);
 }
