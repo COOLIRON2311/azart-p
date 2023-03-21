@@ -542,11 +542,7 @@ background: white;</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-<<<<<<< HEAD
-       <number>2</number>
-=======
        <number>1</number>
->>>>>>> 6331034a7cfc8608485ef050b5396bdaa3e70b50
       </property>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
