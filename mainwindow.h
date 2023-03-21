@@ -75,7 +75,14 @@ private:
         memcpy(&t, a, sizeof(T));
     }
 
+    void setReceiving();
+    void setTransmitting();
+
+    size_t receivedPackets = 0;
+
 private slots:
+
+    void hideDej();
 
     void show_3d();
 
@@ -189,6 +196,8 @@ private slots:
     void _on_economizer_numChanged();
 
     void _on_direction_background_numChanged();
+
+    void on_talk_button_pressed();
 
 private:
     void on_number_i_clicked(int);

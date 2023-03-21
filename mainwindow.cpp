@@ -7,6 +7,8 @@
 #include <iostream>
 #include <QScrollBar>
 #include <QLabel>
+#include <QHBoxLayout>
+#include <QWidget>
 /*
 
 PA - pay attention
@@ -315,6 +317,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->menuBar->addAction(shownorm);
 
     broadcast_init();
+
+    ui->dej->setVisible(false);
 }
 
 void MainWindow::setup(){
@@ -451,6 +455,7 @@ void MainWindow::main_screen()
 void MainWindow::menu_screen()
 {
     ui->mainPages->setCurrentWidget(ui->menu_page);
+    ui->dej->setVisible(false);
     //WD
     //ui->menu_list->setCurrentItem(selected_items["menu_list"]);
 }
@@ -1392,6 +1397,7 @@ void MainWindow::on_direction_selection_left_clicked()
 {
     if(selected_items["direction_selection_list"] != nullptr){
         current_direction = direction_map_d[selected_items["direction_selection_list"]];
+        broadcast_init();
     }
     else{
         current_direction = nullptr;
@@ -1407,6 +1413,7 @@ void MainWindow::on_direction_selection_right_clicked()
 void MainWindow::direction_selection_screen()
 {
     ui->mainPages->setCurrentWidget(ui->direction_selection_page);
+    ui->dej->setVisible(false);
     if(selected_items["direction_selection_list"] == nullptr){
         if(direction_map_d.empty()){
             // PA
@@ -1468,6 +1475,12 @@ void MainWindow::broadcast_init()
     connect(&udpSocket, SIGNAL(readyRead()), this, SLOT(recieveDatagrams()), Qt::QueuedConnection);
 }
 
+void MainWindow::hideDej(){
+    if(!--receivedPackets){
+        ui->dej->setVisible(false);
+    }
+}
+
 void MainWindow::recieveDatagrams()
 {
     QByteArray datagram;
@@ -1480,6 +1493,12 @@ void MainWindow::recieveDatagrams()
     from_byte_array(datagram.constData(), incoming_freq);
     if (incoming_freq == freq && !transmitting)
     {
+        setReceiving();
+        if(ui->mainPages->currentWidget() == ui->main_page) ui->dej->setVisible(true);
+        QTimer timer;
+        timer.start(1000);
+        receivedPackets++;
+        connect(&timer, &QTimer::timeout, this, &MainWindow::hideDej);
         buffer.append(datagram.constData() + 4, datagram.size() - 4);
         playSamples();
     }
@@ -1502,6 +1521,50 @@ void MainWindow::sendDatagrams()
         QHostAddress(ADDR), PORT);
 }
 
+void MainWindow::setReceiving(){
+    ui->arrow->setStyleSheet("border-image: url(:/resources/pr.png)");
+
+}
+
+void MainWindow::setTransmitting(){
+    ui->arrow->setStyleSheet("border-image: url(:/resources/per.png)");
+    char buf[300] = "";
+    Channel *ch = direction_map_d[selected_items["direction_selection_list"]]->ch;
+            //ui->dej_label_1->setText(tr("ПРИЕМ 59.000"));
+            //ui->dej_label_2->setText(tr("ЧМ25"));
+    sprintf(buf, "ПЕРЕДАЧА %d.%03d", (ch->dualfreq ? ch->prd_freq / 1000000 : ch->freq / 1000000), (ch->dualfreq ? (ch->prd_freq / 1000) % 1000 : (ch->freq / 1000) % 1000));
+    ui->dej_label_1->setText(tr(buf));
+    switch (ch->state) {
+    case 0:
+        ui->dej_label_2->setText(tr("Idle"));
+        break;
+    case 1:
+        ui->dej_label_2->setText(tr("TETRA_DMO"));
+        break;
+    case 2:
+        ui->dej_label_2->setText(tr("TETRA_TMO"));
+        break;
+    case 3:
+        ui->dej_label_2->setText(tr("ВПД"));
+        break;
+    case 4:
+        ui->dej_label_2->setText(tr("АМ25"));
+        break;
+    case 5:
+        ui->dej_label_2->setText(tr("ЧМ25"));
+        break;
+    case 6:
+        ui->dej_label_2->setText(tr("ЧМ50"));
+        break;
+    case 7:
+        ui->dej_label_2->setText(tr("ОБП"));
+        break;
+    case 8:
+        ui->dej_label_2->setText(tr("FM радио"));
+        break;
+    }
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if(current_direction != nullptr && current_direction->ch != nullptr)
@@ -1509,6 +1572,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(event->key() == Qt::Key_1 && !transmitting)
         {
             transmitting = true;
+
+            setTransmitting();
+            if(ui->mainPages->currentWidget() == ui->main_page) ui->dej->setVisible(true);
+
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
                 this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
@@ -1523,6 +1590,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
         if(event->key() == Qt::Key_1 && !event->isAutoRepeat())
         {
             transmitting = false;
+
+            ui->dej->setVisible(false);
+
             inptDev->close();
             inpt->stop();
             disconnect(inptConn);
@@ -2681,4 +2751,9 @@ void MainWindow::on_dualfreq_clicked()
         ui->widget_4->setVisible(true);
         //ui->widget_4->setEnabled(true);
     }
+}
+
+void MainWindow::on_talk_button_pressed()
+{
+
 }

@@ -30,5 +30,7 @@
         <file>resources/rdblank.png</file>
         <file>resources/mesh.obj</file>
         <file>resources/base.tga</file>
+        <file>resources/per.png</file>
+        <file>resources/pr.png</file>
     </qresource>
 </RCC>
