@@ -31,22 +31,19 @@ void MainWindow::set_styles()
     // Channel list page
     ui->label_8->setFont(fb);
     ui->channel_list->setFont(f);
-    ui->channel_popup_menu_list->setFont(f);
+    ui->channel_popup_menu_list->setFont(fpop);
     ui->empty_channel_list_label->setFont(f);
     ui->channel_list_left->setFont(fb);
     ui->channel_list_right->setFont(fb);
     ui->label_8->setFont(fb);
 
     // Channel editor page
-    ui->label_8->setFont(fb);
-    ui->channel_list->setFont(f);
-    ui->channel_list_left->setFont(fb);
-    ui->channel_list_right->setFont(fb);
-    ui->channel_popup_menu_list->setFont(fpop);
-    ui->empty_channel_list_label->setFont(f);
+    ui->label_6->setFont(fb);
+    ui->channel_editor_left->setFont(fb);
+    ui->channel_editor_right->setFont(fb);
 
     // Direction editor page
-    ui->label_11->setFont(fb);
+    ui->label_11->setFont(f);
     ui->direction_editor_left->setFont(fb);
     ui->direction_editor_right->setFont(fb);
     ui->channel_in_dir_name->setFont(f);

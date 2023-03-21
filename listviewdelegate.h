@@ -16,7 +16,7 @@ public:
    {
        this->indent = QString(" ").repeated(indent);
        b.setColor(QColor("#7597D9"));
-       b.setStyle(Qt::Dense4Pattern);
+       b.setStyle(Qt::Dense6Pattern);
        w = 1 - width;
    }
 
