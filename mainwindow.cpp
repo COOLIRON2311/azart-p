@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QWidget>
+#include <QGraphicsDropShadowEffect>
 /*
 
 PA - pay attention
@@ -318,7 +319,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     broadcast_init();
 
-    ui->dej->setVisible(false);
+    //ui->dej->setVisible(false);
+    ui->modals->setCurrentWidget(ui->no_modals);
+
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+    effect->setBlurRadius(1);
+    effect->setXOffset(2);
+    effect->setYOffset(2);
+    effect->setColor(Qt::black);
+    ui->widget_18->setGraphicsEffect(effect);
 }
 
 void MainWindow::setup(){
@@ -459,7 +468,8 @@ void MainWindow::main_screen()
 void MainWindow::menu_screen()
 {
     ui->mainPages->setCurrentWidget(ui->menu_page);
-    ui->dej->setVisible(false);
+    ui->modals->setCurrentWidget(ui->no_modals);
+    //ui->dej->setVisible(false);
     //WD
     //ui->menu_list->setCurrentItem(selected_items["menu_list"]);
 }
@@ -801,7 +811,10 @@ void MainWindow::channel_editor_screen()
 
 void MainWindow::on_channel_editor_right_clicked()
 {
-    //TODO
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
 
     // types
     if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
@@ -899,8 +912,17 @@ void MainWindow::on_channel_editor_right_clicked()
 
 }
 
+bool in_range(uint32_t num, uint32_t left, uint32_t right){
+    return num >= left && num < right;
+}
+
 void MainWindow::on_channel_editor_left_clicked()
 {
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
     if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
         if(channel_editor_state_popup->isVisible()){
             //Выбрать
@@ -947,10 +969,56 @@ void MainWindow::on_channel_editor_left_clicked()
     // channel saving
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
 
+    uint32_t left, right;
+
+    int state = ui->channel_editor_state->property("chosen").toInt();
+
+    // check save option
+    switch (state) {
+    case 0:
+        // skip
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    case 5:
+        left = 1000000;
+        right = 1000000000;
+        if(ui->dualfreq->isChecked()){
+            if(!in_range((uint32_t)ui->channel_prm_freq->text().toInt(), left, right) || !in_range((uint32_t)ui->channel_prd_freq->text().toInt(), left, right)){
+                ui->modals->setCurrentWidget(ui->params_error);
+                return;
+            }
+        }
+        if(!in_range((uint32_t)ui->channel_freq->text().toInt(), left, right)){
+            ui->modals->setCurrentWidget(ui->params_error);
+            return;
+        }
+
+        if(ui->channel_name->text().isEmpty()){
+            ui->modals->setCurrentWidget(ui->params_error);
+            return;
+        }
+
+        break;
+    case 6:
+        break;
+    case 7:
+        break;
+    case 8:
+        break;
+        return;
+    }
+
     // clearing before saving
     curr->clear();
-    // REFACTOR
-    curr->state = ui->channel_editor_state->property("chosen").toInt();
+
+    curr->state = state;
 
     switch (curr->state) {
     case 0:
@@ -1417,7 +1485,8 @@ void MainWindow::on_direction_selection_right_clicked()
 void MainWindow::direction_selection_screen()
 {
     ui->mainPages->setCurrentWidget(ui->direction_selection_page);
-    ui->dej->setVisible(false);
+    ui->modals->setCurrentWidget(ui->no_modals);
+    //ui->dej->setVisible(false);
     if(selected_items["direction_selection_list"] == nullptr){
         if(direction_map_d.empty()){
             // PA
@@ -1481,7 +1550,8 @@ void MainWindow::broadcast_init()
 
 void MainWindow::hideDej(){
     if(!--receivedPackets){
-        ui->dej->setVisible(false);
+        ui->modals->setCurrentWidget(ui->no_modals);
+        //ui->dej->setVisible(false);
     }
 }
 
@@ -1498,7 +1568,10 @@ void MainWindow::recieveDatagrams()
     if (incoming_freq == freq && !transmitting)
     {
         setReceiving();
-        if(ui->mainPages->currentWidget() == ui->main_page) ui->dej->setVisible(true);
+        if(ui->mainPages->currentWidget() == ui->main_page){
+            ui->modals->setCurrentWidget(ui->pr_per);
+            //ui->dej->setVisible(true);
+        }
         QTimer timer;
         timer.start(1000);
         receivedPackets++;
@@ -1578,7 +1651,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             transmitting = true;
 
             setTransmitting();
-            if(ui->mainPages->currentWidget() == ui->main_page) ui->dej->setVisible(true);
+            if(ui->mainPages->currentWidget() == ui->main_page){
+                ui->modals->setCurrentWidget(ui->pr_per);
+                //ui->dej->setVisible(true);
+            }
 
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
@@ -1595,7 +1671,8 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
         {
             transmitting = false;
 
-            ui->dej->setVisible(false);
+            ui->modals->setCurrentWidget(ui->no_modals);
+            //ui->dej->setVisible(false);
 
             inptDev->close();
             inpt->stop();
@@ -1758,6 +1835,11 @@ void MainWindow::on_number_0_clicked()
 
 void MainWindow::on_number_i_clicked(int i)
 {
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->channel_editor_page){
         //chm25
@@ -2373,6 +2455,11 @@ void MainWindow::update_direction_editor_page(){
 
 void MainWindow::on_up_arrow_clicked()
 {
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->loading_page){
         //changing type
@@ -2557,6 +2644,11 @@ void go_down(QListWidget* qlw, uint size){
 
 void MainWindow::on_down_arrow_clicked()
 {
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->loading_page){
         //changing type
@@ -2730,6 +2822,11 @@ void MainWindow::on_down_arrow_clicked()
 void MainWindow::on_left_tube_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
+
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
 }
 
 void MainWindow::on_right_tube_clicked()
@@ -2737,6 +2834,11 @@ void MainWindow::on_right_tube_clicked()
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->offscreen){
         selfcontrol_screen();
+        return;
+    }
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
     }
 }
 
