@@ -7556,11 +7556,26 @@ text-align:right;</string>
      <widget class="QListWidget" name="ctcss_popup">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>30</y>
-        <width>51</width>
+        <x>145</x>
+        <y>25</y>
+        <width>50</width>
         <height>201</height>
        </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="channel_type">
+     <widget class="QListWidget" name="ch_type_popup">
+      <property name="geometry">
+       <rect>
+        <x>102</x>
+        <y>42</y>
+        <width>91</width>
+        <height>170</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid ;</string>
       </property>
      </widget>
     </widget>
