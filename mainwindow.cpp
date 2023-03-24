@@ -2357,6 +2357,7 @@ void MainWindow::update_channel_editor_page(){
             ui->tmo_name->setStyleSheet("border: 2px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
+            ui->tmo_name->setFocus();
             break;
         default:
             qCritical("tmo: update_channel_editor_page: no way");
@@ -2396,6 +2397,7 @@ void MainWindow::update_channel_editor_page(){
             ui->vpd_name->setStyleSheet("border: 2px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
+            ui->vpd_name->setFocus();
             break;
         default:
             qCritical("vpd: update_channel_editor_page: no way");
@@ -2450,6 +2452,7 @@ void MainWindow::update_channel_editor_page(){
             ui->am25_name->setStyleSheet("border: 2px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
+            ui->am25_name->setFocus();
             break;
         default:
             qCritical("am25: update_channel_editor_page: no way");
@@ -2518,6 +2521,7 @@ void MainWindow::update_channel_editor_page(){
             ui->chm25_name->setStyleSheet("border: 2px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
+            ui->chm25_name->setFocus();
             break;
         default:
             qCritical("chm25: update_channel_editor_page: no way");
@@ -2586,6 +2590,7 @@ void MainWindow::update_channel_editor_page(){
             ui->chm50_name->setStyleSheet("border: 2px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
+            ui->chm50_name->setFocus();
             break;
         default:
             qCritical("chm50: update_channel_editor_page: no way");
@@ -2632,6 +2637,7 @@ void MainWindow::update_channel_editor_page(){
             ui->label_42->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
+            ui->obp_name->setFocus();
             break;
         default:
             qCritical("obp: update_channel_editor_page: no way");
@@ -2678,6 +2684,7 @@ void MainWindow::update_channel_editor_page(){
             ui->fm_name->setStyleSheet("border: 2px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
+            ui->fm_name->setFocus();
             break;
         default:
             qCritical("fm: update_channel_editor_page: no way");
