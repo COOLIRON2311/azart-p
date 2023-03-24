@@ -205,6 +205,7 @@ private:
     void clear_chm25_fields();
     void clear_chm25_d_fields();
     void clear_chm50_fields();
+    void clear_am25_fields();
     void clear_tetra_tmo_fields();
     void clear_vpd_fields();
     void update_channel_editor_page();

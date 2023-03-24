@@ -163,6 +163,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //                         0
     editor_fields["none_d"] = { "type" };
     curr_editor_field["none_d"] = 0;
+    //                          0       1      2        3       4           5          6
+    editor_fields["am25"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "name" };
+    curr_editor_field["am25"] = 0;
     //                          0       1      2        3       4           5           6        7
     editor_fields["chm25"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
     curr_editor_field["chm25"] = 0;
@@ -832,6 +835,37 @@ void MainWindow::on_channel_editor_right_clicked()
         return;
     }
 
+    if(ui->channel_editor_state->property("chosen") == 4){
+        switch (curr_editor_field["am25"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->am25_prd->toggle();
+            break;
+        case 2:
+            ui->am25_dualfreq->toggle();
+            break;
+        case 3:
+            ui->am25_freq->backspace();
+            break;
+        case 4:
+            ui->am25_prm_freq->backspace();
+            break;
+        case 5:
+            ui->am25_prd_freq->backspace();
+            break;
+        case 6:
+            ui->am25_name->backspace();
+            break;
+        default:
+            qCritical("crit: on_channel_editor_right_clicked");
+            return;
+        }
+        update_channel_editor_page();
+        return;
+    }
+
     if(ui->channel_editor_state->property("chosen") == 5){
         switch (curr_editor_field["chm25"]) {
         case 0:
@@ -938,6 +972,10 @@ void MainWindow::on_channel_editor_left_clicked()
             update_channel_editor_page();
             return;
         }
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 4){
+        //nothing
     }
 
     if(ui->channel_editor_state->property("chosen") == 5){
@@ -1955,6 +1993,19 @@ void MainWindow::clear_chm50_fields(){
     ui->label_39->setVisible(false);
 }
 
+void MainWindow::clear_am25_fields(){
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->am25_prd->setStyleSheet("background: white;");
+    ui->am25_dualfreq->setStyleSheet("background: white;");
+    ui->am25_freq_full->setStyleSheet("background: white;");
+    ui->am25_prm_freq_full->setStyleSheet("background: white;");
+    ui->am25_prd_freq_full->setStyleSheet("background: white;");
+    ui->am25_name->setStyleSheet("background: white;");
+    ui->label_54->setVisible(false);
+    ui->label_57->setVisible(false);
+    ui->label_60->setVisible(false);
+}
+
 void MainWindow::clear_tetra_tmo_fields(){
     ui->channel_editor_state->setStyleSheet("background: white;");
     ui->tmo_net->setStyleSheet("background: white;");
@@ -2000,9 +2051,8 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_states->setCurrentWidget(ui->VPD_page);
         break;
     case 4:
-        // TODO: CHANGE
-        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
-            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        if(ui->channel_editor_states->currentWidget() != ui->AM25_page)
+            ui->channel_editor_states->setCurrentWidget(ui->AM25_page);
         break;
     case 5:
         if(ui->channel_editor_states->currentWidget() != ui->CHM25_page)
@@ -2028,8 +2078,6 @@ void MainWindow::update_channel_editor_page(){
 
     // change buttons at type changing
     if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
-        clear_chm25_fields();
-        // clear_chm50_fields();
         ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
         if(channel_editor_state_popup->isVisible()){
             ui->channel_editor_left->setText("Выбрать");
@@ -2046,6 +2094,64 @@ void MainWindow::update_channel_editor_page(){
     // none
     if(ui->channel_editor_state->property("chosen") == 0){
         // was upper
+        return;
+    }
+
+    // am25
+    if(ui->channel_editor_state->property("chosen") == 4){
+        clear_am25_fields();
+        switch (curr_editor_field["am25"]) {
+        case 0:
+            // was upper
+            ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
+            break;
+        case 1:
+            ui->am25_prd->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 2:
+            ui->am25_dualfreq->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 3:
+            ui->am25_freq_full->setStyleSheet("#am25_freq_full {border: 1px solid black; background: white;}");
+            ui->label_57->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 4:
+            ui->am25_prm_freq_full->setStyleSheet("#am25_prm_freq_full {border: 1px solid black; background: white;}");
+            ui->label_60->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 5:
+            ui->am25_prd_freq_full->setStyleSheet("#am25_prd_freq_full {border: 1px solid black; background: white;}");
+            ui->label_54->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 6:
+            ui->am25_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        default:
+            qCritical("am25: update_channel_editor_page: no way");
+        }
+
+        if(ui->dualfreq->isChecked()){
+            ui->widget_21->setVisible(true);
+            ui->widget_19->setVisible(true);
+            ui->widget_20->setVisible(false);
+        }
+        else{
+            ui->widget_21->setVisible(false);
+            ui->widget_19->setVisible(false);
+            ui->widget_20->setVisible(true);
+        }
         return;
     }
 
@@ -2531,6 +2637,20 @@ void MainWindow::on_up_arrow_clicked()
             return;
         }
 
+        //am25
+        if(ui->channel_editor_state->property("chosen") == 4){
+            uint sz = editor_fields["am25"].size();
+            curr_editor_field["am25"] = (curr_editor_field["am25"] - 1 + sz) % sz;
+            if(ui->dualfreq->isChecked()){
+                if(curr_editor_field["am25"] == 3) curr_editor_field["am25"]--;
+            }
+            else{
+                if(curr_editor_field["am25"] == 5) curr_editor_field["am25"] -= 2;
+            }
+            update_channel_editor_page();
+            return;
+        }
+
         // chm25
         if(ui->channel_editor_state->property("chosen") == 5){
             if(curr_editor_field["chm25"] == 6){
@@ -2719,8 +2839,22 @@ void MainWindow::on_down_arrow_clicked()
             return;
         }
 
+        //am25
+        if(ui->channel_editor_state->property("chosen") == 4){
+            uint sz = editor_fields["am25"].size();
+            curr_editor_field["am25"] = (curr_editor_field["am25"] + 1) % sz;
+            if(ui->dualfreq->isChecked()){
+                if(curr_editor_field["am25"] == 3) curr_editor_field["am25"]++;
+            }
+            else{
+                if(curr_editor_field["am25"] == 4) curr_editor_field["am25"] += 2;
+            }
+
+            update_channel_editor_page();
+            return;
+        }
+
         // chm25
-        // REFACTOR
         if(ui->channel_editor_state->property("chosen") == 5){
 
             if(curr_editor_field["chm25"] == 6){
