@@ -180,7 +180,7 @@ private slots:
 
     void on_direction_selection_list_itemSelectionChanged();
 
-    void on_dualfreq_clicked();
+    void on_chm25_dualfreq_clicked();
 
     void on_channel_list_itemSelectionChanged();
 

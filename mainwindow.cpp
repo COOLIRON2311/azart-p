@@ -217,7 +217,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(channel_editor_state_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_state_popup_itemSelectionChanged);
     channel_editor_state_popup->setCurrentItem(channel_editor_state_popup_item[0]);
 
-    ui->ctcss->setProperty("chosen", 0);
+    ui->chm25_ctcss->setProperty("chosen", 0);
     channel_editor_ctcss_popup = new QListWidget(this);
     channel_editor_ctcss_popup->resize(50, 200);
     channel_editor_ctcss_popup->move(ui->widget->mapToGlobal(ui->widget->rect().topRight()) + QPoint(45, 40)); // QPoint(-495, -5)
@@ -751,14 +751,14 @@ void MainWindow::set_default_channel_fields(){
     // chm25
     // chm50 {the same}
 
-    ui->is_forbidden_prd->setCheckState(Qt::Unchecked);
-    ui->dualfreq->setCheckState(Qt::Unchecked);
-    ui->channel_freq->setText("");
-    ui->channel_prm_freq->setText("");
-    ui->channel_prd_freq->setText("");
+    ui->chm25_prd->setCheckState(Qt::Unchecked);
+    ui->chm25_dualfreq->setCheckState(Qt::Unchecked);
+    ui->chm25_freq->setText("");
+    ui->chm25_prm_freq->setText("");
+    ui->chm25_prd_freq->setText("");
     channel_editor_ctcss_popup->setCurrentRow(0);
-    ui->ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
-    ui->channel_name->setText("");
+    ui->chm25_ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
+    ui->chm25_name->setText("");
 
     // obp
     // fm
@@ -795,15 +795,15 @@ void MainWindow::channel_editor_screen()
         break;
     case 5:
     case 6:
-        ui->is_forbidden_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
-        ui->dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
-        ui->channel_freq->setText(QString::number(curr->freq));
-        ui->channel_prm_freq->setText(QString::number(curr->prm_freq));
-        ui->channel_prd_freq->setText(QString::number(curr->prd_freq));
-        ui->ctcss->setProperty("chosen", curr->ctcss);
+        ui->chm25_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+        ui->chm25_dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
+        ui->chm25_freq->setText(QString::number(curr->freq));
+        ui->chm25_prm_freq->setText(QString::number(curr->prm_freq));
+        ui->chm25_prd_freq->setText(QString::number(curr->prd_freq));
+        ui->chm25_ctcss->setProperty("chosen", curr->ctcss);
         channel_editor_ctcss_popup->setCurrentRow(curr->ctcss);
-        ui->ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
-        ui->channel_name->setText(curr->name);
+        ui->chm25_ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
+        ui->chm25_name->setText(curr->name);
         break;
     case 7:
 
@@ -941,19 +941,19 @@ void MainWindow::on_channel_editor_right_clicked()
             // skip
             break;
         case 1:
-            ui->is_forbidden_prd->toggle();
+            ui->chm25_prd->toggle();
             break;
         case 2:
-            ui->dualfreq->toggle();
+            ui->chm25_dualfreq->toggle();
             break;
         case 3:
-            ui->channel_freq->backspace();
+            ui->chm25_freq->backspace();
             break;
         case 4:
-            ui->channel_prm_freq->backspace();
+            ui->chm25_prm_freq->backspace();
             break;
         case 5:
-            ui->channel_prd_freq->backspace();
+            ui->chm25_prd_freq->backspace();
             break;
         case 6:
             if(channel_editor_ctcss_popup->isVisible()){
@@ -964,7 +964,7 @@ void MainWindow::on_channel_editor_right_clicked()
             }
             break;
         case 7:
-            ui->channel_name->backspace();
+            ui->chm25_name->backspace();
             break;
         default:
             qCritical("crit: on_channel_editor_right_clicked");
@@ -1110,8 +1110,8 @@ void MainWindow::on_channel_editor_left_clicked()
         if(curr_editor_field["chm25"] == 6){
             if(channel_editor_ctcss_popup->isVisible()){
                 //Выбрать
-                ui->ctcss->setText(selected_items["channel_editor_ctcss_popup"]->text());
-                ui->ctcss->setProperty("chosen", channel_editor_ctcss_popup->currentRow());
+                ui->chm25_ctcss->setText(selected_items["channel_editor_ctcss_popup"]->text());
+                ui->chm25_ctcss->setProperty("chosen", channel_editor_ctcss_popup->currentRow());
                 channel_editor_ctcss_popup->setVisible(false);
                 update_channel_editor_page();
                 return;
@@ -1123,8 +1123,8 @@ void MainWindow::on_channel_editor_left_clicked()
         if(curr_editor_field["chm50"] == 6){
             if(channel_editor_ctcss_popup->isVisible()){
                 //Выбрать
-                ui->ctcss->setText(selected_items["channel_editor_ctcss_popup"]->text());
-                ui->ctcss->setProperty("chosen", channel_editor_ctcss_popup->currentRow());
+                ui->chm50_ctcss->setText(selected_items["channel_editor_ctcss_popup"]->text());
+                ui->chm50_ctcss->setProperty("chosen", channel_editor_ctcss_popup->currentRow());
                 channel_editor_ctcss_popup->setVisible(false);
                 update_channel_editor_page();
                 return;
@@ -1155,18 +1155,18 @@ void MainWindow::on_channel_editor_left_clicked()
     case 5:
         left = 1000000;
         right = 1000000000;
-        if(ui->dualfreq->isChecked()){
-            if(!in_range((uint32_t)ui->channel_prm_freq->text().toInt(), left, right) || !in_range((uint32_t)ui->channel_prd_freq->text().toInt(), left, right)){
+        if(ui->chm25_dualfreq->isChecked()){
+            if(!in_range((uint32_t)ui->chm25_prm_freq->text().toInt(), left, right) || !in_range((uint32_t)ui->chm25_prd_freq->text().toInt(), left, right)){
                 ui->modals->setCurrentWidget(ui->params_error);
                 return;
             }
         }
-        if(!in_range((uint32_t)ui->channel_freq->text().toInt(), left, right)){
+        if(!in_range((uint32_t)ui->chm25_freq->text().toInt(), left, right)){
             ui->modals->setCurrentWidget(ui->params_error);
             return;
         }
 
-        if(ui->channel_name->text().isEmpty()){
+        if(ui->chm25_name->text().isEmpty()){
             ui->modals->setCurrentWidget(ui->params_error);
             return;
         }
@@ -1199,14 +1199,14 @@ void MainWindow::on_channel_editor_left_clicked()
     case 4:
         break;
     case 5:
-        curr->PRD = ui->is_forbidden_prd->isChecked();
-        curr->dualfreq = ui->dualfreq->isChecked();
-        curr->freq = (uint32_t)ui->channel_freq->text().toInt();
-        curr->prm_freq = (uint32_t)ui->channel_prm_freq->text().toInt();
-        curr->prd_freq = (uint32_t)ui->channel_prd_freq->text().toInt();
+        curr->PRD = ui->chm25_prd->isChecked();
+        curr->dualfreq = ui->chm25_dualfreq->isChecked();
+        curr->freq = (uint32_t)ui->chm25_freq->text().toInt();
+        curr->prm_freq = (uint32_t)ui->chm25_prm_freq->text().toInt();
+        curr->prd_freq = (uint32_t)ui->chm25_prd_freq->text().toInt();
         // REFACTOR
-        curr->ctcss = ui->ctcss->property("chosen").toInt(); //channel_editor_ctcss_popup->currentRow();
-        curr->name = ui->channel_name->text();
+        curr->ctcss = ui->chm25_ctcss->property("chosen").toInt(); //channel_editor_ctcss_popup->currentRow();
+        curr->name = ui->chm25_name->text();
         break;
     case 6:
         break;
@@ -2069,13 +2069,13 @@ void MainWindow::on_number_i_clicked(int i)
         if(ui->channel_editor_state->property("chosen") == 5){
             switch (curr_editor_field["chm25"]) {
             case 3:
-                addnle(ui->channel_freq, i);
+                addnle(ui->chm25_freq, i);
                 break;
             case 4:
-                addnle(ui->channel_prm_freq, i);
+                addnle(ui->chm25_prm_freq, i);
                 break;
             case 5:
-                addnle(ui->channel_prd_freq, i);
+                addnle(ui->chm25_prd_freq, i);
                 break;
             case 7:
                 /* letters!
@@ -2167,13 +2167,13 @@ void go_up(QListWidget* qlw, uint size){
 
 void MainWindow::clear_chm25_fields(){
     ui->channel_editor_state->setStyleSheet("background: white;");
-    ui->is_forbidden_prd->setStyleSheet("background: white;");
-    ui->dualfreq->setStyleSheet("background: white;");
-    ui->channel_freq_full->setStyleSheet("background: white;");
-    ui->channel_prm_freq_full->setStyleSheet("background: white;");
-    ui->channel_prd_freq_full->setStyleSheet("background: white;");
-    ui->ctcss->setStyleSheet("background: white;");
-    ui->channel_name->setStyleSheet("background: white;");
+    ui->chm25_prd->setStyleSheet("background: white;");
+    ui->chm25_dualfreq->setStyleSheet("background: white;");
+    ui->chm25_freq_full->setStyleSheet("background: white;");
+    ui->chm25_prm_freq_full->setStyleSheet("background: white;");
+    ui->chm25_prd_freq_full->setStyleSheet("background: white;");
+    ui->chm25_ctcss->setStyleSheet("background: white;");
+    ui->chm25_name->setStyleSheet("background: white;");
     ui->label_32->setVisible(false);
     ui->label_42->setVisible(false);
     ui->label_39->setVisible(false);
@@ -2486,35 +2486,35 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->is_forbidden_prd->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm25_prd->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->dualfreq->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm25_dualfreq->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid black; background: white;}");
+            ui->chm25_freq_full->setStyleSheet("#chm25_freq_full {border: 1px solid black; background: white;}");
             ui->label_32->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid black; background: white;}");
+            ui->chm25_prm_freq_full->setStyleSheet("#chm25_prm_freq_full {border: 1px solid black; background: white;}");
             ui->label_42->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
-            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid black; background: white;}");
+            ui->chm25_prd_freq_full->setStyleSheet("#chm25_prd_freq_full {border: 1px solid black; background: white;}");
             ui->label_39->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 6:
-            ui->ctcss->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm25_ctcss->setStyleSheet("border: 1px solid black; background: white;");
             if(channel_editor_ctcss_popup->isVisible()){
                 ui->channel_editor_left->setText("Выбрать");
                 ui->channel_editor_right->setText("Назад");
@@ -2525,7 +2525,7 @@ void MainWindow::update_channel_editor_page(){
             }
             break;
         case 7:
-            ui->channel_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm25_name->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
@@ -2533,7 +2533,7 @@ void MainWindow::update_channel_editor_page(){
             qCritical("chm25: update_channel_editor_page: no way");
         }
 
-        if(ui->dualfreq->isChecked()){
+        if(ui->chm25_dualfreq->isChecked()){
             ui->widget_6->setVisible(true);
             ui->widget_9->setVisible(true);
             ui->widget_4->setVisible(false);
@@ -2984,7 +2984,7 @@ void MainWindow::on_up_arrow_clicked()
 
             uint sz = editor_fields["chm25"].size();
             curr_editor_field["chm25"] = (curr_editor_field["chm25"] - 1 + sz) % sz;
-            if(ui->dualfreq->isChecked()){
+            if(ui->chm25_dualfreq->isChecked()){
                 if(curr_editor_field["chm25"] == 3) curr_editor_field["chm25"]--;
             }
             else{
@@ -3212,7 +3212,7 @@ void MainWindow::on_down_arrow_clicked()
 
             uint sz = editor_fields["chm25"].size();
             curr_editor_field["chm25"] = (curr_editor_field["chm25"] + 1) % sz;
-            if(ui->dualfreq->isChecked()){
+            if(ui->chm25_dualfreq->isChecked()){
                 if(curr_editor_field["chm25"] == 3) curr_editor_field["chm25"]++;
             }
             else{
@@ -3330,9 +3330,9 @@ void MainWindow::on_right_tube_clicked()
     }
 }
 
-void MainWindow::on_dualfreq_clicked()
+void MainWindow::on_chm25_dualfreq_clicked()
 {
-    if(ui->dualfreq->isChecked()){
+    if(ui->chm25_dualfreq->isChecked()){
         ui->widget_6->setVisible(true);
         ui->widget_9->setVisible(true);
         ui->widget_4->setVisible(false);

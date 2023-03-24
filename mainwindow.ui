@@ -1349,7 +1349,7 @@ background: none;</string>
              <item>
               <widget class="QStackedWidget" name="channel_editor_states">
                <property name="currentIndex">
-                <number>2</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="empty_state_page">
                 <layout class="QFormLayout" name="formLayout_4">
@@ -1423,7 +1423,7 @@ background: none;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QCheckBox" name="is_forbidden_prd">
+                    <widget class="QCheckBox" name="chm25_prd">
                      <property name="styleSheet">
                       <string notr="true">background: white;</string>
                      </property>
@@ -1464,7 +1464,7 @@ background: none;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QCheckBox" name="dualfreq">
+                    <widget class="QCheckBox" name="chm25_dualfreq">
                      <property name="styleSheet">
                       <string notr="true">background: white;</string>
                      </property>
@@ -1512,7 +1512,7 @@ background: none;</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="channel_freq_full" native="true">
+                     <widget class="QWidget" name="chm25_freq_full" native="true">
                       <property name="maximumSize">
                        <size>
                         <width>139</width>
@@ -1539,7 +1539,7 @@ background: none;</string>
                         <number>1</number>
                        </property>
                        <item>
-                        <widget class="QLineEdit" name="channel_freq">
+                        <widget class="QLineEdit" name="chm25_freq">
                          <property name="font">
                           <font>
                            <pointsize>10</pointsize>
@@ -1611,7 +1611,7 @@ background: none;</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="channel_prm_freq_full" native="true">
+                     <widget class="QWidget" name="chm25_prm_freq_full" native="true">
                       <property name="maximumSize">
                        <size>
                         <width>139</width>
@@ -1638,7 +1638,7 @@ background: none;</string>
                         <number>1</number>
                        </property>
                        <item>
-                        <widget class="QLineEdit" name="channel_prm_freq">
+                        <widget class="QLineEdit" name="chm25_prm_freq">
                          <property name="font">
                           <font>
                            <pointsize>10</pointsize>
@@ -1713,7 +1713,7 @@ background: none;</string>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QWidget" name="channel_prd_freq_full" native="true">
+                     <widget class="QWidget" name="chm25_prd_freq_full" native="true">
                       <property name="maximumSize">
                        <size>
                         <width>139</width>
@@ -1740,7 +1740,7 @@ background: none;</string>
                         <number>1</number>
                        </property>
                        <item>
-                        <widget class="QLineEdit" name="channel_prd_freq">
+                        <widget class="QLineEdit" name="chm25_prd_freq">
                          <property name="font">
                           <font>
                            <pointsize>10</pointsize>
@@ -1805,7 +1805,7 @@ background: none;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="ctcss">
+                    <widget class="QLabel" name="chm25_ctcss">
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
@@ -1845,7 +1845,7 @@ background: none;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="channel_name">
+                    <widget class="QLineEdit" name="chm25_name">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                        <horstretch>0</horstretch>
