@@ -153,7 +153,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->direction_popup_menu->setEnabled(false);
     ui->direction_popup_menu->setVisible(false);
 
-    //                0       1      2            3      4       5        6        7      8
+    //                0       1      2      3      4       5        6        7      8
     channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
     //                0       1      2      3      4       5        6        7      8
     direction_types = {"none_d", "dmo_d", "tmo_d", "vpd_d", "am25_d", "chm25_d", "chm50_d", "obp_d", "fm_d"};
@@ -218,12 +218,10 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_editor_state_popup->setCurrentItem(channel_editor_state_popup_item[0]);
 
     ui->chm25_ctcss->setProperty("chosen", 0);
-    channel_editor_ctcss_popup = new QListWidget(this);
-    channel_editor_ctcss_popup->resize(50, 200);
-    channel_editor_ctcss_popup->move(ui->widget->mapToGlobal(ui->widget->rect().topRight()) + QPoint(45, 40)); // QPoint(-495, -5)
-    channel_editor_ctcss_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
-    channel_editor_ctcss_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
-    channel_editor_ctcss_popup->setVisible(false);
+
+    ui->ctcss_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
+    ui->ctcss_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
+
 
 {
     channel_editor_ctcss_popup_item[0] = new QListWidgetItem(QIcon(""), "Нет");
@@ -293,12 +291,12 @@ MainWindow::MainWindow(QWidget *parent) :
     channel_editor_ctcss_popup_item[64] = new QListWidgetItem(QIcon(""), "254.1");
 }
     for (int i = 0; i < 65; i++) {
-        channel_editor_ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
+        ui->ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
     }
 
     set_styles();
 
-    connect(channel_editor_ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
+    connect(ui->ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
 
     ui->scan->setProperty("chosen", 0);
     direction_editor_scan_popup = new QListWidget(this);
@@ -539,7 +537,7 @@ void MainWindow::_on_channel_editor_state_popup_itemSelectionChanged()
 
 void MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged()
 {
-    selected_items["channel_editor_ctcss_popup"] = channel_editor_ctcss_popup->currentItem();
+    selected_items["channel_editor_ctcss_popup"] = ui->ctcss_popup->currentItem();
 }
 void MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged()
 {
@@ -756,8 +754,8 @@ void MainWindow::set_default_channel_fields(){
     ui->chm25_freq->setText("");
     ui->chm25_prm_freq->setText("");
     ui->chm25_prd_freq->setText("");
-    channel_editor_ctcss_popup->setCurrentRow(0);
-    ui->chm25_ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
+    ui->ctcss_popup->setCurrentRow(0);
+    ui->chm25_ctcss->setText(ui->ctcss_popup->currentItem()->text());
     ui->chm25_name->setText("");
 
     // obp
@@ -801,8 +799,8 @@ void MainWindow::channel_editor_screen()
         ui->chm25_prm_freq->setText(QString::number(curr->prm_freq));
         ui->chm25_prd_freq->setText(QString::number(curr->prd_freq));
         ui->chm25_ctcss->setProperty("chosen", curr->ctcss);
-        channel_editor_ctcss_popup->setCurrentRow(curr->ctcss);
-        ui->chm25_ctcss->setText(channel_editor_ctcss_popup->currentItem()->text());
+        ui->ctcss_popup->setCurrentRow(curr->ctcss);
+        ui->chm25_ctcss->setText(ui->ctcss_popup->currentItem()->text());
         ui->chm25_name->setText(curr->name);
         break;
     case 7:
@@ -956,11 +954,11 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->chm25_prd_freq->backspace();
             break;
         case 6:
-            if(channel_editor_ctcss_popup->isVisible()){
-                channel_editor_ctcss_popup->setVisible(false);
+            if(ui->modals->currentWidget() == ui->ctcss){
+                ui->modals->setCurrentWidget(ui->no_modals);
             }
             else{
-                channel_editor_ctcss_popup->setVisible(true);
+                ui->modals->setCurrentWidget(ui->ctcss);
             }
             break;
         case 7:
@@ -995,11 +993,11 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->chm50_prd_freq->backspace();
             break;
         case 6:
-            if(channel_editor_ctcss_popup->isVisible()){
-                channel_editor_ctcss_popup->setVisible(false);
+            if(ui->modals->currentWidget() == ui->ctcss){
+                ui->modals->setCurrentWidget(ui->no_modals);
             }
             else{
-                channel_editor_ctcss_popup->setVisible(true);
+                ui->modals->setCurrentWidget(ui->ctcss);
             }
             break;
         case 7:
@@ -1108,11 +1106,11 @@ void MainWindow::on_channel_editor_left_clicked()
 
     if(ui->channel_editor_state->property("chosen") == 5){
         if(curr_editor_field["chm25"] == 6){
-            if(channel_editor_ctcss_popup->isVisible()){
+            if(ui->modals->currentWidget() == ui->ctcss){
                 //Выбрать
                 ui->chm25_ctcss->setText(selected_items["channel_editor_ctcss_popup"]->text());
-                ui->chm25_ctcss->setProperty("chosen", channel_editor_ctcss_popup->currentRow());
-                channel_editor_ctcss_popup->setVisible(false);
+                ui->chm25_ctcss->setProperty("chosen", ui->ctcss_popup->currentRow());
+                ui->modals->setCurrentWidget(ui->no_modals);
                 update_channel_editor_page();
                 return;
             }
@@ -1121,11 +1119,11 @@ void MainWindow::on_channel_editor_left_clicked()
 
     if(ui->channel_editor_state->property("chosen") == 6){
         if(curr_editor_field["chm50"] == 6){
-            if(channel_editor_ctcss_popup->isVisible()){
+            if(ui->modals->currentWidget() == ui->ctcss){
                 //Выбрать
                 ui->chm50_ctcss->setText(selected_items["channel_editor_ctcss_popup"]->text());
-                ui->chm50_ctcss->setProperty("chosen", channel_editor_ctcss_popup->currentRow());
-                channel_editor_ctcss_popup->setVisible(false);
+                ui->chm50_ctcss->setProperty("chosen", ui->ctcss_popup->currentRow());
+                ui->modals->setCurrentWidget(ui->no_modals);
                 update_channel_editor_page();
                 return;
             }
@@ -1204,8 +1202,7 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->freq = (uint32_t)ui->chm25_freq->text().toInt();
         curr->prm_freq = (uint32_t)ui->chm25_prm_freq->text().toInt();
         curr->prd_freq = (uint32_t)ui->chm25_prd_freq->text().toInt();
-        // REFACTOR
-        curr->ctcss = ui->chm25_ctcss->property("chosen").toInt(); //channel_editor_ctcss_popup->currentRow();
+        curr->ctcss = ui->chm25_ctcss->property("chosen").toInt();
         curr->name = ui->chm25_name->text();
         break;
     case 6:
@@ -2515,7 +2512,7 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 6:
             ui->chm25_ctcss->setStyleSheet("border: 1px solid black; background: white;");
-            if(channel_editor_ctcss_popup->isVisible()){
+            if(ui->modals->currentWidget() == ui->ctcss){
                 ui->channel_editor_left->setText("Выбрать");
                 ui->channel_editor_right->setText("Назад");
             }
@@ -2583,7 +2580,7 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 6:
             ui->chm50_ctcss->setStyleSheet("border: 1px solid black; background: white;");
-            if(channel_editor_ctcss_popup->isVisible()){
+            if(ui->modals->currentWidget() == ui->ctcss){
                 ui->channel_editor_left->setText("Выбрать");
                 ui->channel_editor_right->setText("Назад");
             }
@@ -2976,8 +2973,8 @@ void MainWindow::on_up_arrow_clicked()
         // chm25
         if(ui->channel_editor_state->property("chosen") == 5){
             if(curr_editor_field["chm25"] == 6){
-                if(channel_editor_ctcss_popup->isVisible()){
-                    go_up(channel_editor_ctcss_popup, 65);
+                if(ui->modals->currentWidget() == ui->ctcss){
+                    go_up(ui->ctcss_popup, 65);
                     return;
                 }
             }
@@ -2997,8 +2994,8 @@ void MainWindow::on_up_arrow_clicked()
         // chm50
         if(ui->channel_editor_state->property("chosen") == 6){
             if(curr_editor_field["chm50"] == 6){
-                if(channel_editor_ctcss_popup->isVisible()){
-                    go_up(channel_editor_ctcss_popup, 65);
+                if(ui->modals->currentWidget() == ui->ctcss){
+                    go_up(ui->ctcss_popup, 65);
                     return;
                 }
             }
@@ -3204,8 +3201,8 @@ void MainWindow::on_down_arrow_clicked()
         if(ui->channel_editor_state->property("chosen") == 5){
 
             if(curr_editor_field["chm25"] == 6){
-                if(channel_editor_ctcss_popup->isVisible()){
-                    go_down(channel_editor_ctcss_popup, 65);
+                if(ui->modals->currentWidget() == ui->ctcss){
+                    go_down(ui->ctcss_popup, 65);
                     return;
                 }
             }
@@ -3227,8 +3224,8 @@ void MainWindow::on_down_arrow_clicked()
         if(ui->channel_editor_state->property("chosen") == 6){
 
             if(curr_editor_field["chm50"] == 6){
-                if(channel_editor_ctcss_popup->isVisible()){
-                    go_down(channel_editor_ctcss_popup, 65);
+                if(ui->modals->currentWidget() == ui->ctcss){
+                    go_down(ui->ctcss_popup, 65);
                     return;
                 }
             }

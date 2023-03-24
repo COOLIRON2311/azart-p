@@ -1349,7 +1349,7 @@ background: none;</string>
              <item>
               <widget class="QStackedWidget" name="channel_editor_states">
                <property name="currentIndex">
-                <number>1</number>
+                <number>3</number>
                </property>
                <widget class="QWidget" name="empty_state_page">
                 <layout class="QFormLayout" name="formLayout_4">
@@ -7354,6 +7354,7 @@ text-align:right;</string>
       <height>250</height>
      </rect>
     </property>
+    <widget class="QWidget" name="no_modals"/>
     <widget class="QWidget" name="params_error">
      <widget class="QWidget" name="widget_18" native="true">
       <property name="geometry">
@@ -7409,7 +7410,6 @@ text-align:right;</string>
       </layout>
      </widget>
     </widget>
-    <widget class="QWidget" name="no_modals"/>
     <widget class="QWidget" name="pr_per">
      <widget class="QWidget" name="dej" native="true">
       <property name="geometry">
@@ -7552,9 +7552,19 @@ text-align:right;</string>
       </layout>
      </widget>
     </widget>
+    <widget class="QWidget" name="ctcss">
+     <widget class="QListWidget" name="ctcss_popup">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>30</y>
+        <width>51</width>
+        <height>201</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
-   <zorder>modals</zorder>
-   <zorder>horizontalWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
