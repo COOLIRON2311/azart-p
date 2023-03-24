@@ -7359,7 +7359,7 @@ text-align:right;</string>
      <widget class="QWidget" name="widget_18" native="true">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>28</x>
         <y>90</y>
         <width>141</width>
         <height>61</height>
@@ -7372,7 +7372,10 @@ text-align:right;</string>
        </sizepolicy>
       </property>
       <property name="styleSheet">
-       <string notr="true">background: white</string>
+       <string notr="true">#widget_18 {
+	background: white;
+	border: 1px solid;
+}</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_40">
        <property name="spacing">
@@ -7562,6 +7565,9 @@ text-align:right;</string>
         <height>201</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">border: 1px solid;</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="channel_type">
@@ -7577,6 +7583,59 @@ text-align:right;</string>
       <property name="styleSheet">
        <string notr="true">border: 1px solid ;</string>
       </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="password">
+     <widget class="QWidget" name="widget_29" native="true">
+      <property name="geometry">
+       <rect>
+        <x>28</x>
+        <y>90</y>
+        <width>141</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#widget_29{
+	background: white;
+	border: 1px solid;
+}</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_45">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Пароль:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_16">
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid gray;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>

@@ -330,6 +330,7 @@ MainWindow::MainWindow(QWidget *parent) :
     effect->setYOffset(2);
     effect->setColor(Qt::black);
     ui->widget_18->setGraphicsEffect(effect);
+    ui->widget_29->setGraphicsEffect(effect);
 }
 
 void MainWindow::setup(){
@@ -549,10 +550,18 @@ void MainWindow::on_channel_choice_list_itemSelectionChanged()
     selected_items["channel_choice_list"] = ui->channel_choice_list->currentItem();
 }
 
+bool check_password(const QString &pw){
+    return true;
+}
+
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     if(item == service_menu_list_item[7]){
-        data_editor_screen();
+        ui->label_16->setText("");
+        ui->password->setProperty("password", "");
+        ui->modals->setCurrentWidget(ui->password);
+        ui->service_menu_left->setText("Далее");
+        ui->service_menu_right->setText("Стереть");
     }
 }
 
@@ -608,11 +617,25 @@ void MainWindow::on_data_editor_list_itemDoubleClicked(QListWidgetItem *item)
 
 void MainWindow::on_service_menu_right_clicked()
 {
+    if(ui->modals->currentWidget() == ui->password){
+        ui->label_16->setText(ui->label_16->text().remove(0, 1));
+        auto temp = ui->password->property("password").toString();
+        temp.resize(temp.length() - 1);
+        ui->password->setProperty("password", temp);
+        return;
+    }
     menu_screen();
 }
 
 void MainWindow::on_service_menu_left_clicked()
 {
+    if(ui->modals->currentWidget() == ui->password){
+        if(check_password(ui->password->property("password").toString())){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            data_editor_screen();
+            return;
+        }
+    }
     on_service_menu_list_itemDoubleClicked(selected_items["service_menu_list"]);
 }
 
@@ -1998,6 +2021,13 @@ void MainWindow::on_number_i_clicked(int i)
 {
     if(ui->modals->currentWidget() == ui->params_error){
         ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
+    if(ui->modals->currentWidget() == ui->password){
+
+        ui->password->setProperty("password", ui->password->property("password").toString() + QString::number(i));
+        ui->label_16->setText(ui->label_16->text() + "*");
         return;
     }
 
