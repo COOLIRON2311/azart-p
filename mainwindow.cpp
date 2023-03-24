@@ -160,9 +160,12 @@ MainWindow::MainWindow(QWidget *parent) :
     //                         0
     editor_fields["none"] = { "type" };
     curr_editor_field["none"] = 0;
-    //                         0
-    editor_fields["none_d"] = { "type" };
-    curr_editor_field["none_d"] = 0;
+    //                              0       1      2      3      4       5       6       7
+    editor_fields["tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
+    curr_editor_field["tmo"] = 0;
+    //                        0       1      2      3       4       5
+    editor_fields["vpd"] = { "type", "mcc", "mnc", "gssi", "freq", "name" };
+    curr_editor_field["vpd"] = 0;
     //                          0       1      2        3       4           5          6
     editor_fields["am25"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "name" };
     curr_editor_field["am25"] = 0;
@@ -172,12 +175,16 @@ MainWindow::MainWindow(QWidget *parent) :
     //                          0       1      2        3       4           5           6        7
     editor_fields["chm50"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
     curr_editor_field["chm50"] = 0;
-    //                              0       1      2      3      4       5       6       7
-    editor_fields["tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
-    curr_editor_field["tmo"] = 0;
-    //                        0       1      2      3       4       5
-    editor_fields["vpd"] = { "type", "mcc", "mnc", "gssi", "freq", "name" };
-    curr_editor_field["vpd"] = 0;
+    //                          0     1      2       3       4
+    editor_fields["obp"] = { "type", "prd", "band", "freq", "name" };
+    curr_editor_field["obp"] = 0;
+    //                          0     1      2       3       4
+    editor_fields["fm"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "name" };
+    curr_editor_field["fm"] = 0;
+
+    //                         0
+    editor_fields["none_d"] = { "type" };
+    curr_editor_field["none_d"] = 0;
     //                            0          1      2       3       4             5       6
     editor_fields["chm25_d"] = { "channel", "prd", "tone", "scan", "economizer", "name", "background" };
     curr_editor_field["chm25_d"] = 0;
@@ -1006,6 +1013,65 @@ void MainWindow::on_channel_editor_right_clicked()
         return;
     }
 
+    if(ui->channel_editor_state->property("chosen") == 7){
+        switch (curr_editor_field["obp"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->obp_prd->toggle();
+            break;
+        case 2:
+            ui->obp_band->setProperty("band", ui->obp_band->property("band") == 1 ? 0 : 1); // 1 - верхняя, 0 - нижняя
+            ui->obp_band->setText(ui->obp_band->property("band") == 1 ? "Верхняя" : "Нижняя");
+            break;
+        case 3:
+            ui->obp_freq->backspace();
+            break;
+        case 4:
+            ui->obp_name->backspace();
+            break;
+        case 5:
+            ui->obp_name->backspace();
+            break;
+        default:
+            qCritical("crit: on_channel_editor_right_clicked");
+            return;
+        }
+        update_channel_editor_page();
+        return;
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 8){
+        switch (curr_editor_field["fm"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->fm_prd->toggle();
+            break;
+        case 2:
+            ui->fm_dualfreq->toggle();
+            break;
+        case 3:
+            ui->fm_freq->backspace();
+            break;
+        case 4:
+            ui->fm_prm_freq->backspace();
+            break;
+        case 5:
+            ui->fm_prd_freq->backspace();
+            break;
+        case 6:
+            ui->fm_name->backspace();
+            break;
+        default:
+            qCritical("crit: on_channel_editor_right_clicked");
+            return;
+        }
+        update_channel_editor_page();
+        return;
+    }
 }
 
 bool in_range(uint32_t num, uint32_t left, uint32_t right){
@@ -2066,6 +2132,32 @@ void MainWindow::on_number_i_clicked(int i)
             }
             return;
         }
+
+        // obp
+        if(ui->channel_editor_state->property("chosen") == 7){
+            switch (curr_editor_field["obp"]) {
+            case 3:
+                addnle(ui->obp_freq, i);
+                break;
+            }
+            return;
+        }
+
+        // fm
+        if(ui->channel_editor_state->property("chosen") == 8){
+            switch (curr_editor_field["fm"]) {
+            case 3:
+                addnle(ui->fm_freq, i);
+                break;
+            case 4:
+                addnle(ui->fm_prm_freq, i);
+                break;
+            case 5:
+                addnle(ui->fm_prd_freq, i);
+                break;
+            }
+            return;
+        }
     }
 }
 
@@ -2147,9 +2239,29 @@ void MainWindow::clear_vpd_fields(){
     ui->label_69->setVisible(false);
 }
 
-void MainWindow::update_channel_editor_page(){
-    //it will be hard...
+void MainWindow::clear_obp_fields(){
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->obp_prd->setStyleSheet("background: white;");
+    ui->obp_band->setStyleSheet("background: white;");
+    ui->obp_freq_full->setStyleSheet("background: white;");
+    ui->obp_name->setStyleSheet("background: white;");
+    ui->label_72->setVisible(false);
+}
 
+void MainWindow::clear_fm_fields(){
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->fm_prd->setStyleSheet("background: white;");
+    ui->fm_dualfreq->setStyleSheet("background: white;");
+    ui->fm_freq_full->setStyleSheet("background: white;");
+    ui->fm_prm_freq_full->setStyleSheet("background: white;");
+    ui->fm_prd_freq_full->setStyleSheet("background: white;");
+    ui->fm_name->setStyleSheet("background: white;");
+    ui->label_77->setVisible(false);
+    ui->label_75->setVisible(false);
+    ui->label_70->setVisible(false);
+}
+
+void MainWindow::update_channel_editor_page(){
     // swap page if necessary
     switch (ui->channel_editor_state->property("chosen").toInt()) {
     case 0:
@@ -2166,7 +2278,6 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_states->setCurrentWidget(ui->TETRA_TMO_page);
         break;
     case 3:
-        // TODO: CHANGE
         if(ui->channel_editor_states->currentWidget() != ui->VPD_page)
             ui->channel_editor_states->setCurrentWidget(ui->VPD_page);
         break;
@@ -2179,18 +2290,17 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
         break;
     case 6:
+        // TODO: CHANGE
         if(ui->channel_editor_states->currentWidget() != ui->CHM25_page)
             ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
         break;
     case 7:
-        // TODO: CHANGE
-        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
-            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        if(ui->channel_editor_states->currentWidget() != ui->OBP_page)
+            ui->channel_editor_states->setCurrentWidget(ui->OBP_page);
         break;
     case 8:
-        // TODO: CHANGE
-        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
-            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        if(ui->channel_editor_states->currentWidget() != ui->FM_page)
+            ui->channel_editor_states->setCurrentWidget(ui->FM_page);
         break;
     default:
         qCritical("crit: update_channel_editor_page: channel_editor_state");
@@ -2198,7 +2308,6 @@ void MainWindow::update_channel_editor_page(){
 
     // change buttons at type changing
     if(curr_editor_field[channel_types[ui->channel_editor_state->property("chosen").toInt()]] == 0){
-        ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
         if(channel_editor_state_popup->isVisible()){
             ui->channel_editor_left->setText("Выбрать");
             ui->channel_editor_right->setText("Назад");
@@ -2213,7 +2322,103 @@ void MainWindow::update_channel_editor_page(){
     // change buttons for chosen type
     // none
     if(ui->channel_editor_state->property("chosen") == 0){
-        // was upper
+        ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
+        return;
+    }
+
+    // tetra tmo
+    if(ui->channel_editor_state->property("chosen") == 2){
+        clear_tetra_tmo_fields();
+        switch (curr_editor_field["tmo"]) {
+        case 0:
+            // was upper
+            ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
+            break;
+        case 1:
+            ui->tmo_net->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            break;
+        case 2:
+            ui->tmo_mcc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 3:
+            ui->tmo_mnc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 4:
+            ui->tmo_gssi->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 5:
+            ui->tmo_vesh->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 6:
+            ui->tmo_mask->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            break;
+        case 7:
+            ui->tmo_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        default:
+            qCritical("tmo: update_channel_editor_page: no way");
+        }
+
+        return;
+    }
+
+    // vpd
+    if(ui->channel_editor_state->property("chosen") == 3){
+        clear_vpd_fields();
+        switch (curr_editor_field["vpd"]) {
+        case 0:
+            ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
+            break;
+        case 1:
+            ui->vpd_mcc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 2:
+            ui->vpd_mnc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 3:
+            ui->vpd_gssi->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 4:
+            ui->vpd_freq_full->setStyleSheet("#vpd_freq_full{ border: 1px solid black; background: white;}");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 5:
+            ui->vpd_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        default:
+            qCritical("vpd: update_channel_editor_page: no way");
+        }
+
+        if(curr_editor_field["vpd"] == 4){
+            ui->label_69->setVisible(true);
+        }
+        else{
+            ui->label_69->setVisible(false);
+        }
+
         return;
     }
 
@@ -2222,7 +2427,6 @@ void MainWindow::update_channel_editor_page(){
         clear_am25_fields();
         switch (curr_editor_field["am25"]) {
         case 0:
-            // was upper
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
@@ -2280,7 +2484,6 @@ void MainWindow::update_channel_editor_page(){
         clear_chm25_fields();
         switch (curr_editor_field["chm25"]) {
         case 0:
-            // was upper
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
@@ -2355,7 +2558,6 @@ void MainWindow::update_channel_editor_page(){
         clear_chm50_fields();
         switch (curr_editor_field["chm50"]) {
         case 0:
-            // was upper
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
@@ -2425,100 +2627,95 @@ void MainWindow::update_channel_editor_page(){
         return;
     }
 
-    // tetra tmo
-    if(ui->channel_editor_state->property("chosen") == 2){
-        clear_tetra_tmo_fields();
-        switch (curr_editor_field["tmo"]) {
+    // obp
+    if(ui->channel_editor_state->property("chosen") == 7){
+        clear_obp_fields();
+        switch (curr_editor_field["obp"]) {
         case 0:
-            // was upper
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->tmo_net->setStyleSheet("border: 1px solid black; background: white;");
+            ui->obp_prd->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            ui->channel_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->tmo_mcc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->obp_band->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
+            ui->channel_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->tmo_mnc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->obp_freq_full->setStyleSheet("#obp_freq_full {border: 1px solid black; background: white;}");
+            ui->label_32->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->tmo_gssi->setStyleSheet("border: 1px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
-            break;
-        case 5:
-            ui->tmo_vesh->setStyleSheet("border: 1px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Изменить");
-            break;
-        case 6:
-            ui->tmo_mask->setStyleSheet("border: 1px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Изменить");
-            break;
-        case 7:
-            ui->tmo_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->obp_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->label_42->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         default:
-            qCritical("tmo: update_channel_editor_page: no way");
+            qCritical("obp: update_channel_editor_page: no way");
         }
-
         return;
     }
 
-    // vpd
-    if(ui->channel_editor_state->property("chosen") == 3){
-        clear_vpd_fields();
-        switch (curr_editor_field["vpd"]) {
+    // fm
+    if(ui->channel_editor_state->property("chosen") == 8){
+        clear_fm_fields();
+        switch (curr_editor_field["fm"]) {
         case 0:
-            // was upper
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->vpd_mcc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->fm_prd->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
+            ui->channel_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->vpd_mnc->setStyleSheet("border: 1px solid black; background: white;");
+            ui->fm_dualfreq->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
+            ui->channel_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->vpd_gssi->setStyleSheet("border: 1px solid black; background: white;");
+            ui->fm_freq_full->setStyleSheet("#fm_freq_full {border: 1px solid black; background: white;}");
+            ui->label_77->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->vpd_freq_full->setStyleSheet("#vpd_freq_full{ border: 1px solid black; background: white;}");
+            ui->fm_prm_freq_full->setStyleSheet("#fm_prm_freq_full {border: 1px solid black; background: white;}");
+            ui->label_75->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
-            ui->vpd_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->fm_prd_freq_full->setStyleSheet("#fm_prd_freq_full {border: 1px solid black; background: white;}");
+            ui->label_70->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            break;
+        case 6:
+            ui->fm_name->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         default:
-            qCritical("vpd: update_channel_editor_page: no way");
+            qCritical("fm: update_channel_editor_page: no way");
         }
 
-        if(curr_editor_field["vpd"] == 4){
-            ui->label_69->setVisible(true);
+        if(ui->fm_dualfreq->isChecked()){
+            ui->widget_23->setVisible(true);
+            ui->widget_22->setVisible(true);
+            ui->widget_25->setVisible(false);
         }
         else{
-            ui->label_69->setVisible(false);
+            ui->widget_23->setVisible(false);
+            ui->widget_22->setVisible(false);
+            ui->widget_25->setVisible(true);
         }
-
         return;
     }
 }
@@ -2757,7 +2954,25 @@ void MainWindow::on_up_arrow_clicked()
             return;
         }
 
-        //am25
+        // tetra tmo
+        if(ui->channel_editor_state->property("chosen") == 2){
+            uint sz = editor_fields["tmo"].size();
+            curr_editor_field["tmo"] = (curr_editor_field["tmo"] - 1 + sz) % sz;
+
+            update_channel_editor_page();
+            return;
+        }
+
+        // vpd
+        if(ui->channel_editor_state->property("chosen") == 3){
+            uint sz = editor_fields["vpd"].size();
+            curr_editor_field["vpd"] = (curr_editor_field["vpd"] - 1 + sz) % sz;
+
+            update_channel_editor_page();
+            return;
+        }
+
+        // am25
         if(ui->channel_editor_state->property("chosen") == 4){
             uint sz = editor_fields["am25"].size();
             curr_editor_field["am25"] = (curr_editor_field["am25"] - 1 + sz) % sz;
@@ -2813,23 +3028,28 @@ void MainWindow::on_up_arrow_clicked()
             return;
         }
 
-        // tetra tmo
-        if(ui->channel_editor_state->property("chosen") == 2){
-            uint sz = editor_fields["tmo"].size();
-            curr_editor_field["tmo"] = (curr_editor_field["tmo"] - 1 + sz) % sz;
-
+        // obp
+        if(ui->channel_editor_state->property("chosen") == 7){
+            uint sz = editor_fields["obp"].size();
+            curr_editor_field["obp"] = (curr_editor_field["obp"] - 1 + sz) % sz;
             update_channel_editor_page();
             return;
         }
 
-        // vpd
-        if(ui->channel_editor_state->property("chosen") == 3){
-            uint sz = editor_fields["vpd"].size();
-            curr_editor_field["vpd"] = (curr_editor_field["vpd"] - 1 + sz) % sz;
-
+        // fm
+        if(ui->channel_editor_state->property("chosen") == 8){
+            uint sz = editor_fields["fm"].size();
+            curr_editor_field["fm"] = (curr_editor_field["fm"] - 1 + sz) % sz;
+            if(ui->fm_dualfreq->isChecked()){
+                if(curr_editor_field["fm"] == 3) curr_editor_field["fm"]--;
+            }
+            else{
+                if(curr_editor_field["fm"] == 5) curr_editor_field["fm"] -= 2;
+            }
             update_channel_editor_page();
             return;
         }
+
     }
     if(curr == ui->direction_editor_page){
         if(ui->direction_editor_stackedWidget->currentWidget() == ui->empty_direction_editor_page){
@@ -2959,7 +3179,26 @@ void MainWindow::on_down_arrow_clicked()
             return;
         }
 
-        //am25
+        // tetra tmo
+        if(ui->channel_editor_state->property("chosen") == 2){
+            uint sz = editor_fields["tmo"].size();
+            curr_editor_field["tmo"] = (curr_editor_field["tmo"] + 1) % sz;
+
+            update_channel_editor_page();
+            return;
+        }
+
+        // vpd
+        if(ui->channel_editor_state->property("chosen") == 3){
+            uint sz = editor_fields["vpd"].size();
+            curr_editor_field["vpd"] = (curr_editor_field["vpd"] + 1) % sz;
+
+            update_channel_editor_page();
+            return;
+        }
+
+
+        // am25
         if(ui->channel_editor_state->property("chosen") == 4){
             uint sz = editor_fields["am25"].size();
             curr_editor_field["am25"] = (curr_editor_field["am25"] + 1) % sz;
@@ -3020,23 +3259,31 @@ void MainWindow::on_down_arrow_clicked()
             return;
         }
 
-        // tetra tmo
-        if(ui->channel_editor_state->property("chosen") == 2){
-            uint sz = editor_fields["tmo"].size();
-            curr_editor_field["tmo"] = (curr_editor_field["tmo"] + 1) % sz;
+
+        // obp
+        if(ui->channel_editor_state->property("chosen") == 7){
+            uint sz = editor_fields["obp"].size();
+            curr_editor_field["obp"] = (curr_editor_field["obp"] + 1) % sz;
 
             update_channel_editor_page();
             return;
         }
 
-        // vpd
-        if(ui->channel_editor_state->property("chosen") == 3){
-            uint sz = editor_fields["vpd"].size();
-            curr_editor_field["vpd"] = (curr_editor_field["vpd"] + 1) % sz;
+        // fm
+        if(ui->channel_editor_state->property("chosen") == 8){
+            uint sz = editor_fields["fm"].size();
+            curr_editor_field["fm"] = (curr_editor_field["fm"] + 1) % sz;
+            if(ui->fm_dualfreq->isChecked()){
+                if(curr_editor_field["fm"] == 3) curr_editor_field["fm"]++;
+            }
+            else{
+                if(curr_editor_field["fm"] == 4) curr_editor_field["fm"] += 2;
+            }
 
             update_channel_editor_page();
             return;
         }
+
     }
     if(curr == ui->direction_editor_page){
         if(ui->direction_editor_stackedWidget->currentWidget() == ui->empty_direction_editor_page){

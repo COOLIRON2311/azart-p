@@ -208,6 +208,8 @@ private:
     void clear_am25_fields();
     void clear_tetra_tmo_fields();
     void clear_vpd_fields();
+    void clear_obp_fields();
+    void clear_fm_fields();
     void update_channel_editor_page();
     void update_direction_editor_page();
     void swap_direction_page();
