@@ -349,7 +349,7 @@ void MainWindow::show_radiodata()
 
 void MainWindow::show_normative()
 {
-    qDebug() << "norm";
+    normwin.show();
 }
 
 MainWindow::~MainWindow()
@@ -1453,6 +1453,7 @@ void MainWindow::_on_direction_background_numChanged()
     ui->label_37->setStyleSheet("border-image: url(:/resources/back (" + QString::number(ui->background_dir_picture->property("num").toInt()) + ").png);");
 }
 
+// TODO: this scheisse
 // direction saving
 void MainWindow::on_direction_editor_left_clicked()
 {

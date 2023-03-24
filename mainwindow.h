@@ -12,6 +12,7 @@
 #include <qbuffer.h>
 #include "modalwindowrd.h"
 #include "modalwindow3d.h"
+#include "modalwindownorm.h"
 
 namespace Ui {
     class MainWindow;
@@ -26,6 +27,7 @@ public:
     ~MainWindow();
     ModalWindowRD rdwin;
     ModalWindow3D _3dwin;
+    ModalWindowNorm normwin;
 
 public slots:
     void change_global_time();
