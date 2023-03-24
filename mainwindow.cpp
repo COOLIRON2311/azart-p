@@ -154,7 +154,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->direction_popup_menu->setVisible(false);
 
     //                0       1      2            3      4       5        6        7      8
-    channel_types = {"none", "dmo", "tetra_tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
+    channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
     //                0       1      2      3      4       5        6        7      8
     direction_types = {"none_d", "dmo_d", "tmo_d", "vpd_d", "am25_d", "chm25_d", "chm50_d", "obp_d", "fm_d"};
     //                         0
@@ -173,8 +173,8 @@ MainWindow::MainWindow(QWidget *parent) :
     editor_fields["chm50"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "ctcss", "name" };
     curr_editor_field["chm50"] = 0;
     //                              0       1      2      3      4       5       6       7
-    editor_fields["tetra_tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
-    curr_editor_field["tetra_tmo"] = 0;
+    editor_fields["tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
+    curr_editor_field["tmo"] = 0;
     //                        0       1      2      3       4       5
     editor_fields["vpd"] = { "type", "mcc", "mnc", "gssi", "freq", "name" };
     curr_editor_field["vpd"] = 0;
@@ -832,6 +832,68 @@ void MainWindow::on_channel_editor_right_clicked()
     }
 
     if(ui->channel_editor_state->property("chosen") == 0){
+        return;
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 2){
+        switch (curr_editor_field["tmo"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            // skip
+            break;
+        case 2:
+            ui->tmo_mcc->backspace();
+            break;
+        case 3:
+            ui->tmo_mnc->backspace();
+            break;
+        case 4:
+            ui->tmo_gssi->backspace();
+            break;
+        case 5:
+            ui->tmo_vesh->toggle();
+            break;
+        case 6:
+            ui->tmo_mask->toggle();
+            break;
+        case 7:
+            ui->tmo_name->backspace();
+            break;
+        default:
+            qCritical("crit: on_channel_editor_right_clicked");
+            return;
+        }
+        update_channel_editor_page();
+        return;
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 3){
+        switch (curr_editor_field["vpd"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->vpd_mcc->backspace();
+            break;
+        case 2:
+            ui->vpd_mnc->backspace();
+            break;
+        case 3:
+            ui->vpd_gssi->backspace();
+            break;
+        case 4:
+            ui->vpd_freq->backspace();
+            break;
+        case 5:
+            ui->vpd_name->backspace();
+            break;
+        default:
+            qCritical("crit: on_channel_editor_right_clicked");
+            return;
+        }
+        update_channel_editor_page();
         return;
     }
 
@@ -1657,7 +1719,7 @@ void MainWindow::setTransmitting(){
         ui->dej_label_2->setText(tr("TETRA_DMO"));
         break;
     case 2:
-        ui->dej_label_2->setText(tr("TETRA_TMO"));
+        ui->dej_label_2->setText(tr("tmo"));
         break;
     case 3:
         ui->dej_label_2->setText(tr("ВПД"));
@@ -1871,6 +1933,11 @@ void MainWindow::on_number_0_clicked()
     on_number_i_clicked(0);
 }
 
+// add a number to line edit
+void addnle(QLineEdit* line, int number){
+    line->setText(line->text() + QString::number(number));
+}
+
 void MainWindow::on_number_i_clicked(int i)
 {
     if(ui->modals->currentWidget() == ui->params_error){
@@ -1880,17 +1947,69 @@ void MainWindow::on_number_i_clicked(int i)
 
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->channel_editor_page){
-        //chm25
+
+        // tetra tmo
+        if(ui->channel_editor_state->property("chosen") == 2){
+            switch (curr_editor_field["tmo"]) {
+            case 2:
+                addnle(ui->tmo_mcc, i);
+                break;
+            case 3:
+                addnle(ui->tmo_mnc, i);
+                break;
+            case 4:
+                addnle(ui->tmo_gssi, i);
+                break;
+            }
+            return;
+        }
+
+        // vpd
+        if(ui->channel_editor_state->property("chosen") == 3){
+            switch (curr_editor_field["vpd"]) {
+            case 1:
+                addnle(ui->vpd_mcc, i);
+                break;
+            case 2:
+                addnle(ui->vpd_mnc, i);
+                break;
+            case 3:
+                addnle(ui->vpd_gssi, i);
+                break;
+            case 4:
+                addnle(ui->vpd_freq, i);
+                break;
+            }
+            return;
+        }
+
+        // am25
+        if(ui->channel_editor_state->property("chosen") == 4){
+            switch (curr_editor_field["am25"]) {
+            case 3:
+                addnle(ui->am25_freq, i);
+                break;
+            case 4:
+                addnle(ui->am25_prm_freq, i);
+                break;
+            case 5:
+                addnle(ui->am25_prd_freq, i);
+                break;
+            }
+            return;
+        }
+
+        // chm25
         if(ui->channel_editor_state->property("chosen") == 5){
             switch (curr_editor_field["chm25"]) {
             case 3:
-                ui->channel_freq->setText(ui->channel_freq->text() + QString::number(i));
+                addnle(ui->channel_freq, i);
                 break;
             case 4:
-                ui->channel_prm_freq->setText(ui->channel_prm_freq->text() + QString::number(i));
+                addnle(ui->channel_prm_freq, i);
                 break;
             case 5:
-                ui->channel_prd_freq->setText(ui->channel_prd_freq->text() + QString::number(i));
+                addnle(ui->channel_prd_freq, i);
                 break;
             case 7:
                 /* letters!
@@ -1914,16 +2033,17 @@ void MainWindow::on_number_i_clicked(int i)
             return;
         }
 
+        // chm50
         if(ui->channel_editor_state->property("chosen") == 6){
             switch (curr_editor_field["chm50"]) {
             case 3:
-                ui->channel_freq->setText(ui->channel_freq->text() + QString::number(i));
+                addnle(ui->channel_freq, i);
                 break;
             case 4:
-                ui->channel_prm_freq->setText(ui->channel_prm_freq->text() + QString::number(i));
+                addnle(ui->channel_prm_freq, i);
                 break;
             case 5:
-                ui->channel_prd_freq->setText(ui->channel_prd_freq->text() + QString::number(i));
+                addnle(ui->channel_prd_freq, i);
                 break;
             case 7:
                 /* letters!
@@ -2142,7 +2262,7 @@ void MainWindow::update_channel_editor_page(){
             qCritical("am25: update_channel_editor_page: no way");
         }
 
-        if(ui->dualfreq->isChecked()){
+        if(ui->am25_dualfreq->isChecked()){
             ui->widget_21->setVisible(true);
             ui->widget_19->setVisible(true);
             ui->widget_20->setVisible(false);
@@ -2308,7 +2428,7 @@ void MainWindow::update_channel_editor_page(){
     // tetra tmo
     if(ui->channel_editor_state->property("chosen") == 2){
         clear_tetra_tmo_fields();
-        switch (curr_editor_field["tetra_tmo"]) {
+        switch (curr_editor_field["tmo"]) {
         case 0:
             // was upper
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
@@ -2641,7 +2761,7 @@ void MainWindow::on_up_arrow_clicked()
         if(ui->channel_editor_state->property("chosen") == 4){
             uint sz = editor_fields["am25"].size();
             curr_editor_field["am25"] = (curr_editor_field["am25"] - 1 + sz) % sz;
-            if(ui->dualfreq->isChecked()){
+            if(ui->am25_dualfreq->isChecked()){
                 if(curr_editor_field["am25"] == 3) curr_editor_field["am25"]--;
             }
             else{
@@ -2695,8 +2815,8 @@ void MainWindow::on_up_arrow_clicked()
 
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
-            uint sz = editor_fields["tetra_tmo"].size();
-            curr_editor_field["tetra_tmo"] = (curr_editor_field["tetra_tmo"] - 1 + sz) % sz;
+            uint sz = editor_fields["tmo"].size();
+            curr_editor_field["tmo"] = (curr_editor_field["tmo"] - 1 + sz) % sz;
 
             update_channel_editor_page();
             return;
@@ -2843,7 +2963,7 @@ void MainWindow::on_down_arrow_clicked()
         if(ui->channel_editor_state->property("chosen") == 4){
             uint sz = editor_fields["am25"].size();
             curr_editor_field["am25"] = (curr_editor_field["am25"] + 1) % sz;
-            if(ui->dualfreq->isChecked()){
+            if(ui->am25_dualfreq->isChecked()){
                 if(curr_editor_field["am25"] == 3) curr_editor_field["am25"]++;
             }
             else{
@@ -2902,8 +3022,8 @@ void MainWindow::on_down_arrow_clicked()
 
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
-            uint sz = editor_fields["tetra_tmo"].size();
-            curr_editor_field["tetra_tmo"] = (curr_editor_field["tetra_tmo"] + 1) % sz;
+            uint sz = editor_fields["tmo"].size();
+            curr_editor_field["tmo"] = (curr_editor_field["tmo"] + 1) % sz;
 
             update_channel_editor_page();
             return;
@@ -2980,19 +3100,13 @@ void MainWindow::on_dualfreq_clicked()
 {
     if(ui->dualfreq->isChecked()){
         ui->widget_6->setVisible(true);
-        //ui->widget_6->setEnabled(true);
         ui->widget_9->setVisible(true);
-        //ui->widget_9->setEnabled(true);
         ui->widget_4->setVisible(false);
-        //ui->widget_4->setEnabled(false);
     }
     else{
         ui->widget_6->setVisible(false);
-        //ui->widget_6->setEnabled(false);
         ui->widget_9->setVisible(false);
-        //ui->widget_9->setEnabled(false);
         ui->widget_4->setVisible(true);
-        //ui->widget_4->setEnabled(true);
     }
 }
 

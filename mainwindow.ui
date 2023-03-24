@@ -542,7 +542,7 @@ background: rgb(250, 250, 250)</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="offscreen">
        <property name="styleSheet">
@@ -6355,6 +6355,8 @@ text-align:right;</string>
      </widget>
     </widget>
    </widget>
+   <zorder>modals</zorder>
+   <zorder>horizontalWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
