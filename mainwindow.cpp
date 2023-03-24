@@ -980,19 +980,19 @@ void MainWindow::on_channel_editor_right_clicked()
             // skip
             break;
         case 1:
-            ui->is_forbidden_prd->toggle();
+            ui->chm50_prd->toggle();
             break;
         case 2:
-            ui->dualfreq->toggle();
+            ui->chm50_dualfreq->toggle();
             break;
         case 3:
-            ui->channel_freq->backspace();
+            ui->chm50_freq->backspace();
             break;
         case 4:
-            ui->channel_prm_freq->backspace();
+            ui->chm50_prm_freq->backspace();
             break;
         case 5:
-            ui->channel_prd_freq->backspace();
+            ui->chm50_prd_freq->backspace();
             break;
         case 6:
             if(channel_editor_ctcss_popup->isVisible()){
@@ -1003,7 +1003,7 @@ void MainWindow::on_channel_editor_right_clicked()
             }
             break;
         case 7:
-            ui->channel_name->backspace();
+            ui->chm50_name->backspace();
             break;
         default:
             qCritical("crit: on_channel_editor_right_clicked");
@@ -2103,13 +2103,13 @@ void MainWindow::on_number_i_clicked(int i)
         if(ui->channel_editor_state->property("chosen") == 6){
             switch (curr_editor_field["chm50"]) {
             case 3:
-                addnle(ui->channel_freq, i);
+                addnle(ui->chm50_freq, i);
                 break;
             case 4:
-                addnle(ui->channel_prm_freq, i);
+                addnle(ui->chm50_prm_freq, i);
                 break;
             case 5:
-                addnle(ui->channel_prd_freq, i);
+                addnle(ui->chm50_prd_freq, i);
                 break;
             case 7:
                 /* letters!
@@ -2193,16 +2193,16 @@ void MainWindow::clear_chm25_d_fields(){
 
 void MainWindow::clear_chm50_fields(){
     ui->channel_editor_state->setStyleSheet("background: white;");
-    ui->is_forbidden_prd->setStyleSheet("background: white;");
-    ui->dualfreq->setStyleSheet("background: white;");
-    ui->channel_freq_full->setStyleSheet("background: white;");
-    ui->channel_prm_freq_full->setStyleSheet("background: white;");
-    ui->channel_prd_freq_full->setStyleSheet("background: white;");
-    ui->ctcss->setStyleSheet("background: white;");
-    ui->channel_name->setStyleSheet("background: white;");
-    ui->label_32->setVisible(false);
-    ui->label_42->setVisible(false);
-    ui->label_39->setVisible(false);
+    ui->chm50_prd->setStyleSheet("background: white;");
+    ui->chm50_dualfreq->setStyleSheet("background: white;");
+    ui->chm50_freq_full->setStyleSheet("background: white;");
+    ui->chm50_prm_freq_full->setStyleSheet("background: white;");
+    ui->chm50_prd_freq_full->setStyleSheet("background: white;");
+    ui->chm50_ctcss->setStyleSheet("background: white;");
+    ui->chm50_name->setStyleSheet("background: white;");
+    ui->label_88->setVisible(false);
+    ui->label_85->setVisible(false);
+    ui->label_82->setVisible(false);
 }
 
 void MainWindow::clear_am25_fields(){
@@ -2290,9 +2290,8 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
         break;
     case 6:
-        // TODO: CHANGE
-        if(ui->channel_editor_states->currentWidget() != ui->CHM25_page)
-            ui->channel_editor_states->setCurrentWidget(ui->CHM25_page);
+        if(ui->channel_editor_states->currentWidget() != ui->CHM50_page)
+            ui->channel_editor_states->setCurrentWidget(ui->CHM50_page);
         break;
     case 7:
         if(ui->channel_editor_states->currentWidget() != ui->OBP_page)
@@ -2536,19 +2535,13 @@ void MainWindow::update_channel_editor_page(){
 
         if(ui->dualfreq->isChecked()){
             ui->widget_6->setVisible(true);
-            //ui->widget_6->setEnabled(true);
             ui->widget_9->setVisible(true);
-            //ui->widget_9->setEnabled(true);
             ui->widget_4->setVisible(false);
-            //ui->widget_4->setEnabled(false);
         }
         else{
             ui->widget_6->setVisible(false);
-            //ui->widget_6->setEnabled(false);
             ui->widget_9->setVisible(false);
-            //ui->widget_9->setEnabled(false);
             ui->widget_4->setVisible(true);
-            //ui->widget_4->setEnabled(true);
         }
         return;
     }
@@ -2561,35 +2554,35 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_state->setStyleSheet("border: 1px solid black; background: white;");
             break;
         case 1:
-            ui->is_forbidden_prd->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm50_prd->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 2:
-            ui->dualfreq->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm50_dualfreq->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Изменить");
             break;
         case 3:
-            ui->channel_freq_full->setStyleSheet("#channel_freq_full {border: 1px solid black; background: white;}");
-            ui->label_32->setVisible(true);
+            ui->chm50_freq_full->setStyleSheet("#chm50_freq_full {border: 1px solid black; background: white;}");
+            ui->label_88->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 4:
-            ui->channel_prm_freq_full->setStyleSheet("#channel_prm_freq_full {border: 1px solid black; background: white;}");
-            ui->label_42->setVisible(true);
+            ui->chm50_prm_freq_full->setStyleSheet("#chm50_prm_freq_full {border: 1px solid black; background: white;}");
+            ui->label_85->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 5:
-            ui->channel_prd_freq_full->setStyleSheet("#channel_prd_freq_full {border: 1px solid black; background: white;}");
-            ui->label_39->setVisible(true);
+            ui->chm50_prd_freq_full->setStyleSheet("#chm50_prd_freq_full {border: 1px solid black; background: white;}");
+            ui->label_82->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
         case 6:
-            ui->ctcss->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm50_ctcss->setStyleSheet("border: 1px solid black; background: white;");
             if(channel_editor_ctcss_popup->isVisible()){
                 ui->channel_editor_left->setText("Выбрать");
                 ui->channel_editor_right->setText("Назад");
@@ -2600,7 +2593,7 @@ void MainWindow::update_channel_editor_page(){
             }
             break;
         case 7:
-            ui->channel_name->setStyleSheet("border: 1px solid black; background: white;");
+            ui->chm50_name->setStyleSheet("border: 1px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
@@ -2608,21 +2601,15 @@ void MainWindow::update_channel_editor_page(){
             qCritical("chm50: update_channel_editor_page: no way");
         }
 
-        if(ui->dualfreq->isChecked()){
-            ui->widget_6->setVisible(true);
-            //ui->widget_6->setEnabled(true);
-            ui->widget_9->setVisible(true);
-            //ui->widget_9->setEnabled(true);
-            ui->widget_4->setVisible(false);
-            //ui->widget_4->setEnabled(false);
+        if(ui->chm50_dualfreq->isChecked()){
+            ui->widget_27->setVisible(true);
+            ui->widget_26->setVisible(true);
+            ui->widget_28->setVisible(false);
         }
         else{
-            ui->widget_6->setVisible(false);
-            //ui->widget_6->setEnabled(false);
-            ui->widget_9->setVisible(false);
-            //ui->widget_9->setEnabled(false);
-            ui->widget_4->setVisible(true);
-            //ui->widget_4->setEnabled(true);
+            ui->widget_27->setVisible(false);
+            ui->widget_26->setVisible(false);
+            ui->widget_28->setVisible(true);
         }
         return;
     }
@@ -2646,7 +2633,7 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 3:
             ui->obp_freq_full->setStyleSheet("#obp_freq_full {border: 1px solid black; background: white;}");
-            ui->label_32->setVisible(true);
+            ui->label_72->setVisible(true);
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
             break;
@@ -3018,7 +3005,7 @@ void MainWindow::on_up_arrow_clicked()
 
             uint sz = editor_fields["chm50"].size();
             curr_editor_field["chm50"] = (curr_editor_field["chm50"] - 1 + sz) % sz;
-            if(ui->dualfreq->isChecked()){
+            if(ui->chm50_dualfreq->isChecked()){
                 if(curr_editor_field["chm50"] == 3) curr_editor_field["chm50"]--;
             }
             else{
@@ -3248,7 +3235,7 @@ void MainWindow::on_down_arrow_clicked()
 
             uint sz = editor_fields["chm50"].size();
             curr_editor_field["chm50"] = (curr_editor_field["chm50"] + 1) % sz;
-            if(ui->dualfreq->isChecked()){
+            if(ui->chm50_dualfreq->isChecked()){
                 if(curr_editor_field["chm50"] == 3) curr_editor_field["chm50"]++;
             }
             else{
