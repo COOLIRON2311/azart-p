@@ -33,6 +33,7 @@ public slots:
 public Q_SLOTS:
 
     void setup();
+    void off_screen();
     void selfcontrol_screen();
     void loading_screen();
     void main_screen();

@@ -544,6 +544,11 @@ background: rgb(250, 250, 250)</string>
       <property name="currentIndex">
        <number>0</number>
       </property>
+      <widget class="QWidget" name="offscreen">
+       <property name="styleSheet">
+        <string notr="true">background: black;</string>
+       </property>
+      </widget>
       <widget class="QWidget" name="service_menu_page">
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <property name="spacing">

@@ -347,6 +347,10 @@ MainWindow::~MainWindow()
     outpDev->close();
 }
 
+void MainWindow::off_screen(){
+    ui->mainPages->setCurrentWidget(ui->offscreen);
+}
+
 void MainWindow::selfcontrol_screen()
 {
     ui->mainPages->setCurrentWidget(ui->selfcontrol_page);
@@ -2731,6 +2735,9 @@ void MainWindow::on_left_tube_clicked()
 void MainWindow::on_right_tube_clicked()
 {
     auto curr = ui->mainPages->currentWidget();
+    if(curr == ui->offscreen){
+        selfcontrol_screen();
+    }
 }
 
 void MainWindow::on_dualfreq_clicked()

@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     w.setup();
-    w.selfcontrol_screen();
+    w.off_screen();
     w.rdwin.hide();
     return a.exec();
 }
