@@ -333,10 +333,14 @@ struct MainWindow::Channel
     bool PRD = false;
     bool dualfreq = false;
     quint32 freq = 0;
+    quint32 band = 0;
     quint32 prm_freq = 0;
     quint32 prd_freq = 0;
     quint32 ctcss = 0;
     QString name = "";
+    QString mcc = "";
+    QString mnc = "";
+    QString gssi = "";
 
     // set default all fields
     void clear(){
@@ -351,10 +355,14 @@ struct MainWindow::Channel
         PRD = false;
         dualfreq = false;
         freq = 0;
+        band = 0;
         prm_freq = 0;
         prd_freq = 0;
         ctcss = 0;
         name = "";
+        mcc = "";
+        mnc = "";
+        gssi = "";
 
         // obp
         // fm
