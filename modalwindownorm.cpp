@@ -8,12 +8,26 @@ ModalWindowNorm::ModalWindowNorm(QWidget *parent) :
     ui->setupUi(this);
     quartz.setInterval(1000);
     connect(&quartz, SIGNAL(timeout()), this, SLOT(each_sec()));
-    auto s = size();
-//    setMinimumSize(s);
-//    setMaximumSize(s);
+    double scale = QGuiApplication::primaryScreen()->logicalDotsPerInchY() / 96;
+    QSize sz;
+    if (abs(scale - 1.0) < 1e-5)
+    {
+        font = QFont("Segoe UI", 9, QFont::Normal);
+        sz.setWidth(802);
+        sz.setHeight(303);
+    }
+    else if (abs(scale - 1.25) < 1e-5)
+    {
+        font = QFont("Segoe UI", 8, QFont::Normal);
+        sz.setWidth(902);
+        sz.setHeight(403);
+    }
+    setMinimumSize(sz);
+    setMaximumSize(sz);
 
     ui->tableWidget->setColumnCount(5);
     ui->tableWidget->setRowCount(1);
+    ui->tableWidget->horizontalHeader()->setFont(font);
 
     ui->tableWidget->setHorizontalHeaderLabels(labels);
         ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -40,6 +54,7 @@ inline void ModalWindowNorm::set_text()
         auto t = new QTableWidgetItem(contents[n][i]);
         if (i == 0 || i == 3 || i == 4)
             t->setTextAlignment(Qt::AlignCenter);
+        t->setFont(font);
         ui->tableWidget->setItem(0, i, t);
     }
 }

@@ -12,14 +12,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>802</width>
-    <height>303</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>802</width>
-    <height>303</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="" native="true">
+     <widget class="QWidget" name="widget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -82,7 +82,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="" native="true">
+     <widget class="QWidget" name="widget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
