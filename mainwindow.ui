@@ -7638,6 +7638,43 @@ text-align:right;</string>
       </layout>
      </widget>
     </widget>
+    <widget class="QWidget" name="shutdown">
+     <widget class="QWidget" name="widget_30" native="true">
+      <property name="geometry">
+       <rect>
+        <x>28</x>
+        <y>100</y>
+        <width>141</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#widget_30{
+	background: white;
+	border: 1px solid;
+}</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_46">
+       <item>
+        <widget class="QLabel" name="label_22">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Держите для
+выключения</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

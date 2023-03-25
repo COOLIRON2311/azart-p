@@ -331,6 +331,7 @@ MainWindow::MainWindow(QWidget *parent) :
     effect->setColor(Qt::black);
     ui->widget_18->setGraphicsEffect(effect);
     ui->widget_29->setGraphicsEffect(effect);
+    ui->widget_30->setGraphicsEffect(effect);
 }
 
 void MainWindow::setup(){
@@ -3346,15 +3347,6 @@ void MainWindow::on_left_tube_clicked()
 
 void MainWindow::on_right_tube_clicked()
 {
-    auto curr = ui->mainPages->currentWidget();
-    if(curr == ui->offscreen){
-        selfcontrol_screen();
-        return;
-    }
-    if(ui->modals->currentWidget() == ui->params_error){
-        ui->modals->setCurrentWidget(ui->no_modals);
-        return;
-    }
 }
 
 void MainWindow::on_chm25_dualfreq_clicked()
@@ -3374,4 +3366,56 @@ void MainWindow::on_chm25_dualfreq_clicked()
 void MainWindow::on_talk_button_pressed()
 {
 
+}
+
+void MainWindow::check_holded_right_tube(int i){
+    if(i == ui->right_tube->property("clicked_times").toInt()){
+
+        // включение после секунды
+        if(ui->mainPages->currentWidget() == ui->offscreen){
+            selfcontrol_screen();
+            return;
+        }
+
+
+        if(ui->modals->currentWidget() == ui->no_modals){
+            ui->modals->setCurrentWidget(ui->shutdown);
+            QTimer* t;
+            timers.push(t = new QTimer());
+            connect(t, &QTimer::timeout, this, [i, t, this]{ check_holded_right_tube(i); t->stop(); });
+            t->start(1000);
+            return;
+        }
+
+        if(ui->modals->currentWidget() == ui->shutdown){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            ui->mainPages->setCurrentWidget(ui->offscreen);
+            return;
+        }
+    }
+}
+
+void MainWindow::on_right_tube_pressed()
+{
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
+    auto curr = ui->mainPages->currentWidget();
+    int i = ui->right_tube->property("clicked_times").toInt();
+    QTimer* t;
+    timers.push(t = new QTimer());
+    connect(t, &QTimer::timeout, this, [i, t, this](){ this->check_holded_right_tube(i); t->stop(); });
+    t->start(1000);
+    return;
+}
+
+void MainWindow::on_right_tube_released()
+{
+    ui->right_tube->setProperty("clicked_times", ui->right_tube->property("clicked_times").toInt() + 1);
+    if(ui->modals->currentWidget() == ui->shutdown){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
 }

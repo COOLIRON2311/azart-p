@@ -12,6 +12,7 @@
 #include <qbuffer.h>
 #include "modalwindowrd.h"
 #include "modalwindow3d.h"
+#include <queue>
 
 namespace Ui {
     class MainWindow;
@@ -26,6 +27,7 @@ public:
     ~MainWindow();
     ModalWindowRD rdwin;
     ModalWindow3D _3dwin;
+    std::queue<QTimer*> timers;
 
 public slots:
     void change_global_time();
@@ -199,6 +201,12 @@ private slots:
     void _on_direction_background_numChanged();
 
     void on_talk_button_pressed();
+
+    void on_right_tube_pressed();
+
+    void on_right_tube_released();
+
+    void check_holded_right_tube(int);
 
 private:
     void on_number_i_clicked(int);
