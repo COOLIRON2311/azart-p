@@ -5,6 +5,8 @@
 #include <QTime>
 #include <QMainWindow>
 #include <QTableWidgetItem>
+#include <QScreen>
+#include <QGuiApplication>
 
 namespace Ui {
 class ModalWindowNorm;
@@ -16,6 +18,7 @@ class ModalWindowNorm : public QMainWindow
     int n;
     QTimer quartz;
     QTime elapsed;
+    QFont font;
     QStringList labels {
       "№", "Наименование норматива", "Объём выполняемых работ", "Оценка", "Время\n(мин.)"
     };
