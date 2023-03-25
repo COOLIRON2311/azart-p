@@ -53,3 +53,22 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resource.qrc
 
+DISTFILES += \
+    resources/volume_0.png \
+    resources/volume_1.png \
+    resources/volume_2.png \
+    resources/volume_3.png \
+    resources/volume_4.png \
+    resources/volume_5.png \
+    resources/volume_6.png \
+    resources/volume_7.png \
+    resources/volume_8.png \
+    resources/volume_9.png \
+    resources/volume_10.png \
+    resources/volume_11.png \
+    resources/volume_12.png \
+    resources/volume_13.png \
+    resources/volume_14.png \
+    resources/volume_15.png \
+    resources/volume_16.png
+

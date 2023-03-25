@@ -332,6 +332,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->widget_18->setGraphicsEffect(effect);
     ui->widget_29->setGraphicsEffect(effect);
     ui->widget_30->setGraphicsEffect(effect);
+
+    ui->modals->move(250, 210);
+    ui->atuners->move(250, 210);
 }
 
 void MainWindow::setup(){

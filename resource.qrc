@@ -32,5 +32,23 @@
         <file>resources/base.tga</file>
         <file>resources/per.png</file>
         <file>resources/pr.png</file>
+        <file>resources/arrs_up_down.png</file>
+        <file>resources/volume_0.png</file>
+        <file>resources/volume_1.png</file>
+        <file>resources/volume_2.png</file>
+        <file>resources/volume_3.png</file>
+        <file>resources/volume_4.png</file>
+        <file>resources/volume_5.png</file>
+        <file>resources/volume_6.png</file>
+        <file>resources/volume_7.png</file>
+        <file>resources/volume_8.png</file>
+        <file>resources/volume_9.png</file>
+        <file>resources/volume_10.png</file>
+        <file>resources/volume_11.png</file>
+        <file>resources/volume_12.png</file>
+        <file>resources/volume_13.png</file>
+        <file>resources/volume_14.png</file>
+        <file>resources/volume_15.png</file>
+        <file>resources/volume_16.png</file>
     </qresource>
 </RCC>
