@@ -209,8 +209,10 @@ private slots:
 
     void check_holded_right_tube(int);
 
-    void volume_handler(int);
+    void volume_show();
+    void noise_show();
 
+    void volume_handler(int);
     void noise_handler(int);
 
 private:

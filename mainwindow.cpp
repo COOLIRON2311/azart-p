@@ -489,8 +489,23 @@ void MainWindow::service_menu_screen()
 
 void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
+    if(item == menu_list_item[0]){
+        main_screen();
+        ui->atuners->setCurrentWidget(ui->noise);
+        ui->noise->setProperty("from_menu", true);
+        noise_show();
+        return;
+    }
+    if(item == menu_list_item[1]){
+        main_screen();
+        ui->atuners->setCurrentWidget(ui->volume);
+        ui->volume->setProperty("from_menu", true);
+        volume_show();
+        return;
+    }
     if(item == menu_list_item[5]){
         service_menu_screen();
+        return;
     }
 }
 
@@ -1630,11 +1645,28 @@ void MainWindow::on_direction_list_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_main_left_clicked()
 {
+    if(ui->noise->property("from_menu").toBool() == true){
+        noise_show();
+        // and mb something yet
+        return;
+    }
+    if(ui->volume->property("from_menu").toBool() == true){
+        volume_handler(ui->volume->property("clicked_times").toInt());
+        return;
+    }
     menu_screen();
 }
 
 void MainWindow::on_main_right_clicked()
 {
+    if(ui->noise->property("from_menu").toBool() == true){
+        noise_handler(ui->noise->property("clicked_times").toInt());
+        return;
+    }
+    if(ui->volume->property("from_menu").toBool() == true){
+        ui->volume->setProperty("from_menu", false);
+        volume_handler(ui->volume->property("clicked_times").toInt());
+    }
     direction_selection_screen();
 }
 
@@ -2895,26 +2927,50 @@ void MainWindow::update_direction_editor_page(){
                ==
 */
 
+void MainWindow::volume_show(){
+    QTimer *t;
+    timers.push(t = new QTimer());
+    int i = ui->volume->property("clicked_times").toInt() + 1;
+    ui->volume->setProperty("clicked_times", i);
+    connect(t, &QTimer::timeout, this, [i, t, this](){ volume_handler(i); t->stop(); });
+    t->start(1000);
+}
+
+void MainWindow::noise_show(){
+    QTimer *t;
+    timers.push(t = new QTimer());
+    int i = ui->noise->property("clicked_times").toInt() + 1;
+    ui->noise->setProperty("clicked_times", i);
+    ui->main_left->setText("Каналы");
+    ui->main_right->setText("Назад");
+    connect(t, &QTimer::timeout, this, [i, t, this](){ noise_handler(i); t->stop(); });
+    t->start(1000);
+}
+
 void MainWindow::volume_handler(int i){
     if(i == ui->volume->property("clicked_times").toInt()){
         if(ui->atuners->currentWidget() == ui->volume){
             ui->atuners->setCurrentWidget(ui->no_tuners);
-            return;
+            if(ui->volume->property("from_menu").toBool() == true){
+                ui->volume->setProperty("from_menu", false);
+                menu_screen();
+            }
         }
-        return;
     }
-    return;
 }
 
 void MainWindow::noise_handler(int i){
     if(i == ui->noise->property("clicked_times").toInt()){
         if(ui->atuners->currentWidget() == ui->noise){
             ui->atuners->setCurrentWidget(ui->no_tuners);
-            return;
-        }
-        return;
+            ui->main_left->setText("Меню");
+            ui->main_right->setText("Направление");
+            if(ui->noise->property("from_menu").toBool() == true){
+                ui->noise->setProperty("from_menu", false);
+                menu_screen();
+            }
+        }        
     }
-    return;
 }
 
 void MainWindow::on_up_arrow_clicked()
@@ -2938,34 +2994,23 @@ void MainWindow::on_up_arrow_clicked()
         return;
     }
     if(curr == ui->main_page){
-        QTimer *t;
-        timers.push(t = new QTimer());
         if(ui->atuners->currentWidget() == ui->no_tuners){
             ui->atuners->setCurrentWidget(ui->volume);
-            int i = ui->volume->property("clicked_times").toInt() + 1;
-            ui->volume->setProperty("clicked_times", i);
-            connect(t, &QTimer::timeout, this, [i, t, this](){ volume_handler(i); t->stop(); });
-            t->start(1000);
+            volume_show();
             return;
         }
         if(ui->atuners->currentWidget() == ui->volume){
             volume++;
             if(volume > MAX_VOLUME) volume = MAX_VOLUME;
             ui->label_89->setStyleSheet("image: url(:/resources/volume_" + QString::number(volume) + ".png)");
-            int i = ui->volume->property("clicked_times").toInt() + 1;
-            ui->volume->setProperty("clicked_times", i);
-            connect(t, &QTimer::timeout, this, [i, t, this](){ volume_handler(i); t->stop(); });
-            t->start(1000);
+            volume_show();
             return;
         }
         if(ui->atuners->currentWidget() == ui->noise){
             noise++;
             if(noise > MAX_NOISE) noise = MAX_NOISE;
             ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(noise) + ".png)");
-            int i = ui->noise->property("clicked_times").toInt() + 1;
-            ui->noise->setProperty("clicked_times", i);
-            connect(t, &QTimer::timeout, this, [i, t, this](){ noise_handler(i); t->stop(); });
-            t->start(1000);
+            noise_show();
             return;
         }
     }
@@ -3196,34 +3241,23 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
     if(curr == ui->main_page){
-        QTimer *t;
-        timers.push(t = new QTimer());
         if(ui->atuners->currentWidget() == ui->no_tuners){
             ui->atuners->setCurrentWidget(ui->noise);
-            int i = ui->noise->property("clicked_times").toInt() + 1;
-            ui->noise->setProperty("clicked_times", i);
-            connect(t, &QTimer::timeout, this, [i, t, this](){ noise_handler(i); t->stop(); });
-            t->start(1000);
+            noise_show();
             return;
         }
         if(ui->atuners->currentWidget() == ui->volume){
             volume--;
             if(volume < MIN_VOLUME) volume = MIN_VOLUME;
             ui->label_89->setStyleSheet("image: url(:/resources/volume_" + QString::number(volume) + ".png)");
-            int i = ui->volume->property("clicked_times").toInt() + 1;
-            ui->volume->setProperty("clicked_times", i);
-            connect(t, &QTimer::timeout, this, [i, t, this](){ volume_handler(i); t->stop(); });
-            t->start(1000);
+            volume_show();
             return;
         }
         if(ui->atuners->currentWidget() == ui->noise){
             noise--;
             if(noise < MIN_NOISE) noise = MIN_NOISE;
             ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(noise) + ".png)");
-            int i = ui->noise->property("clicked_times").toInt() + 1;
-            ui->noise->setProperty("clicked_times", i);
-            connect(t, &QTimer::timeout, this, [i, t, this](){ noise_handler(i); t->stop(); });
-            t->start(1000);
+            noise_show();
             return;
         }
     }
