@@ -27,7 +27,7 @@
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">QComboBox::drop-down {border-width: 0px;} 
+   <string notr="true">QComboBox::drop-down {border-width: 0px;}
 QComboBox::down-arrow {image: url(noimg); border-width: 0px;}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -2519,7 +2519,7 @@ background: none;</string>
              <item>
               <widget class="QStackedWidget" name="channel_editor_states">
                <property name="currentIndex">
-                <number>3</number>
+                <number>6</number>
                </property>
                <widget class="QWidget" name="empty_state_page">
                 <layout class="QFormLayout" name="formLayout_4">
@@ -9138,8 +9138,8 @@ text-align:right;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>770</width>
-     <height>21</height>
+     <width>515</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

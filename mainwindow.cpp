@@ -217,73 +217,73 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ctcss_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
 
 
-{
-    channel_editor_ctcss_popup_item[0] = new QListWidgetItem(QIcon(""), "Нет");
-    channel_editor_ctcss_popup_item[1] = new QListWidgetItem(QIcon(""), "33.0");
-    channel_editor_ctcss_popup_item[2] = new QListWidgetItem(QIcon(""), "35.4");
-    channel_editor_ctcss_popup_item[3] = new QListWidgetItem(QIcon(""), "36.6");
-    channel_editor_ctcss_popup_item[4] = new QListWidgetItem(QIcon(""), "37.9");
-    channel_editor_ctcss_popup_item[5] = new QListWidgetItem(QIcon(""), "39.6");
-    channel_editor_ctcss_popup_item[6] = new QListWidgetItem(QIcon(""), "44.4");
-    channel_editor_ctcss_popup_item[7] = new QListWidgetItem(QIcon(""), "47.5");
-    channel_editor_ctcss_popup_item[8] = new QListWidgetItem(QIcon(""), "49.2");
-    channel_editor_ctcss_popup_item[9] = new QListWidgetItem(QIcon(""), "51.2");
-    channel_editor_ctcss_popup_item[10] = new QListWidgetItem(QIcon(""), "53.0");
-    channel_editor_ctcss_popup_item[11] = new QListWidgetItem(QIcon(""), "54.9");
-    channel_editor_ctcss_popup_item[12] = new QListWidgetItem(QIcon(""), "56.8");
-    channel_editor_ctcss_popup_item[13] = new QListWidgetItem(QIcon(""), "58.8");
-    channel_editor_ctcss_popup_item[14] = new QListWidgetItem(QIcon(""), "63.0");
-    channel_editor_ctcss_popup_item[15] = new QListWidgetItem(QIcon(""), "67.0");
-    channel_editor_ctcss_popup_item[16] = new QListWidgetItem(QIcon(""), "69.4");
-    channel_editor_ctcss_popup_item[17] = new QListWidgetItem(QIcon(""), "71.9");
-    channel_editor_ctcss_popup_item[18] = new QListWidgetItem(QIcon(""), "74.4");
-    channel_editor_ctcss_popup_item[19] = new QListWidgetItem(QIcon(""), "77.0");
-    channel_editor_ctcss_popup_item[20] = new QListWidgetItem(QIcon(""), "79.7");
-    channel_editor_ctcss_popup_item[21] = new QListWidgetItem(QIcon(""), "82.5");
-    channel_editor_ctcss_popup_item[22] = new QListWidgetItem(QIcon(""), "85.4");
-    channel_editor_ctcss_popup_item[23] = new QListWidgetItem(QIcon(""), "88.5");
-    channel_editor_ctcss_popup_item[24] = new QListWidgetItem(QIcon(""), "91.5");
-    channel_editor_ctcss_popup_item[25] = new QListWidgetItem(QIcon(""), "94.8");
-    channel_editor_ctcss_popup_item[26] = new QListWidgetItem(QIcon(""), "97.4");
-    channel_editor_ctcss_popup_item[27] = new QListWidgetItem(QIcon(""), "100.0");
-    channel_editor_ctcss_popup_item[28] = new QListWidgetItem(QIcon(""), "103.5");
-    channel_editor_ctcss_popup_item[29] = new QListWidgetItem(QIcon(""), "107.2");
-    channel_editor_ctcss_popup_item[30] = new QListWidgetItem(QIcon(""), "110.9");
-    channel_editor_ctcss_popup_item[31] = new QListWidgetItem(QIcon(""), "114.8");
-    channel_editor_ctcss_popup_item[32] = new QListWidgetItem(QIcon(""), "118.8");
-    channel_editor_ctcss_popup_item[33] = new QListWidgetItem(QIcon(""), "123.0");
-    channel_editor_ctcss_popup_item[34] = new QListWidgetItem(QIcon(""), "127.3");
-    channel_editor_ctcss_popup_item[35] = new QListWidgetItem(QIcon(""), "131.8");
-    channel_editor_ctcss_popup_item[36] = new QListWidgetItem(QIcon(""), "136.5");
-    channel_editor_ctcss_popup_item[37] = new QListWidgetItem(QIcon(""), "141.3");
-    channel_editor_ctcss_popup_item[38] = new QListWidgetItem(QIcon(""), "146.2");
-    channel_editor_ctcss_popup_item[39] = new QListWidgetItem(QIcon(""), "151.4");
-    channel_editor_ctcss_popup_item[40] = new QListWidgetItem(QIcon(""), "156.7");
-    channel_editor_ctcss_popup_item[41] = new QListWidgetItem(QIcon(""), "159.8");
-    channel_editor_ctcss_popup_item[42] = new QListWidgetItem(QIcon(""), "162.2");
-    channel_editor_ctcss_popup_item[43] = new QListWidgetItem(QIcon(""), "165.5");
-    channel_editor_ctcss_popup_item[44] = new QListWidgetItem(QIcon(""), "167.9");
-    channel_editor_ctcss_popup_item[45] = new QListWidgetItem(QIcon(""), "171.3");
-    channel_editor_ctcss_popup_item[46] = new QListWidgetItem(QIcon(""), "173.8");
-    channel_editor_ctcss_popup_item[47] = new QListWidgetItem(QIcon(""), "177.3");
-    channel_editor_ctcss_popup_item[48] = new QListWidgetItem(QIcon(""), "179.9");
-    channel_editor_ctcss_popup_item[49] = new QListWidgetItem(QIcon(""), "183.5");
-    channel_editor_ctcss_popup_item[50] = new QListWidgetItem(QIcon(""), "186.2");
-    channel_editor_ctcss_popup_item[51] = new QListWidgetItem(QIcon(""), "189.9");
-    channel_editor_ctcss_popup_item[52] = new QListWidgetItem(QIcon(""), "192.8");
-    channel_editor_ctcss_popup_item[53] = new QListWidgetItem(QIcon(""), "196.6");
-    channel_editor_ctcss_popup_item[54] = new QListWidgetItem(QIcon(""), "199.5");
-    channel_editor_ctcss_popup_item[55] = new QListWidgetItem(QIcon(""), "203.5");
-    channel_editor_ctcss_popup_item[56] = new QListWidgetItem(QIcon(""), "206.5");
-    channel_editor_ctcss_popup_item[57] = new QListWidgetItem(QIcon(""), "210.7");
-    channel_editor_ctcss_popup_item[58] = new QListWidgetItem(QIcon(""), "218.1");
-    channel_editor_ctcss_popup_item[59] = new QListWidgetItem(QIcon(""), "225.7");
-    channel_editor_ctcss_popup_item[60] = new QListWidgetItem(QIcon(""), "229.1");
-    channel_editor_ctcss_popup_item[61] = new QListWidgetItem(QIcon(""), "233.6");
-    channel_editor_ctcss_popup_item[62] = new QListWidgetItem(QIcon(""), "241.8");
-    channel_editor_ctcss_popup_item[63] = new QListWidgetItem(QIcon(""), "250.3");
-    channel_editor_ctcss_popup_item[64] = new QListWidgetItem(QIcon(""), "254.1");
-}
+    {
+        channel_editor_ctcss_popup_item[0] = new QListWidgetItem(QIcon(""), "Нет");
+        channel_editor_ctcss_popup_item[1] = new QListWidgetItem(QIcon(""), "33.0");
+        channel_editor_ctcss_popup_item[2] = new QListWidgetItem(QIcon(""), "35.4");
+        channel_editor_ctcss_popup_item[3] = new QListWidgetItem(QIcon(""), "36.6");
+        channel_editor_ctcss_popup_item[4] = new QListWidgetItem(QIcon(""), "37.9");
+        channel_editor_ctcss_popup_item[5] = new QListWidgetItem(QIcon(""), "39.6");
+        channel_editor_ctcss_popup_item[6] = new QListWidgetItem(QIcon(""), "44.4");
+        channel_editor_ctcss_popup_item[7] = new QListWidgetItem(QIcon(""), "47.5");
+        channel_editor_ctcss_popup_item[8] = new QListWidgetItem(QIcon(""), "49.2");
+        channel_editor_ctcss_popup_item[9] = new QListWidgetItem(QIcon(""), "51.2");
+        channel_editor_ctcss_popup_item[10] = new QListWidgetItem(QIcon(""), "53.0");
+        channel_editor_ctcss_popup_item[11] = new QListWidgetItem(QIcon(""), "54.9");
+        channel_editor_ctcss_popup_item[12] = new QListWidgetItem(QIcon(""), "56.8");
+        channel_editor_ctcss_popup_item[13] = new QListWidgetItem(QIcon(""), "58.8");
+        channel_editor_ctcss_popup_item[14] = new QListWidgetItem(QIcon(""), "63.0");
+        channel_editor_ctcss_popup_item[15] = new QListWidgetItem(QIcon(""), "67.0");
+        channel_editor_ctcss_popup_item[16] = new QListWidgetItem(QIcon(""), "69.4");
+        channel_editor_ctcss_popup_item[17] = new QListWidgetItem(QIcon(""), "71.9");
+        channel_editor_ctcss_popup_item[18] = new QListWidgetItem(QIcon(""), "74.4");
+        channel_editor_ctcss_popup_item[19] = new QListWidgetItem(QIcon(""), "77.0");
+        channel_editor_ctcss_popup_item[20] = new QListWidgetItem(QIcon(""), "79.7");
+        channel_editor_ctcss_popup_item[21] = new QListWidgetItem(QIcon(""), "82.5");
+        channel_editor_ctcss_popup_item[22] = new QListWidgetItem(QIcon(""), "85.4");
+        channel_editor_ctcss_popup_item[23] = new QListWidgetItem(QIcon(""), "88.5");
+        channel_editor_ctcss_popup_item[24] = new QListWidgetItem(QIcon(""), "91.5");
+        channel_editor_ctcss_popup_item[25] = new QListWidgetItem(QIcon(""), "94.8");
+        channel_editor_ctcss_popup_item[26] = new QListWidgetItem(QIcon(""), "97.4");
+        channel_editor_ctcss_popup_item[27] = new QListWidgetItem(QIcon(""), "100.0");
+        channel_editor_ctcss_popup_item[28] = new QListWidgetItem(QIcon(""), "103.5");
+        channel_editor_ctcss_popup_item[29] = new QListWidgetItem(QIcon(""), "107.2");
+        channel_editor_ctcss_popup_item[30] = new QListWidgetItem(QIcon(""), "110.9");
+        channel_editor_ctcss_popup_item[31] = new QListWidgetItem(QIcon(""), "114.8");
+        channel_editor_ctcss_popup_item[32] = new QListWidgetItem(QIcon(""), "118.8");
+        channel_editor_ctcss_popup_item[33] = new QListWidgetItem(QIcon(""), "123.0");
+        channel_editor_ctcss_popup_item[34] = new QListWidgetItem(QIcon(""), "127.3");
+        channel_editor_ctcss_popup_item[35] = new QListWidgetItem(QIcon(""), "131.8");
+        channel_editor_ctcss_popup_item[36] = new QListWidgetItem(QIcon(""), "136.5");
+        channel_editor_ctcss_popup_item[37] = new QListWidgetItem(QIcon(""), "141.3");
+        channel_editor_ctcss_popup_item[38] = new QListWidgetItem(QIcon(""), "146.2");
+        channel_editor_ctcss_popup_item[39] = new QListWidgetItem(QIcon(""), "151.4");
+        channel_editor_ctcss_popup_item[40] = new QListWidgetItem(QIcon(""), "156.7");
+        channel_editor_ctcss_popup_item[41] = new QListWidgetItem(QIcon(""), "159.8");
+        channel_editor_ctcss_popup_item[42] = new QListWidgetItem(QIcon(""), "162.2");
+        channel_editor_ctcss_popup_item[43] = new QListWidgetItem(QIcon(""), "165.5");
+        channel_editor_ctcss_popup_item[44] = new QListWidgetItem(QIcon(""), "167.9");
+        channel_editor_ctcss_popup_item[45] = new QListWidgetItem(QIcon(""), "171.3");
+        channel_editor_ctcss_popup_item[46] = new QListWidgetItem(QIcon(""), "173.8");
+        channel_editor_ctcss_popup_item[47] = new QListWidgetItem(QIcon(""), "177.3");
+        channel_editor_ctcss_popup_item[48] = new QListWidgetItem(QIcon(""), "179.9");
+        channel_editor_ctcss_popup_item[49] = new QListWidgetItem(QIcon(""), "183.5");
+        channel_editor_ctcss_popup_item[50] = new QListWidgetItem(QIcon(""), "186.2");
+        channel_editor_ctcss_popup_item[51] = new QListWidgetItem(QIcon(""), "189.9");
+        channel_editor_ctcss_popup_item[52] = new QListWidgetItem(QIcon(""), "192.8");
+        channel_editor_ctcss_popup_item[53] = new QListWidgetItem(QIcon(""), "196.6");
+        channel_editor_ctcss_popup_item[54] = new QListWidgetItem(QIcon(""), "199.5");
+        channel_editor_ctcss_popup_item[55] = new QListWidgetItem(QIcon(""), "203.5");
+        channel_editor_ctcss_popup_item[56] = new QListWidgetItem(QIcon(""), "206.5");
+        channel_editor_ctcss_popup_item[57] = new QListWidgetItem(QIcon(""), "210.7");
+        channel_editor_ctcss_popup_item[58] = new QListWidgetItem(QIcon(""), "218.1");
+        channel_editor_ctcss_popup_item[59] = new QListWidgetItem(QIcon(""), "225.7");
+        channel_editor_ctcss_popup_item[60] = new QListWidgetItem(QIcon(""), "229.1");
+        channel_editor_ctcss_popup_item[61] = new QListWidgetItem(QIcon(""), "233.6");
+        channel_editor_ctcss_popup_item[62] = new QListWidgetItem(QIcon(""), "241.8");
+        channel_editor_ctcss_popup_item[63] = new QListWidgetItem(QIcon(""), "250.3");
+        channel_editor_ctcss_popup_item[64] = new QListWidgetItem(QIcon(""), "254.1");
+    }
     for (int i = 0; i < 65; i++) {
         ui->ctcss_popup->addItem(channel_editor_ctcss_popup_item[i]);
     }
@@ -460,9 +460,9 @@ void MainWindow::main_screen()
         }
 
         ui->main_background->setStyleSheet(
-            "#main_background {"
-            " border-image: url(:/resources/back (" + QString::number(current_direction->background) + ").png)"
-            "}");
+                    "#main_background {"
+                    " border-image: url(:/resources/back (" + QString::number(current_direction->background) + ").png)"
+                                                                                                               "}");
 
         ui->dejurnii_label->setText("Дежурный приём");
     }
@@ -785,7 +785,7 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
         ui->channel_list->setCurrentItem(ref);
 
         ui->channel_popup_menu->setVisible(false);
-        ui->channel_list_left->setText("Меню");        
+        ui->channel_list_left->setText("Меню");
         channel_editor_screen();
     }
     // DELETE
@@ -856,25 +856,40 @@ void MainWindow::channel_editor_screen()
     set_default_channel_fields();
 
     switch (curr->state) {
-    case 0:
+    case 0: // none
+        break;
+    case 1: // dmo
+    {
+        break;
+    }
+    case 2: // tmo
+    {
 
         break;
-    case 1:
-
+    }
+    case 3: // vpd
+    {
+        ui->vpd_mcc->setText(curr->mcc);
+        ui->vpd_mnc->setText(curr->mnc);
+        ui->vpd_gssi->setText(curr->gssi);
+        ui->vpd_freq->setText(QString::number(curr->freq));
+        ui->vpd_name->setText(curr->name);
         break;
-    case 2:
-
+    }
+    case 4: // am25
+    {
+        ui->am25_prd->setChecked(curr->PRD);
+        ui->am25_dualfreq->setChecked(curr->dualfreq);
+        ui->am25_freq->setText(QString::number(curr->freq));
+        ui->am25_prm_freq->setText(QString::number(curr->prm_freq));
+        ui->am25_prd_freq->setText(QString::number(curr->prd_freq));
+        ui->am25_name->setText(curr->name);
         break;
-    case 3:
-
-        break;
-    case 4:
-
-        break;
-    case 5:
-    case 6:
-        ui->chm25_prd->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
-        ui->chm25_dualfreq->setCheckState(curr->dualfreq ? Qt::Checked : Qt::Unchecked);
+    }
+    case 5: // chm25
+    {
+        ui->chm25_prd->setChecked(curr->PRD);
+        ui->chm25_dualfreq->setChecked(curr->dualfreq);
         ui->chm25_freq->setText(QString::number(curr->freq));
         ui->chm25_prm_freq->setText(QString::number(curr->prm_freq));
         ui->chm25_prd_freq->setText(QString::number(curr->prd_freq));
@@ -883,10 +898,30 @@ void MainWindow::channel_editor_screen()
         ui->chm25_ctcss->setText(ui->ctcss_popup->currentItem()->text());
         ui->chm25_name->setText(curr->name);
         break;
-    case 7:
-
+    }
+    case 6: // chm50
+    {
+        ui->chm50_prd->setChecked(curr->PRD);
+        ui->chm50_dualfreq->setChecked(curr->dualfreq);
+        ui->chm50_freq->setText(QString::number(curr->freq));
+        ui->chm50_prm_freq->setText(QString::number(curr->prm_freq));
+        ui->chm50_prd_freq->setText(QString::number(curr->prd_freq));
+        ui->chm50_ctcss->setProperty("chosen", curr->ctcss);
+        ui->ctcss_popup->setCurrentRow(curr->ctcss);
+        ui->chm50_ctcss->setText(ui->ctcss_popup->currentItem()->text());
+        ui->chm50_name->setText(curr->name);
         break;
-    case 8:
+    }
+    case 7: // obp
+    {
+        ui->obp_prd->setChecked(curr->PRD);
+        ui->obp_band->setProperty("band", curr->band);
+        ui->obp_band->setText(curr->band ? "Верхняя" : "Нижняя");
+        ui->obp_freq->setText(QString::number(curr->freq));
+        ui->obp_name->setText(curr->name);
+        break;
+    }
+    case 8: // fm
 
         break;
     }
@@ -1213,50 +1248,167 @@ void MainWindow::on_channel_editor_left_clicked()
     // channel saving
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
 
+#define ERR ui->modals->setCurrentWidget(ui->params_error); \
+    return;
+
     uint32_t left, right;
 
     int state = ui->channel_editor_state->property("chosen").toInt();
-
+    using u32 = uint32_t;
     // check save option
-    switch (state) {
-    case 0:
+    switch (state)
+    {
+    case 0: // none
         // skip
         break;
-    case 1:
+    case 1: // dmo not implemented
         break;
-    case 2:
+    case 2: // tmo not implemented
         break;
-    case 3:
-        break;
-    case 4:
-        break;
-    case 5:
+    case 3: // vpd
+    {
         left = 1000000;
         right = 1000000000;
-        if(ui->chm25_dualfreq->isChecked()){
-            if(!in_range((uint32_t)ui->chm25_prm_freq->text().toInt(), left, right) || !in_range((uint32_t)ui->chm25_prd_freq->text().toInt(), left, right)){
-                ui->modals->setCurrentWidget(ui->params_error);
-                return;
+        u32 mcc = ui->vpd_mcc->text().toInt();
+        u32 mnc = ui->vpd_mnc->text().toInt();
+        u32 gssi = ui->vpd_gssi->text().toInt();
+        if (!in_range(mcc, 0, 999) || !in_range(mnc, 0, 999) || !in_range(gssi, 0, 16777215))
+        {
+            ERR
+        }
+        u32 freq = ui->vpd_freq->text().toInt();
+        if (!in_range(freq, left, right))
+        {
+            ERR
+        }
+        break;
+    }
+    case 4: // am25
+    {
+        left = 1000000;
+        right = 1000000000;
+        if (ui->am25_dualfreq->isChecked())
+        {
+            u32 am25_prm_freq = ui->am25_prm_freq->text().toInt();
+            u32 am25_prd_freq = ui->am25_prd_freq->text().toInt();
+            if (!in_range(am25_prm_freq, left, right) || !in_range(am25_prd_freq, left, right))
+            {
+                ERR
             }
         }
-        if(!in_range((uint32_t)ui->chm25_freq->text().toInt(), left, right)){
-            ui->modals->setCurrentWidget(ui->params_error);
-            return;
+        else
+        {
+            u32 freq = ui->am25_freq->text().toInt();
+            if (!in_range(freq, left, right))
+            {
+                ERR
+            }
+        }
+        if (ui->am25_name->text().isEmpty())
+        {
+            ERR
+        }
+        break;
+    }
+    case 5: // chm25
+    {
+        left = 1000000;
+        right = 1000000000;
+        if (ui->chm25_dualfreq->isChecked())
+        {
+            u32 chm25_prm_freq = ui->chm25_prm_freq->text().toInt();
+            u32 chm25_prd_freq = ui->chm25_prd_freq->text().toInt();
+            if (!in_range(chm25_prm_freq, left, right) || !in_range(chm25_prd_freq, left, right))
+            {
+                ERR
+            }
+        }
+        else
+        {
+            u32 freq = ui->chm25_freq->text().toInt();
+            if (!in_range(freq, left, right))
+            {
+                ERR
+            }
         }
 
-        if(ui->chm25_name->text().isEmpty()){
-            ui->modals->setCurrentWidget(ui->params_error);
-            return;
+        if (ui->chm25_name->text().isEmpty())
+        {
+            ERR
+        }
+        break;
+    }
+    case 6: // chm50
+    {
+        left = 1000000;
+        right = 1000000000;
+        if (ui->chm50_dualfreq->isChecked())
+        {
+            u32 chm50_prm_freq = ui->chm50_prm_freq->text().toInt();
+            u32 chm50_prd_freq = ui->chm50_prd_freq->text().toInt();
+            if (!in_range(chm50_prm_freq, left, right) || !in_range(chm50_prd_freq, left, right))
+            {
+                ERR
+            }
+        }
+        else
+        {
+            u32 freq = ui->chm50_freq->text().toInt();
+            if (!in_range(freq, left, right))
+            {
+                ERR
+            }
         }
 
+        if (ui->chm25_name->text().isEmpty())
+        {
+            ERR
+        }
         break;
-    case 6:
+    }
+    case 7: // obp
+    {
+        left = 1000000;
+        right = 1000000000;
+        u32 freq = ui->obp_freq->text().toInt();
+        if (!in_range(freq, left, right))
+        {
+            ERR
+        }
+
+        if (ui->obp_name->text().isEmpty())
+        {
+            ERR
+        }
         break;
-    case 7:
+    }
+    case 8: // fm
+    {
+        left = 1000000;
+        right = 1000000000;
+        if (ui->fm_dualfreq->isChecked())
+        {
+            u32 fm_prm_freq = ui->fm_prm_freq->text().toInt();
+            u32 fm_prd_freq = ui->fm_prd_freq->text().toInt();
+            if (!in_range(fm_prm_freq, left, right) || !in_range(fm_prd_freq, left, right))
+            {
+                ERR
+            }
+        }
+        else
+        {
+            u32 freq = ui->fm_freq->text().toInt();
+            if (!in_range(freq, left, right))
+            {
+                ERR
+            }
+        }
+        if (ui->fm_name->text().isEmpty())
+        {
+            ERR
+        }
         break;
-    case 8:
-        break;
-        return;
+    }
     }
 
     // clearing before saving
@@ -1264,34 +1416,74 @@ void MainWindow::on_channel_editor_left_clicked()
 
     curr->state = state;
 
-    switch (curr->state) {
-    case 0:
+    switch (curr->state)
+    {
+    case 0: // none
         // skip
         break;
-    case 1:
+    case 1: // dmo not implemented
         break;
-    case 2:
+    case 2: // tmo not implemented
         break;
-    case 3:
+    case 3:  // vpd
+    {
+        curr->mcc = ui->vpd_mcc->text().trimmed();
+        curr->mnc = ui->vpd_mnc->text().trimmed();
+        curr->gssi = ui->vpd_gssi->text().trimmed();
+        curr->freq = ui->vpd_freq->text().toInt();
+        curr->name = ui->vpd_name->text();
         break;
-    case 4:
+    }
+    case 4: // am25
+    {
+        curr->PRD = ui->am25_prd->isChecked();
+        curr->dualfreq = ui->am25_dualfreq->isChecked();
+        curr->freq = ui->am25_freq->text().toInt();
+        curr->prm_freq = ui->am25_prm_freq->text().toInt();
+        curr->prd_freq = ui->am25_prd_freq->text().toInt();
+        curr->name = ui->am25_name->text();
         break;
-    case 5:
+    }
+    case 5: // chm25
+    {
         curr->PRD = ui->chm25_prd->isChecked();
         curr->dualfreq = ui->chm25_dualfreq->isChecked();
-        curr->freq = (uint32_t)ui->chm25_freq->text().toInt();
-        curr->prm_freq = (uint32_t)ui->chm25_prm_freq->text().toInt();
-        curr->prd_freq = (uint32_t)ui->chm25_prd_freq->text().toInt();
+        curr->freq = ui->chm25_freq->text().toInt();
+        curr->prm_freq = ui->chm25_prm_freq->text().toInt();
+        curr->prd_freq = ui->chm25_prd_freq->text().toInt();
         curr->ctcss = ui->chm25_ctcss->property("chosen").toInt();
         curr->name = ui->chm25_name->text();
         break;
-    case 6:
+    }
+    case 6: // chm50
+    {
+        curr->PRD = ui->chm50_prd->isChecked();
+        curr->dualfreq = ui->chm50_dualfreq->isChecked();
+        curr->freq = ui->chm50_freq->text().toInt();
+        curr->prm_freq = ui->chm50_prm_freq->text().toInt();
+        curr->prd_freq = ui->chm50_prd_freq->text().toInt();
+        curr->ctcss = ui->chm50_ctcss->property("chosen").toInt();
+        curr->name = ui->chm50_name->text();
         break;
-    case 7:
+    }
+    case 7: // obp
+    {
+        curr->PRD = ui->obp_prd->isChecked();
+        curr->band = ui->obp_band->property("band") == 1 ? 0 : 1;
+        curr->freq = ui->obp_freq->text().toInt();
+        curr->name = ui->obp_name->text();
         break;
-    case 8:
+    }
+    case 8: // fm
+    {
+        curr->PRD = ui->fm_prd->isChecked();
+        curr->dualfreq = ui->fm_dualfreq->isChecked();
+        curr->freq = ui->fm_freq->text().toInt();
+        curr->prm_freq = ui->fm_prm_freq->text().toInt();
+        curr->prd_freq = ui->fm_prd_freq->text().toInt();
+        curr->name = ui->fm_name->text();
         break;
-        return;
+    }
     }
 
     selected_items["channel_list"]->setText(curr->name);
@@ -1773,7 +1965,7 @@ void MainWindow::broadcast_init()
     udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
     udpSocket.joinMulticastGroup(QHostAddress(ADDR));
     connect(&udpSocket, &QUdpSocket::readyRead,
-        this, &MainWindow::recieveDatagrams);
+            this, &MainWindow::recieveDatagrams);
 
     QAudioFormat format_in;
     format_in.setSampleRate(8000);
@@ -1856,7 +2048,7 @@ void MainWindow::sendDatagrams()
     datagram.append(freq_bytes, 4);
     datagram.append(inptDev->readAll());
     udpSocket.writeDatagram(datagram.data(), datagram.size(),
-        QHostAddress(ADDR), PORT);
+                            QHostAddress(ADDR), PORT);
 }
 
 void MainWindow::setReceiving(){
@@ -1868,8 +2060,8 @@ void MainWindow::setTransmitting(){
     ui->arrow->setStyleSheet("border-image: url(:/resources/per.png)");
     char buf[300] = "";
     Channel *ch = direction_map_d[selected_items["direction_selection_list"]]->ch;
-            //ui->dej_label_1->setText(tr("ПРИЕМ 59.000"));
-            //ui->dej_label_2->setText(tr("ЧМ25"));
+    //ui->dej_label_1->setText(tr("ПРИЕМ 59.000"));
+    //ui->dej_label_2->setText(tr("ЧМ25"));
     sprintf(buf, "ПЕРЕДАЧА %d.%03d", (ch->dualfreq ? ch->prd_freq / 1000000 : ch->freq / 1000000), (ch->dualfreq ? (ch->prd_freq / 1000) % 1000 : (ch->freq / 1000) % 1000));
     ui->dej_label_1->setText(tr(buf));
     switch (ch->state) {
@@ -1919,7 +2111,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
-                this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
+                               this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
         }
     }
 }
@@ -2898,7 +3090,7 @@ void MainWindow::update_direction_editor_page(){
         else{
             ui->channel_in_dir_name->setStyleSheet("text-align: left;");
         }
-        if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){            
+        if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
             if(channel_map_d.empty()){
                 ui->direction_editor_left->setText("");
             }
