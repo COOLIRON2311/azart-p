@@ -6,13 +6,14 @@
 #include "QListWidget"
 #include <map>
 #include <tuple>
+#include <queue>
 #include <QUdpSocket>
 #include <QAudioInput>
 #include <QAudioOutput>
 #include <qbuffer.h>
 #include "modalwindowrd.h"
 #include "modalwindow3d.h"
-#include <queue>
+#include "modalwindownorm.h"
 
 namespace Ui {
     class MainWindow;
@@ -26,8 +27,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     ModalWindowRD rdwin;
-    ModalWindow3D _3dwin;
-    std::queue<QTimer*> timers;
+    ModalWindow3D _3dwin;    
+    ModalWindowNorm normwin;
 
 public slots:
     void change_global_time();
@@ -291,7 +292,7 @@ private:
 
     //kostil
     ref chosen_ref_d = 0;
-
+    std::queue<QTimer*> timers;
 
     QUdpSocket udpSocket;
     const QString ADDR = "26.115.163.75";

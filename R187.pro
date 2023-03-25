@@ -28,6 +28,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         modalwindow3d.cpp \
+        modalwindownorm.cpp \
         modalwindowrd.cpp \
         styles.cpp
 
@@ -35,11 +36,13 @@ HEADERS += \
         listviewdelegate.h \
         mainwindow.h \
         modalwindow3d.h \
+        modalwindownorm.h \
         modalwindowrd.h \
         protocol.h
 
 FORMS += \
         mainwindow.ui \
+        modalwindownorm.ui \
         modalwindowrd.ui
 
 # Default rules for deployment.
