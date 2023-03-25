@@ -694,6 +694,8 @@ void MainWindow::on_service_menu_left_clicked()
     if(ui->modals->currentWidget() == ui->password){
         if(check_password(ui->password->property("password").toString())){
             ui->modals->setCurrentWidget(ui->no_modals);
+            ui->service_menu_left->setText("Выбрать");
+            ui->service_menu_right->setText("Назад");
             data_editor_screen();
             return;
         }
