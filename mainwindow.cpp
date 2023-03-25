@@ -575,6 +575,18 @@ bool check_password(const QString &pw){
 
 void MainWindow::on_service_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
+    if(item == service_menu_list_item[0]){
+        RS485_PRM_screen();
+    }
+    if(item == service_menu_list_item[1]){
+        RS485_PRD_screen();
+    }
+    if(item == service_menu_list_item[2]){
+        USB_PRM_screen();
+    }
+    if(item == service_menu_list_item[3]){
+        BL_PRM_screen();
+    }
     if(item == service_menu_list_item[7]){
         ui->label_16->setText("");
         ui->password->setProperty("password", "");
@@ -589,6 +601,37 @@ void MainWindow::data_editor_screen()
     ui->mainPages->setCurrentWidget(ui->data_editor_page);
     //WD
     //ui->data_editor_list->setCurrentItem(selected_items["data_editor_list"]);
+}
+
+void MainWindow::RS485_PRM_screen(){
+    ui->mainPages->setCurrentWidget(ui->RS485_PRM_page);
+}
+
+void MainWindow::RS485_PRD_screen(){
+    ui->mainPages->setCurrentWidget(ui->RS485_PRD_page);
+    ui->modals->setCurrentWidget(ui->privilege_level);
+}
+
+void MainWindow::USB_PRM_screen(){
+    ui->mainPages->setCurrentWidget(ui->USB_PRM_page);
+}
+
+void MainWindow::BL_PRM_screen(){
+    ui->mainPages->setCurrentWidget(ui->BL_PRM_page);
+    ui->modals->setCurrentWidget(ui->privilege_level);
+}
+
+void MainWindow::BL_PRD_screen(){
+    ui->mainPages->setCurrentWidget(ui->BL_PRD_page);
+    ui->modals->setCurrentWidget(ui->privilege_level);
+}
+
+void MainWindow::IR_PRM_screen(){
+    ui->mainPages->setCurrentWidget(ui->IR_PRM_page);
+}
+
+void MainWindow::IR_PRD_screen(){
+    ui->mainPages->setCurrentWidget(ui->IR_PRD_page);
 }
 
 void MainWindow::update_channel_list_screen()
@@ -2004,6 +2047,22 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->direction_editor_page){
         ui->direction_editor_right->click();
+        return;
+    }
+    if(curr == ui->RS485_PRM_page){
+        ui->RS485_PRM_right->click();
+        return;
+    }
+    if(curr == ui->RS485_PRD_page){
+        ui->RS485_PRD_right->click();
+        return;
+    }
+    if(curr == ui->USB_PRM_page){
+        ui->RS485_PRM_right->click();
+        return;
+    }
+    if(curr == ui->BL_PRM_page){
+        ui->BL_PRM_right->click();
         return;
     }
 }
@@ -3469,10 +3528,6 @@ void MainWindow::on_left_tube_clicked()
     }
 }
 
-void MainWindow::on_right_tube_clicked()
-{
-}
-
 void MainWindow::on_chm25_dualfreq_clicked()
 {
     if(ui->chm25_dualfreq->isChecked()){
@@ -3497,12 +3552,13 @@ void MainWindow::check_holded_right_tube(int i){
 
         // включение после секунды
         if(ui->mainPages->currentWidget() == ui->offscreen){
+            ui->right_tube->setProperty("was_action", true);
             selfcontrol_screen();
             return;
         }
 
-
         if(ui->modals->currentWidget() == ui->no_modals){
+            ui->right_tube->setProperty("was_action", true);
             ui->modals->setCurrentWidget(ui->shutdown);
             QTimer* t;
             timers.push(t = new QTimer());
@@ -3512,6 +3568,7 @@ void MainWindow::check_holded_right_tube(int i){
         }
 
         if(ui->modals->currentWidget() == ui->shutdown){
+            ui->right_tube->setProperty("was_action", true);
             ui->modals->setCurrentWidget(ui->no_modals);
             ui->mainPages->setCurrentWidget(ui->offscreen);
             return;
@@ -3525,6 +3582,8 @@ void MainWindow::on_right_tube_pressed()
         ui->modals->setCurrentWidget(ui->no_modals);
         return;
     }
+
+    ui->right_tube->setProperty("was_action", false);
 
     auto curr = ui->mainPages->currentWidget();
     int i = ui->right_tube->property("clicked_times").toInt();
@@ -3542,4 +3601,55 @@ void MainWindow::on_right_tube_released()
         ui->modals->setCurrentWidget(ui->no_modals);
         return;
     }
+
+    if(ui->right_tube->property("was_action").toBool() == false){
+        if(ui->mainPages->currentWidget() == ui->channel_editor_page){
+            channel_list_screen();
+            // TODO
+        }
+        if(ui->mainPages->currentWidget() == ui->RS485_PRM_page){
+            service_menu_screen();
+            return;
+        }
+        if(ui->mainPages->currentWidget() == ui->RS485_PRD_page){
+            service_menu_screen();
+            ui->modals->setCurrentWidget(ui->no_modals);
+            return;
+        }
+        if(ui->mainPages->currentWidget() == ui->USB_PRM_page){
+            service_menu_screen();
+            return;
+        }
+        if(ui->mainPages->currentWidget() == ui->BL_PRM_page){
+            service_menu_screen();
+            ui->modals->setCurrentWidget(ui->no_modals);
+            return;
+        }
+        if(ui->mainPages->currentWidget() == ui->BL_PRD_page){
+            service_menu_screen();
+            ui->modals->setCurrentWidget(ui->no_modals);
+            return;
+        }
+    }
+}
+
+void MainWindow::on_RS485_PRM_right_clicked()
+{
+    service_menu_screen();
+}
+
+void MainWindow::on_USB_PRM_right_clicked()
+{
+    service_menu_screen();
+}
+
+void MainWindow::on_RS485_PRD_right_clicked()
+{
+    service_menu_screen();
+    ui->modals->setCurrentWidget(ui->no_modals);
+}
+
+void MainWindow::on_BL_PRM_right_clicked()
+{
+    ui->lineEdit->backspace();
 }

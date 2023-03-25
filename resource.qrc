@@ -50,5 +50,7 @@
         <file>resources/volume_14.png</file>
         <file>resources/volume_15.png</file>
         <file>resources/volume_16.png</file>
+        <file>resources/toggler.png</file>
+        <file>resources/блютус.png</file>
     </qresource>
 </RCC>

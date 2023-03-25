@@ -44,6 +44,14 @@ public Q_SLOTS:
     void service_menu_screen();
     void data_editor_screen();
 
+    void RS485_PRM_screen();
+    void RS485_PRD_screen();
+    void USB_PRM_screen();
+    void BL_PRM_screen();
+    void BL_PRD_screen();
+    void IR_PRM_screen();
+    void IR_PRD_screen();
+
     void update_channel_list_screen();
     void update_direction_list_screen();
 
@@ -173,8 +181,6 @@ private slots:
 
     void on_left_tube_clicked();
 
-    void on_right_tube_clicked();
-
     void on_data_editor_list_itemSelectionChanged();
 
     void on_channel_popup_menu_list_itemSelectionChanged();
@@ -214,6 +220,14 @@ private slots:
 
     void volume_handler(int);
     void noise_handler(int);
+
+    void on_RS485_PRM_right_clicked();
+
+    void on_USB_PRM_right_clicked();
+
+    void on_RS485_PRD_right_clicked();
+
+    void on_BL_PRM_right_clicked();
 
 private:
     void on_number_i_clicked(int);
