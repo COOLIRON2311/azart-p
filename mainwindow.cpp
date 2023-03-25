@@ -2895,6 +2895,28 @@ void MainWindow::update_direction_editor_page(){
                ==
 */
 
+void MainWindow::volume_handler(int i){
+    if(i == ui->volume->property("clicked_times").toInt()){
+        if(ui->atuners->currentWidget() == ui->volume){
+            ui->atuners->setCurrentWidget(ui->no_tuners);
+            return;
+        }
+        return;
+    }
+    return;
+}
+
+void MainWindow::noise_handler(int i){
+    if(i == ui->noise->property("clicked_times").toInt()){
+        if(ui->atuners->currentWidget() == ui->noise){
+            ui->atuners->setCurrentWidget(ui->no_tuners);
+            return;
+        }
+        return;
+    }
+    return;
+}
+
 void MainWindow::on_up_arrow_clicked()
 {
     if(ui->modals->currentWidget() == ui->params_error){
@@ -2914,6 +2936,38 @@ void MainWindow::on_up_arrow_clicked()
             ui->widget_8->setStyleSheet("font-weight: bold;");
         }
         return;
+    }
+    if(curr == ui->main_page){
+        QTimer *t;
+        timers.push(t = new QTimer());
+        if(ui->atuners->currentWidget() == ui->no_tuners){
+            ui->atuners->setCurrentWidget(ui->volume);
+            int i = ui->volume->property("clicked_times").toInt() + 1;
+            ui->volume->setProperty("clicked_times", i);
+            connect(t, &QTimer::timeout, this, [i, t, this](){ volume_handler(i); t->stop(); });
+            t->start(1000);
+            return;
+        }
+        if(ui->atuners->currentWidget() == ui->volume){
+            volume++;
+            if(volume > MAX_VOLUME) volume = MAX_VOLUME;
+            ui->label_89->setStyleSheet("image: url(:/resources/volume_" + QString::number(volume) + ".png)");
+            int i = ui->volume->property("clicked_times").toInt() + 1;
+            ui->volume->setProperty("clicked_times", i);
+            connect(t, &QTimer::timeout, this, [i, t, this](){ volume_handler(i); t->stop(); });
+            t->start(1000);
+            return;
+        }
+        if(ui->atuners->currentWidget() == ui->noise){
+            noise++;
+            if(noise > MAX_NOISE) noise = MAX_NOISE;
+            ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(noise) + ".png)");
+            int i = ui->noise->property("clicked_times").toInt() + 1;
+            ui->noise->setProperty("clicked_times", i);
+            connect(t, &QTimer::timeout, this, [i, t, this](){ noise_handler(i); t->stop(); });
+            t->start(1000);
+            return;
+        }
     }
     if(curr == ui->menu_page){
         go_up(ui->menu_list, menu_list_size);
@@ -3128,7 +3182,7 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
 
-    auto curr = ui->mainPages->currentWidget();
+    auto curr = ui->mainPages->currentWidget();    
     if(curr == ui->loading_page){
         //changing type
         if(is_open_communication){
@@ -3140,6 +3194,38 @@ void MainWindow::on_down_arrow_clicked()
             ui->widget_8->setStyleSheet("background: rgb(0, 0, 255);");
         }
         return;
+    }
+    if(curr == ui->main_page){
+        QTimer *t;
+        timers.push(t = new QTimer());
+        if(ui->atuners->currentWidget() == ui->no_tuners){
+            ui->atuners->setCurrentWidget(ui->noise);
+            int i = ui->noise->property("clicked_times").toInt() + 1;
+            ui->noise->setProperty("clicked_times", i);
+            connect(t, &QTimer::timeout, this, [i, t, this](){ noise_handler(i); t->stop(); });
+            t->start(1000);
+            return;
+        }
+        if(ui->atuners->currentWidget() == ui->volume){
+            volume--;
+            if(volume < MIN_VOLUME) volume = MIN_VOLUME;
+            ui->label_89->setStyleSheet("image: url(:/resources/volume_" + QString::number(volume) + ".png)");
+            int i = ui->volume->property("clicked_times").toInt() + 1;
+            ui->volume->setProperty("clicked_times", i);
+            connect(t, &QTimer::timeout, this, [i, t, this](){ volume_handler(i); t->stop(); });
+            t->start(1000);
+            return;
+        }
+        if(ui->atuners->currentWidget() == ui->noise){
+            noise--;
+            if(noise < MIN_NOISE) noise = MIN_NOISE;
+            ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(noise) + ".png)");
+            int i = ui->noise->property("clicked_times").toInt() + 1;
+            ui->noise->setProperty("clicked_times", i);
+            connect(t, &QTimer::timeout, this, [i, t, this](){ noise_handler(i); t->stop(); });
+            t->start(1000);
+            return;
+        }
     }
     if(curr == ui->menu_page){
         go_down(ui->menu_list, menu_list_size);

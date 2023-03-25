@@ -209,6 +209,10 @@ private slots:
 
     void check_holded_right_tube(int);
 
+    void volume_handler(int);
+
+    void noise_handler(int);
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
@@ -307,6 +311,13 @@ private:
     QMetaObject::Connection outpConn;
     const uint BUF_SZ = 1024;
     char freq_bytes[4];
+
+    int volume = 6;
+    int noise = 6;
+    int MAX_VOLUME = 16;
+    int MAX_NOISE = 16;
+    int MIN_VOLUME = 0;
+    int MIN_NOISE = 0;
 
 protected:
 

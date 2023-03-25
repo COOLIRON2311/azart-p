@@ -7745,7 +7745,7 @@ text-align:right;</string>
          <item>
           <widget class="QLabel" name="label_89">
            <property name="styleSheet">
-            <string notr="true">image: url(:/resources/volume_9.png)</string>
+            <string notr="true">image: url(:/resources/volume_6.png)</string>
            </property>
            <property name="text">
             <string/>
@@ -7832,7 +7832,7 @@ text-align:right;</string>
          <item>
           <widget class="QLabel" name="label_92">
            <property name="styleSheet">
-            <string notr="true">image: url(:/resources/volume_9.png)</string>
+            <string notr="true">image: url(:/resources/volume_6.png)</string>
            </property>
            <property name="text">
             <string/>
