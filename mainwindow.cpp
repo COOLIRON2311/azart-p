@@ -337,6 +337,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->atuners->move(250, 210);
 
     ui->label_107->setVisible(false);
+    ui->obp_band->setProperty("band", 1);
 }
 
 void MainWindow::setup(){
