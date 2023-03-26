@@ -638,11 +638,9 @@ void MainWindow::update_channel_list_screen()
 {
     if(selected_items["channel_list"] == nullptr){
         ui->empty_channel_list_label->setVisible(true);
-        //ui->empty_channel_list_label->setEnabled(true);
     }
     else{
         ui->empty_channel_list_label->setVisible(false);
-        //ui->empty_channel_list_label->setEnabled(false);
     }
 }
 
@@ -752,6 +750,32 @@ void MainWindow::on_channel_list_left_clicked()
     }
 }
 
+bool MainWindow::delete_channel(QListWidgetItem *item){
+    if(item == nullptr) return false;
+
+    // for channel
+    ui->channel_list->removeItemWidget(item);
+    // for directions
+    ui->channel_choice_list->removeItemWidget(channel_map[item].ref2);
+    channel_map_d.erase(channel_map[item].ref2);
+
+    delete channel_map[item].channel;
+    delete channel_map[item].ref2;
+    channel_map.erase(item);
+
+    // PA: we dont do it cause qt does it by itself and even better
+    // selected_items["channel_list"] = nullptr;
+    // delete a chosen item causes item Selection automatically from available items
+
+    delete item;
+
+    // PA: a few lines above
+    // selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
+    // ui->channel_list->setCurrentItem(channel_map.empty() ? nullptr : channel_map.begin()->first);
+
+    return true;
+}
+
 void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     //look at the choice
@@ -759,7 +783,6 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     if(item == channel_popup_menu_list_item[0]){
         if(selected_items["channel_list"] == nullptr) return;
         //else
-        //ui->channel_popup_menu->setEnabled(false);
         ui->channel_popup_menu->setVisible(false);
         ui->channel_list_left->setText("Меню");
         channel_editor_screen();
@@ -790,29 +813,7 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     }
     // DELETE
     if(item == channel_popup_menu_list_item[2]){
-        if(selected_items["channel_list"] != nullptr){
-
-            // for channel
-            ui->channel_list->removeItemWidget(selected_items["channel_list"]);
-            // for directions
-            ui->channel_choice_list->removeItemWidget(channel_map[selected_items["channel_list"]].ref2);
-            channel_map_d.erase(channel_map[selected_items["channel_list"]].ref2);
-
-            delete channel_map[selected_items["channel_list"]].channel;
-            delete channel_map[selected_items["channel_list"]].ref2;
-            channel_map.erase(selected_items["channel_list"]);
-
-            // PA: we dont do it cause qt does it by itself and even better
-            // selected_items["channel_list"] = nullptr;
-            // delete a chosen item causes item Selection automatically from available items
-
-            delete selected_items["channel_list"];
-
-            // PA: a few lines above
-            // selected_items["channel_list"] = channel_map.empty() ? nullptr : channel_map.begin()->first;
-            // ui->channel_list->setCurrentItem(channel_map.empty() ? nullptr : channel_map.begin()->first);
-
-            //ui->channel_popup_menu->setEnabled(false);
+        if(delete_channel(selected_items["channel_list"])){
             ui->channel_popup_menu->setVisible(false);
             ui->channel_list_left->setText("Меню");
             update_channel_list_screen();
@@ -1247,9 +1248,9 @@ void MainWindow::on_channel_editor_left_clicked()
 
     // channel saving
     Channel* curr = channel_map[selected_items["channel_list"]].channel;
+    curr->is_new = false;
 
-#define ERR ui->modals->setCurrentWidget(ui->params_error); \
-    return;
+#define ERR ui->modals->setCurrentWidget(ui->params_error); return; \
 
     uint32_t left, right;
 
@@ -3797,29 +3798,71 @@ void MainWindow::on_right_tube_released()
     }
 
     if(ui->right_tube->property("was_action").toBool() == false){
-        if(ui->mainPages->currentWidget() == ui->channel_editor_page){
-            channel_list_screen();
-            // TODO
+        auto curr = ui->mainPages->currentWidget();
+        if(curr == ui->loading_page){
+            return;
         }
-        if(ui->mainPages->currentWidget() == ui->RS485_PRM_page){
+        if(curr == ui->main_page){
+            return;
+        }
+        if(curr == ui->menu_page){
+            main_screen();
+            return;
+        }
+        if(curr == ui->service_menu_page){
+            menu_screen();
+            return;
+        }
+        if(curr == ui->data_editor_page){
             service_menu_screen();
             return;
         }
-        if(ui->mainPages->currentWidget() == ui->RS485_PRD_page){
+        if(curr == ui->channel_list_page){
+            data_editor_screen();
+            return;
+        }
+        if(curr == ui->direction_list_page){
+            data_editor_screen();
+            return;
+        }
+        if(curr == ui->direction_selection_page){
+            // nothing
+            //return;
+        }
+        if(curr == ui->channel_editor_page){
+            if(ui->modals->currentWidget() == ui->no_modals){
+                if(channel_map[selected_items["channel_list"]].channel->is_new){
+                    delete_channel(selected_items["channel_list"]);
+                }
+                channel_list_screen();
+                return;
+            }
+            ui->modals->setCurrentWidget(ui->no_modals);
+            return;
+        }
+        if(curr == ui->direction_editor_page){
+            return;
+        }
+
+        if(curr == ui->RS485_PRM_page){
+            service_menu_screen();
+            return;
+        }
+        if(curr == ui->RS485_PRD_page){
             service_menu_screen();
             ui->modals->setCurrentWidget(ui->no_modals);
             return;
         }
-        if(ui->mainPages->currentWidget() == ui->USB_PRM_page){
+        if(curr == ui->USB_PRM_page){
             service_menu_screen();
             return;
         }
-        if(ui->mainPages->currentWidget() == ui->BL_PRM_page){
+        if(curr == ui->BL_PRM_page){
             service_menu_screen();
             ui->modals->setCurrentWidget(ui->no_modals);
             return;
         }
-        if(ui->mainPages->currentWidget() == ui->BL_PRD_page){
+        if(curr == ui->BL_PRD_page){
             service_menu_screen();
             ui->modals->setCurrentWidget(ui->no_modals);
             return;

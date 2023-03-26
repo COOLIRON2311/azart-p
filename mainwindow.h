@@ -128,6 +128,8 @@ private slots:
     void on_data_editor_left_clicked(); //
     void on_data_editor_right_clicked(); //
 
+    bool delete_channel(QListWidgetItem *item);
+
     void on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
     void on_channel_editor_left_clicked(); //
@@ -343,6 +345,7 @@ protected:
 
 struct MainWindow::Channel
 {
+    bool is_new = true;
     quint32 state = 0; //"Не задано"
     bool PRD = false;
     bool dualfreq = false;
@@ -358,28 +361,18 @@ struct MainWindow::Channel
 
     // set default all fields
     void clear(){
-        // dmo
-        // tmo
-        // am25
-        // vpd
-        // chm25
-        // chm50
-
         state = 0; //"Не задано"
         PRD = false;
         dualfreq = false;
         freq = 0;
-        band = 0;
+        band = 1; // Верхняя
         prm_freq = 0;
         prd_freq = 0;
         ctcss = 0;
         name = "";
-        mcc = "";
-        mnc = "";
+        mcc = "250";
+        mnc = "1";
         gssi = "";
-
-        // obp
-        // fm
     }
 };
 
@@ -388,10 +381,10 @@ struct MainWindow::Direction
     Channel* ch = nullptr;
     bool PRD = false;
     bool tone_call = false;
-    quint32 scan_list = 0; //32
-    qint32 economizer = 3; //4
+    quint32 scan_list = 0; //0 - 31
+    qint32 economizer = 3; //0 - 3
     QString name = "";
-    quint32 background = 0; //?
+    quint32 background = 0; //1 - 10
 
     // set default all fields
     void clear(){
