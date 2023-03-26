@@ -542,12 +542,39 @@ background: rgb(250, 250, 250)</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>8</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="offscreen">
        <property name="styleSheet">
         <string notr="true">background: black;</string>
        </property>
+       <layout class="QVBoxLayout" name="verticalLayout_62">
+        <item>
+         <widget class="QLabel" name="label_107">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: white;</string>
+          </property>
+          <property name="text">
+           <string>Выключение питания</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="IR_PRD_page"/>
       <widget class="QWidget" name="IR_PRM_page"/>
@@ -9138,8 +9165,8 @@ text-align:right;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>515</width>
-     <height>25</height>
+     <width>770</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

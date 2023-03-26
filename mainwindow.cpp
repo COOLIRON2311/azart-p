@@ -335,6 +335,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->modals->move(250, 210);
     ui->atuners->move(250, 210);
+
+    ui->label_107->setVisible(false);
 }
 
 void MainWindow::setup(){
@@ -3751,14 +3753,26 @@ void MainWindow::on_talk_button_pressed()
 void MainWindow::check_holded_right_tube(int i){
     if(i == ui->right_tube->property("clicked_times").toInt()){
 
+        auto currPage = ui->mainPages->currentWidget();
+        auto currModal = ui->modals->currentWidget();
+
         // включение после секунды
-        if(ui->mainPages->currentWidget() == ui->offscreen){
+        if(currPage == ui->offscreen){
             ui->right_tube->setProperty("was_action", true);
             selfcontrol_screen();
             return;
         }
 
-        if(ui->modals->currentWidget() == ui->no_modals){
+        // пропускание
+        if(currPage == ui->selfcontrol_page){
+            return;
+        }
+        if(currPage == ui->loading_page){
+            return;
+        }
+
+        // предупреждение выключения после секунды
+        if(currModal == ui->no_modals){
             ui->right_tube->setProperty("was_action", true);
             ui->modals->setCurrentWidget(ui->shutdown);
             QTimer* t;
@@ -3768,10 +3782,17 @@ void MainWindow::check_holded_right_tube(int i){
             return;
         }
 
-        if(ui->modals->currentWidget() == ui->shutdown){
+        // выключение после ещё 1 секунды
+        if(currModal == ui->shutdown){
             ui->right_tube->setProperty("was_action", true);
             ui->modals->setCurrentWidget(ui->no_modals);
             ui->mainPages->setCurrentWidget(ui->offscreen);
+            ui->label_107->setVisible(true);
+            QTimer *t;
+            timers.push(t = new QTimer());
+            auto label = ui->label_107;
+            connect(t, &QTimer::timeout, this, [t, label](){ label->setVisible(false); t->stop(); });
+            t->start(1000);
             return;
         }
     }
