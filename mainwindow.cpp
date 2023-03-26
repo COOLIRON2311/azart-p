@@ -333,8 +333,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->widget_29->setGraphicsEffect(effect);
     ui->widget_30->setGraphicsEffect(effect);
 
-    ui->modals->move(250, 210);
-    ui->atuners->move(250, 210);
+    ui->modals->move(248, 210);
+    ui->atuners->move(248, 210);
 
     ui->label_107->setVisible(false);
     ui->obp_band->setProperty("band", 1);
