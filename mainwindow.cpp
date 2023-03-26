@@ -831,16 +831,16 @@ void MainWindow::set_default_channel_fields(){
     // dmo
 
     // tmo
-    ui->tmo_mcc->setText("");
-    ui->tmo_mnc->setText("");
+    ui->tmo_mcc->setText("250");
+    ui->tmo_mnc->setText("1");
     ui->tmo_gssi->setText("");
     ui->tmo_vesh->setChecked(false);
     ui->tmo_mask->setChecked(false);
     ui->tmo_name->setText("");
 
     // vpd
-    ui->vpd_mcc->setText("");
-    ui->vpd_mnc->setText("");
+    ui->vpd_mcc->setText("250");
+    ui->vpd_mnc->setText("1");
     ui->vpd_gssi->setText("");
     ui->vpd_freq->setText("");
     ui->vpd_name->setText("");
@@ -863,7 +863,7 @@ void MainWindow::set_default_channel_fields(){
     ui->chm25_ctcss->setText(ui->ctcss_popup->currentItem()->text());
     ui->chm25_name->setText("");
 
-    // chm50 {the same}
+    // chm50
     ui->chm50_prd->setChecked(false);
     ui->chm50_dualfreq->setChecked(false);
     ui->chm50_freq->setText("");
@@ -875,8 +875,8 @@ void MainWindow::set_default_channel_fields(){
 
     // obp
     ui->obp_prd->setChecked(false);
-    ui->obp_band->setProperty("band", 0);
-    ui->obp_band->setText("Нижняя");
+    ui->obp_band->setProperty("band", 1);
+    ui->obp_band->setText("Верхняя");
     ui->obp_freq->setText("");
     ui->obp_name->setText("");
 
