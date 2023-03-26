@@ -76,7 +76,7 @@ void MainWindow::set_styles()
     ui->direction_list_right->setFont(fb);
 
     // Menu page
-    ui->label_3->setFont(fb);
+    ui->label_dej_2->setFont(fb);
     ui->menu_list->setFont(f);
     ui->menu_left->setFont(fb);
     ui->menu_right->setFont(fb);
@@ -87,7 +87,7 @@ void MainWindow::set_styles()
     ui->direction_selection_right->setFont(fb);
 
     // Main page
-    ui->dejurnii_label->setFont(fb);
+    ui->label_dej_1->setFont(fb);
     // ui->hours_minutes_2->setFont(minf);
     // ui->seconds_2->setFont(secf);
     ui->main_left->setFont(fb);

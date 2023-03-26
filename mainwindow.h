@@ -94,6 +94,9 @@ private:
 
 private slots:
 
+    void hide_dej_labels();
+    void show_dej_labels();
+
     void hideDej();
 
     void show_3d();

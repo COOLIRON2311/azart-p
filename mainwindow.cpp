@@ -466,11 +466,11 @@ void MainWindow::main_screen()
                     " border-image: url(:/resources/back (" + QString::number(current_direction->background) + ").png)"
                                                                                                                "}");
 
-        ui->dejurnii_label->setText("Дежурный приём");
+        show_dej_labels();
     }
     else{
         ui->main_background->setStyleSheet("background-color: black");
-        ui->dejurnii_label->setText("");
+        hide_dej_labels();
     }
 }
 
@@ -478,9 +478,12 @@ void MainWindow::menu_screen()
 {
     ui->mainPages->setCurrentWidget(ui->menu_page);
     ui->modals->setCurrentWidget(ui->no_modals);
-    //ui->dej->setVisible(false);
-    //WD
-    //ui->menu_list->setCurrentItem(selected_items["menu_list"]);
+    if(current_direction != nullptr){
+        show_dej_labels();
+    }
+    else{
+        hide_dej_labels();
+    }
 }
 
 void MainWindow::service_menu_screen()
@@ -2010,10 +2013,20 @@ void MainWindow::broadcast_init()
     connect(&udpSocket, SIGNAL(readyRead()), this, SLOT(recieveDatagrams()), Qt::QueuedConnection);
 }
 
+void MainWindow::hide_dej_labels(){
+    ui->label_dej_1->setText("");
+    ui->label_dej_2->setText("");
+}
+
+void MainWindow::show_dej_labels(){
+    ui->label_dej_1->setText("Дежурный прием");
+    ui->label_dej_2->setText("Дежурный прием");
+}
+
 void MainWindow::hideDej(){
     if(!--receivedPackets){
         ui->modals->setCurrentWidget(ui->no_modals);
-        //ui->dej->setVisible(false);
+        hide_dej_labels();
     }
 }
 
@@ -2032,12 +2045,13 @@ void MainWindow::recieveDatagrams()
         setReceiving();
         if(ui->mainPages->currentWidget() == ui->main_page){
             ui->modals->setCurrentWidget(ui->pr_per);
-            //ui->dej->setVisible(true);
         }
-        QTimer timer;
-        timer.start(1000);
+        hide_dej_labels();
+        QTimer *t;
+        timers.push(t = new QTimer());
         receivedPackets++;
-        connect(&timer, &QTimer::timeout, this, &MainWindow::hideDej);
+        connect(t, &QTimer::timeout, this, [t, this](){ hideDej(); t->stop(); });
+        t->start(1000);
         buffer.append(datagram.constData() + 4, datagram.size() - 4);
         playSamples();
     }
@@ -2113,9 +2127,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             transmitting = true;
 
             setTransmitting();
+            hide_dej_labels();
             if(ui->mainPages->currentWidget() == ui->main_page){
                 ui->modals->setCurrentWidget(ui->pr_per);
-                //ui->dej->setVisible(true);
             }
 
             inptDev = inpt->start();
@@ -2134,7 +2148,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
             transmitting = false;
 
             ui->modals->setCurrentWidget(ui->no_modals);
-            //ui->dej->setVisible(false);
+            show_dej_labels();
 
             inptDev->close();
             inpt->stop();
@@ -3165,6 +3179,7 @@ void MainWindow::update_direction_editor_page(){
             ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
             break;
         case 6:
             ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
