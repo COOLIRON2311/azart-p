@@ -828,15 +828,33 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
 
 void MainWindow::set_default_channel_fields(){
     // dmo
+
     // tmo
+    ui->tmo_mcc->setText("");
+    ui->tmo_mnc->setText("");
+    ui->tmo_gssi->setText("");
+    ui->tmo_vesh->setChecked(false);
+    ui->tmo_mask->setChecked(false);
+    ui->tmo_name->setText("");
+
     // vpd
+    ui->vpd_mcc->setText("");
+    ui->vpd_mnc->setText("");
+    ui->vpd_gssi->setText("");
+    ui->vpd_freq->setText("");
+    ui->vpd_name->setText("");
+
     // am25
+    ui->am25_prd->setChecked(false);
+    ui->am25_dualfreq->setChecked(false);
+    ui->am25_freq->setText("");
+    ui->am25_prm_freq->setText("");
+    ui->am25_prd_freq->setText("");
+    ui->am25_name->setText("");
 
     // chm25
-    // chm50 {the same}
-
-    ui->chm25_prd->setCheckState(Qt::Unchecked);
-    ui->chm25_dualfreq->setCheckState(Qt::Unchecked);
+    ui->chm25_prd->setChecked(false);
+    ui->chm25_dualfreq->setChecked(false);
     ui->chm25_freq->setText("");
     ui->chm25_prm_freq->setText("");
     ui->chm25_prd_freq->setText("");
@@ -844,8 +862,30 @@ void MainWindow::set_default_channel_fields(){
     ui->chm25_ctcss->setText(ui->ctcss_popup->currentItem()->text());
     ui->chm25_name->setText("");
 
+    // chm50 {the same}
+    ui->chm50_prd->setChecked(false);
+    ui->chm50_dualfreq->setChecked(false);
+    ui->chm50_freq->setText("");
+    ui->chm50_prm_freq->setText("");
+    ui->chm50_prd_freq->setText("");
+    ui->ctcss_popup->setCurrentRow(0);
+    ui->chm50_ctcss->setText(ui->ctcss_popup->currentItem()->text());
+    ui->chm50_name->setText("");
+
     // obp
+    ui->obp_prd->setChecked(false);
+    ui->obp_band->setProperty("band", 0);
+    ui->obp_band->setText("Нижняя");
+    ui->obp_freq->setText("");
+    ui->obp_name->setText("");
+
     // fm
+    ui->fm_prd->setChecked(false);
+    ui->fm_dualfreq->setChecked(false);
+    ui->fm_freq->setText("");
+    ui->fm_prm_freq->setText("");
+    ui->fm_prd_freq->setText("");
+    ui->fm_name->setText("");
 }
 
 // channel loading
@@ -864,13 +904,18 @@ void MainWindow::channel_editor_screen()
     switch (curr->state) {
     case 0: // none
         break;
-    case 1: // dmo
+    case 1: // dmo not implemented
     {
         break;
     }
     case 2: // tmo
     {
-
+        ui->tmo_mcc->setText(curr->mcc);
+        ui->tmo_mnc->setText(curr->mnc);
+        ui->tmo_gssi->setText(curr->gssi);
+        ui->tmo_vesh->setChecked(curr->vesh);
+        ui->tmo_mask->setChecked(curr->mask);
+        ui->tmo_name->setText(curr->name);
         break;
     }
     case 3: // vpd
@@ -928,8 +973,15 @@ void MainWindow::channel_editor_screen()
         break;
     }
     case 8: // fm
-
+    {
+        ui->fm_prd->setChecked(curr->PRD);
+        ui->fm_dualfreq->setChecked(curr->dualfreq);
+        ui->fm_freq->setText(QString::number(curr->freq));
+        ui->fm_prm_freq->setText(QString::number(curr->prm_freq));
+        ui->fm_prd_freq->setText(QString::number(curr->prd_freq));
+        ui->fm_name->setText(curr->name);
         break;
+    }
     }
 
     // Always point to the first field first
@@ -1273,10 +1325,25 @@ void MainWindow::on_channel_editor_left_clicked()
     case 0: // none
         // skip
         break;
-    case 1: // dmo not implemented
+    case 1: // dmo
+    {
         break;
-    case 2: // tmo not implemented
+    }
+    case 2: // tmo
+    {
+        u32 mcc = ui->tmo_mcc->text().toInt();
+        u32 mnc = ui->tmo_mnc->text().toInt();
+        u32 gssi = ui->tmo_gssi->text().toInt();
+        if (!in_range(mcc, 0, 1000) || !in_range(mnc, 0, 1000) || !in_range(gssi, 0, 16777216))
+        {
+            ERR
+        }
+        if (ui->tmo_name->text().isEmpty())
+        {
+            ERR
+        }
         break;
+    }
     case 3: // vpd
     {
         left = 1000000;
@@ -1284,12 +1351,16 @@ void MainWindow::on_channel_editor_left_clicked()
         u32 mcc = ui->vpd_mcc->text().toInt();
         u32 mnc = ui->vpd_mnc->text().toInt();
         u32 gssi = ui->vpd_gssi->text().toInt();
-        if (!in_range(mcc, 0, 999) || !in_range(mnc, 0, 999) || !in_range(gssi, 0, 16777215))
+        if (!in_range(mcc, 0, 1000) || !in_range(mnc, 0, 1000) || !in_range(gssi, 0, 16777216))
         {
             ERR
         }
         u32 freq = ui->vpd_freq->text().toInt();
         if (!in_range(freq, left, right))
+        {
+            ERR
+        }
+        if (ui->vpd_name->text().isEmpty())
         {
             ERR
         }
@@ -1435,8 +1506,16 @@ void MainWindow::on_channel_editor_left_clicked()
         break;
     case 1: // dmo not implemented
         break;
-    case 2: // tmo not implemented
+    case 2: // tmo
+    {
+        curr->mcc = ui->tmo_mcc->text().trimmed();
+        curr->mnc = ui->tmo_mnc->text().trimmed();
+        curr->gssi = ui->tmo_gssi->text().trimmed();
+        curr->vesh = ui->tmo_vesh->isChecked();
+        curr->mask = ui->tmo_mask->isChecked();
+        curr->name = ui->tmo_name->text();
         break;
+    }
     case 3:  // vpd
     {
         curr->mcc = ui->vpd_mcc->text().trimmed();
@@ -1481,7 +1560,7 @@ void MainWindow::on_channel_editor_left_clicked()
     case 7: // obp
     {
         curr->PRD = ui->obp_prd->isChecked();
-        curr->band = ui->obp_band->property("band") == 1 ? 0 : 1;
+        curr->band = ui->obp_band->property("band") == 1 ? 1 : 0;
         curr->freq = ui->obp_freq->text().toInt();
         curr->name = ui->obp_name->text();
         break;
