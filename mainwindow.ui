@@ -542,7 +542,7 @@ background: rgb(250, 250, 250)</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>14</number>
+       <number>10</number>
       </property>
       <widget class="QWidget" name="offscreen">
        <property name="styleSheet">
@@ -2546,7 +2546,7 @@ background: none;</string>
              <item>
               <widget class="QStackedWidget" name="channel_editor_states">
                <property name="currentIndex">
-                <number>6</number>
+                <number>3</number>
                </property>
                <widget class="QWidget" name="empty_state_page">
                 <layout class="QFormLayout" name="formLayout_4">
@@ -9166,7 +9166,7 @@ text-align:right;</string>
      <x>0</x>
      <y>0</y>
      <width>770</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

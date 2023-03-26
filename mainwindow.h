@@ -361,6 +361,8 @@ struct MainWindow::Channel
     QString mcc = "";
     QString mnc = "";
     QString gssi = "";
+    bool vesh = false;
+    bool mask = false;
 
     // set default all fields
     void clear(){
@@ -376,6 +378,8 @@ struct MainWindow::Channel
         mcc = "250";
         mnc = "1";
         gssi = "";
+        vesh = false;
+        mask = false;
     }
 };
 
