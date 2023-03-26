@@ -1204,9 +1204,15 @@ void MainWindow::on_channel_editor_left_clicked()
             //Выбрать
             ui->channel_editor_state->setText(selected_items["channel_editor_state_popup"]->text());
             if(ui->channel_editor_state->property("chosen") != ui->ch_type_popup->currentRow()){
-                channel_map[selected_items["channel_list"]].channel->clear();
+                /* useless
                 clear_chm25_fields();
                 clear_chm50_fields();
+                clear_am25_fields();
+                clear_tetra_tmo_fields();
+                clear_vpd_fields();
+                clear_obp_fields();
+                clear_fm_fields();
+                */
                 set_default_channel_fields();
             }
             ui->channel_editor_state->setProperty("chosen", ui->ch_type_popup->currentRow());
