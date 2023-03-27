@@ -377,8 +377,28 @@ struct MainWindow::Channel
     QString mcc = "";
     QString mnc = "";
     QString gssi = "";
+
     bool vesh = false;
     bool mask = false;
+
+    bool pprch = false;
+    bool retr = false;
+    bool prd_only_retr = false;
+    QString sos = "";
+    QString f_dmo = "";
+    QString f_retr = "";
+    QString tx_dmo = "";
+
+    QString chp_dmo = "";
+    QString chp_retr = "";
+    QString chp_prd = "";
+    QString prm_hz = "";
+    QString prd_hz = "";
+    QString prm_net = "";
+    QString prd_net = "";
+    QString n_retr = "";
+    QString mask_key = "";
+
 
     // set default all fields
     void clear(){
@@ -394,8 +414,27 @@ struct MainWindow::Channel
         mcc = "250";
         mnc = "1";
         gssi = "";
+
         vesh = false;
         mask = false;
+
+        pprch = false;
+        retr = false;
+        prd_only_retr = false;
+        sos = "";
+        f_dmo = "";
+        f_retr = "";
+        tx_dmo = "";
+
+        chp_dmo = "";
+        chp_retr = "";
+        chp_prd = "";
+        prm_hz = "";
+        prd_hz = "";
+        prm_net = "";
+        prd_net = "";
+        n_retr = "";
+        mask_key = "";
     }
 };
 

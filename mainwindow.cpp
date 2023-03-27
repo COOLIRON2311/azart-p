@@ -992,30 +992,30 @@ void MainWindow::channel_editor_screen()
     switch (curr->state) {
     case 0: // none
         break;
-    case 1: // dmo not implemented
+    case 1: // dmo
     {
-        ui->dmo_pprch->setChecked(false);
-        ui->dmo_retr->setChecked(false);
-        ui->dmo_prd_only_retr->setChecked(false);
-        ui->dmo_dualfreq->setChecked(false);
-        ui->dmo_mcc->setText("250");
-        ui->dmo_mnc->setText("1");
-        ui->dmo_gssi->setText("");
-        ui->dmo_sos->setText("");
-        ui->dmo_f_dmo->setText("");
-        ui->dmo_f_retr->setText("");
-        ui->dmo_tx_dmo->setText("");
-        ui->dmo_chp_dmo->setText("Не задано");
-        ui->dmo_chp_retr->setText("Не задано");
-        ui->dmo_chp_prd->setText("Не задано");
-        ui->dmo_prm_hz->setText("");
-        ui->dmo_prd_hz->setText("");
-        ui->dmo_prm_net->setText("Не задано");
-        ui->dmo_prd_net->setText("Не задано");
-        ui->dmo_n_retr->setText("");
-        ui->dmo_mask->setChecked(false);
-        ui->dmo_mask_key->setText("Нет");
-        ui->dmo_name->setText("");
+        ui->dmo_pprch->setChecked(curr->pprch);
+        ui->dmo_retr->setChecked(curr->retr);
+        ui->dmo_prd_only_retr->setChecked(curr->prd_only_retr);
+        ui->dmo_dualfreq->setChecked(curr->dualfreq);
+        ui->dmo_mcc->setText(curr->mcc);
+        ui->dmo_mnc->setText(curr->mnc);
+        ui->dmo_gssi->setText(curr->gssi);
+        ui->dmo_sos->setText(curr->sos);
+        ui->dmo_f_dmo->setText(curr->f_dmo);
+        ui->dmo_f_retr->setText(curr->f_retr);
+        ui->dmo_tx_dmo->setText(curr->tx_dmo);
+        ui->dmo_chp_dmo->setText(curr->chp_dmo);
+        ui->dmo_chp_retr->setText(curr->chp_retr);
+        ui->dmo_chp_prd->setText(curr->chp_prd);
+        ui->dmo_prm_hz->setText(curr->prm_hz);
+        ui->dmo_prd_hz->setText(curr->prd_hz);
+        ui->dmo_prm_net->setText(curr->prm_net);
+        ui->dmo_prd_net->setText(curr->prd_net);
+        ui->dmo_n_retr->setText(curr->n_retr);
+        ui->dmo_mask->setChecked(curr->mask);
+        ui->dmo_mask_key->setText(curr->mask_key);
+        ui->dmo_name->setText(curr->name);
         break;
     }
     case 2: // tmo
@@ -1511,6 +1511,17 @@ void MainWindow::on_channel_editor_left_clicked()
         break;
     case 1: // dmo
     {
+        u32 mcc = ui->dmo_mcc->text().toInt();
+        u32 mnc = ui->dmo_mnc->text().toInt();
+        u32 gssi = ui->dmo_gssi->text().toInt();
+        if (!in_range(mcc, 0, 1000) || !in_range(mnc, 0, 1000) || !in_range(gssi, 0, 16777216))
+        {
+            ERR
+        }
+        if (ui->tmo_name->text().isEmpty())
+        {
+            ERR
+        }
         break;
     }
     case 2: // tmo
@@ -1688,8 +1699,32 @@ void MainWindow::on_channel_editor_left_clicked()
     case 0: // none
         curr->name = tr("Не задано 0.000");
         break;
-    case 1: // dmo not implemented
+    case 1: // dmo
+    {
+        ui->dmo_pprch->setChecked(curr->pprch);
+        ui->dmo_retr->setChecked(curr->retr);
+        ui->dmo_prd_only_retr->setChecked(curr->prd_only_retr);
+        ui->dmo_dualfreq->setChecked(curr->dualfreq);
+        ui->dmo_mcc->setText(curr->mcc);
+        ui->dmo_mnc->setText(curr->mnc);
+        ui->dmo_gssi->setText(curr->gssi);
+        ui->dmo_sos->setText(curr->sos);
+        ui->dmo_f_dmo->setText(curr->f_dmo);
+        ui->dmo_f_retr->setText(curr->f_retr);
+        ui->dmo_tx_dmo->setText(curr->tx_dmo);
+        ui->dmo_chp_dmo->setText(curr->chp_dmo);
+        ui->dmo_chp_retr->setText(curr->chp_retr);
+        ui->dmo_chp_prd->setText(curr->chp_prd);
+        ui->dmo_prm_hz->setText(curr->prm_hz);
+        ui->dmo_prd_hz->setText(curr->prd_hz);
+        ui->dmo_prm_net->setText(curr->prm_net);
+        ui->dmo_prd_net->setText(curr->prd_net);
+        ui->dmo_n_retr->setText(curr->n_retr);
+        ui->dmo_mask->setChecked(curr->mask);
+        ui->dmo_mask_key->setText(curr->mask_key);
+        ui->dmo_name->setText(curr->name);
         break;
+    }
     case 2: // tmo
     {
         curr->mcc = ui->tmo_mcc->text().trimmed();
