@@ -10474,6 +10474,49 @@ text-align:right;</string>
       </layout>
      </widget>
     </widget>
+    <widget class="QWidget" name="wait">
+     <widget class="QWidget" name="widget_61" native="true">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>80</y>
+        <width>141</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: white;  border: 1px solid;</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_65">
+       <item>
+        <widget class="QLabel" name="label_136">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: none; background: none;</string>
+         </property>
+         <property name="text">
+          <string>ЖДИТЕ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignHCenter|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </widget>
    <widget class="QStackedWidget" name="atuners">
     <property name="geometry">
@@ -10673,6 +10716,9 @@ text-align:right;</string>
      </widget>
     </widget>
    </widget>
+   <zorder>horizontalWidget</zorder>
+   <zorder>atuners</zorder>
+   <zorder>modals</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

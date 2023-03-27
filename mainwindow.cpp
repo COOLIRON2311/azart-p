@@ -335,6 +335,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->widget_18->setGraphicsEffect(effect);
     ui->widget_29->setGraphicsEffect(effect);
     ui->widget_30->setGraphicsEffect(effect);
+    ui->widget_61->setGraphicsEffect(effect);
 
     ui->modals->move(248, 210);
     ui->atuners->move(248, 210);
@@ -719,7 +720,11 @@ void MainWindow::on_service_menu_right_clicked()
         ui->password->setProperty("password", temp);
         return;
     }
-    menu_screen();
+    QTimer *t;
+    timers.push(t = new QTimer());
+    ui->modals->setCurrentWidget(ui->wait);
+    connect(t, &QTimer::timeout, this, [t, this](){ ui->modals->setCurrentWidget(ui->no_modals); menu_screen(); t->stop(); });
+    t->start(1000);
 }
 
 void MainWindow::on_service_menu_left_clicked()
@@ -4482,7 +4487,18 @@ void MainWindow::on_right_tube_released()
             return;
         }
         if(curr == ui->service_menu_page){
-            menu_screen();
+            if(ui->modals->currentWidget() == ui->password){
+                ui->modals->setCurrentWidget(ui->no_modals);
+                ui->service_menu_left->setText("Выбрать");
+                ui->service_menu_right->setText("Назад");
+                return;
+            }
+
+            QTimer *t;
+            timers.push(t = new QTimer());
+            ui->modals->setCurrentWidget(ui->wait);
+            connect(t, &QTimer::timeout, this, [t, this](){ ui->modals->setCurrentWidget(ui->no_modals); menu_screen(); t->stop(); });
+            t->start(1000);
             return;
         }
         if(curr == ui->data_editor_page){
