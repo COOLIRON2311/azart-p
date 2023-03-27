@@ -555,6 +555,10 @@ void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
         navigation_screen();
         return;
     }
+    if(item == menu_list_item[3]){
+        received_messages_screen();
+        return;
+    }
     if(item == menu_list_item[5]){
         service_menu_screen();
         return;
@@ -662,6 +666,10 @@ void MainWindow::data_editor_screen()
 
 void MainWindow::navigation_screen(){
     ui->mainPages->setCurrentWidget(ui->navigation_page);
+}
+
+void MainWindow::received_messages_screen(){
+    ui->mainPages->setCurrentWidget(ui->received_messages_page);
 }
 
 void MainWindow::RS485_PRM_screen(){
@@ -2316,11 +2324,13 @@ void MainWindow::broadcast_init()
 void MainWindow::hide_dej_labels(){
     ui->label_dej_1->setText("");
     ui->label_dej_2->setText("");
+    ui->label_dej_3->setText("");
 }
 
 void MainWindow::show_dej_labels(){
     ui->label_dej_1->setText("Дежурный прием");
     ui->label_dej_2->setText("Дежурный прием");
+    ui->label_dej_3->setText("Дежурный прием");
 }
 
 void MainWindow::hideDej(){
@@ -2632,6 +2642,10 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->navigation_page){
         ui->navigation_right->click();
+        return;
+    }
+    if(curr == ui->received_messages_page){
+        ui->rec_msgs_right->click();
         return;
     }
 }
@@ -4718,6 +4732,10 @@ void MainWindow::on_right_tube_released()
             ui->modals->setCurrentWidget(ui->no_modals);
             return;
         }
+        if(curr == ui->received_messages_page){
+            menu_screen();
+            return;
+        }
     }
 }
 
@@ -4760,4 +4778,9 @@ void MainWindow::on_navigation_left_clicked()
         ui->navigation_left->setText("Выбрать");
         return;
     }
+}
+
+void MainWindow::on_rec_msgs_right_clicked()
+{
+    menu_screen();
 }

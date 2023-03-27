@@ -46,6 +46,7 @@ public Q_SLOTS:
     void data_editor_screen();
 
     void navigation_screen();
+    void received_messages_screen();
 
     void RS485_PRM_screen();
     void RS485_PRD_screen();
@@ -244,6 +245,8 @@ private slots:
     void on_navigation_left_clicked();
 
     void on_nav_menu_list_itemSelectionChanged();
+
+    void on_rec_msgs_right_clicked();
 
 private:
     void on_number_i_clicked(int);
