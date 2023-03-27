@@ -137,9 +137,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //selected_items["channel_popup_menu_list"] = channel_popup_menu_list_item[0];
     ui->channel_popup_menu_list->setCurrentItem(channel_popup_menu_list_item[0]);
 
-    //ui->channel_popup_menu->setEnabled(false);
-    ui->channel_popup_menu->setVisible(false);
-
     //
     direction_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
     direction_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить");
@@ -152,8 +149,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //selected_items["direction_popup_menu_list"] = direction_popup_menu_list_item[0];
     ui->direction_popup_menu_list->setCurrentItem(direction_popup_menu_list_item[0]);
 
-    //ui->direction_popup_menu->setEnabled(false);
-    ui->direction_popup_menu->setVisible(false);
 
     //                0       1      2      3      4       5        6        7      8
     channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
@@ -781,10 +776,9 @@ void MainWindow::on_service_menu_left_clicked()
 
 void MainWindow::on_channel_list_right_clicked()
 {
-    if(ui->channel_popup_menu->isVisible()){
+    if(ui->modals->currentWidget() == ui->channel_popup_menu){
         ui->channel_list_left->setText("Меню");
-        ui->channel_popup_menu->setVisible(false);
-        //ui->channel_popup_menu->setEnabled(false);
+        ui->modals->setCurrentWidget(ui->no_modals);
     }
     else{
         data_editor_screen();
@@ -793,10 +787,9 @@ void MainWindow::on_channel_list_right_clicked()
 
 void MainWindow::on_direction_list_right_clicked()
 {
-    if(ui->direction_popup_menu->isVisible()){
+    if(ui->modals->currentWidget() == ui->direction_popup_menu){
         ui->direction_list_left->setText("Меню");
-        ui->direction_popup_menu->setVisible(false);
-        //ui->direction_popup_menu->setEnabled(false);
+        ui->modals->setCurrentWidget(ui->no_modals);
     }
     else{
         data_editor_screen();
@@ -815,14 +808,13 @@ void MainWindow::on_data_editor_right_clicked()
 
 void MainWindow::on_channel_list_left_clicked()
 {
-    if(ui->channel_popup_menu->isVisible()){
+    if(ui->modals->currentWidget() == ui->channel_popup_menu){
         // menu selection
         on_channel_popup_menu_list_itemDoubleClicked(selected_items["channel_popup_menu_list"]);
     }
     else{
         // menu activation
-        //ui->channel_popup_menu->setEnabled(true);
-        ui->channel_popup_menu->setVisible(true);
+        ui->modals->setCurrentWidget(ui->channel_popup_menu);
         ui->channel_popup_menu_list->setCurrentItem(selected_items["channel_popup_menu_list"]);
         ui->channel_list_left->setText("Выбрать");
     }
@@ -861,7 +853,7 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     if(item == channel_popup_menu_list_item[0]){
         if(selected_items["channel_list"] == nullptr) return;
         //else
-        ui->channel_popup_menu->setVisible(false);
+        ui->modals->setCurrentWidget(ui->no_modals);
         ui->channel_list_left->setText("Меню");
         channel_editor_screen();
     }
@@ -885,14 +877,14 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
         //selected_items["channel_list"] = ref;
         ui->channel_list->setCurrentItem(ref);
 
-        ui->channel_popup_menu->setVisible(false);
+        ui->modals->setCurrentWidget(ui->no_modals);
         ui->channel_list_left->setText("Меню");
         channel_editor_screen();
     }
     // DELETE
     if(item == channel_popup_menu_list_item[2]){
         if(delete_channel(selected_items["channel_list"])){
-            ui->channel_popup_menu->setVisible(false);
+            ui->modals->setCurrentWidget(ui->no_modals);
             ui->channel_list_left->setText("Меню");
             update_channel_list_screen();
         }
@@ -1782,14 +1774,13 @@ void MainWindow::on_channel_list_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_direction_list_left_clicked()
 {
-    if(ui->direction_popup_menu->isVisible()){
+    if(ui->modals->currentWidget() == ui->direction_popup_menu){
         // menu selection
         on_direction_popup_menu_list_itemDoubleClicked(selected_items["direction_popup_menu_list"]);
     }
     else{
         // menu activation
-        //ui->direction_popup_menu->setEnabled(true);
-        ui->direction_popup_menu->setVisible(true);
+        ui->modals->setCurrentWidget(ui->direction_popup_menu);
         ui->direction_popup_menu_list->setCurrentItem(selected_items["direction_popup_menu_list"]);
         ui->direction_list_left->setText("Выбрать");
     }
@@ -1801,8 +1792,7 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
     // EDIT
     if(item == direction_popup_menu_list_item[0]){
         if(selected_items["direction_list"] == nullptr) return;
-        //ui->direction_popup_menu->setEnabled(false);
-        ui->direction_popup_menu->setVisible(false);
+        ui->modals->setCurrentWidget(ui->no_modals);
         ui->direction_list_left->setText("Меню");
         direction_editor_screen();
     }
@@ -1821,8 +1811,7 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
         //selected_items["direction_list"] = ref;
         ui->direction_list->setCurrentItem(ref);
 
-        //ui->direction_popup_menu->setEnabled(false);
-        ui->direction_popup_menu->setVisible(false);
+        ui->modals->setCurrentWidget(ui->no_modals);
         ui->direction_list_left->setText("Меню");
         direction_editor_screen();
     }
@@ -1846,8 +1835,7 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
             // selected_items["direction_list"] = direction_map.empty() ? nullptr : direction_map.begin()->first;
             // ui->direction_list->setCurrentItem(direction_map.empty() ? nullptr : direction_map.begin()->first);
 
-            //ui->direction_popup_menu->setEnabled(false);
-            ui->direction_popup_menu->setVisible(false);
+            ui->modals->setCurrentWidget(ui->no_modals);
             ui->direction_list_left->setText("Меню");
             //TODO ~update_direction_list
         }
@@ -4033,7 +4021,7 @@ void MainWindow::on_up_arrow_clicked()
         return;
     }
     if(curr == ui->channel_list_page){
-        if(ui->channel_popup_menu->isVisible()){
+        if(ui->modals->currentWidget() == ui->channel_popup_menu){
             //change selection in menu list
             go_up(ui->channel_popup_menu_list, 3);
         }
@@ -4046,7 +4034,7 @@ void MainWindow::on_up_arrow_clicked()
         return;
     }
     if(curr == ui->direction_list_page){
-        if(ui->direction_popup_menu->isVisible()){
+        if(ui->modals->currentWidget() == ui->direction_popup_menu){
             //change selection in menu list
             go_up(ui->direction_popup_menu_list, 3);
         }
@@ -4301,7 +4289,7 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
     if(curr == ui->channel_list_page){
-        if(ui->channel_popup_menu->isVisible()){
+        if(ui->modals->currentWidget() == ui->channel_popup_menu){
             //change selection in menu list
             go_down(ui->channel_popup_menu_list, 3);
         }
@@ -4314,7 +4302,7 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
     if(curr == ui->direction_list_page){
-        if(ui->direction_popup_menu->isVisible()){
+        if(ui->modals->currentWidget() == ui->direction_popup_menu){
             //change selection in menu list
             go_down(ui->direction_popup_menu_list, 3);
         }
