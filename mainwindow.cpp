@@ -165,8 +165,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //                        0       1        2       3                4           5      6      7       8      9        10        11        12         13          14         15        16        17         18         19        20      21          22
     editor_fields["dmo"] = { "type", "pprch", "retr", "prd_only_retr", "dualfreq", "mcc", "mnc", "gssi", "sos", "f_dmo", "f_retr", "tx_dmo", "chp_dmo", "chp_retr", "chp_prd", "prm_hz", "prd_hz", "prm_net", "prd_net", "n_retr", "mask", "mask_key", "name" };
     curr_editor_field["dmo"] = 0;
-    //                              0       1      2      3      4       5       6       7
-    editor_fields["tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
+    //                        0       1      2      3      4       5       6       7           8
+    editor_fields["tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "mask_key", "name" };
     curr_editor_field["tmo"] = 0;
     //                        0       1      2      3       4       5
     editor_fields["vpd"] = { "type", "mcc", "mnc", "gssi", "freq", "name" };
@@ -922,6 +922,7 @@ void MainWindow::set_default_channel_fields(){
     ui->tmo_gssi->setText("");
     ui->tmo_vesh->setChecked(false);
     ui->tmo_mask->setChecked(false);
+    ui->tmo_mask_key->setText("Нет");
     ui->tmo_name->setText("");
 
     // vpd
@@ -1025,6 +1026,7 @@ void MainWindow::channel_editor_screen()
         ui->tmo_vesh->setChecked(curr->vesh);
         ui->tmo_mask->setChecked(curr->mask);
         ui->tmo_name->setText(curr->name);
+        //tmo_mask_key->setText(curr-> ? ); TODO
         break;
     }
     case 3: // vpd
@@ -1225,6 +1227,9 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->tmo_mask->toggle();
             break;
         case 7:
+            //ui->tmo_mask_key
+            break;
+        case 8:
             ui->tmo_name->backspace();
             break;
         default:
@@ -2939,6 +2944,7 @@ void MainWindow::clear_tetra_tmo_fields(){
     ui->tmo_mnc->setStyleSheet("background: white;");
     ui->tmo_gssi->setStyleSheet("background: white;");
     ui->tmo_mask->setStyleSheet("background: white;");
+    ui->tmo_mask_key->setStyleSheet("background: white;");
     ui->tmo_name->setStyleSheet("background: white;");
     ui->tmo_vesh->setStyleSheet("background: white;");
 }
@@ -3392,6 +3398,11 @@ void MainWindow::update_channel_editor_page(){
             ui->channel_editor_right->setText("Изменить");
             break;
         case 7:
+            ui->tmo_mask_key->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            break;
+        case 8:
             ui->tmo_name->setStyleSheet("border: 2px solid black; background: white;");
             ui->channel_editor_left->setText("Сохранить");
             ui->channel_editor_right->setText("Стереть");
@@ -3399,6 +3410,13 @@ void MainWindow::update_channel_editor_page(){
             break;
         default:
             qCritical("tmo: update_channel_editor_page: no way");
+        }
+
+        if(ui->tmo_mask->isChecked()){
+            ui->widget_66->setVisible(true);
+        }
+        else{
+            ui->widget_66->setVisible(false);
         }
 
         return;
@@ -4063,6 +4081,10 @@ void MainWindow::on_up_arrow_clicked()
             uint sz = editor_fields["tmo"].size();
             curr_editor_field["tmo"] = (curr_editor_field["tmo"] - 1 + sz) % sz;
 
+            if(!ui->tmo_mask->isChecked()){
+                if(curr_editor_field["tmo"] == 7) curr_editor_field["tmo"]--;
+            }
+
             update_channel_editor_page();
             return;
         }
@@ -4326,6 +4348,10 @@ void MainWindow::on_down_arrow_clicked()
         if(ui->channel_editor_state->property("chosen") == 2){
             uint sz = editor_fields["tmo"].size();
             curr_editor_field["tmo"] = (curr_editor_field["tmo"] + 1) % sz;
+
+            if(!ui->tmo_mask->isChecked()){
+                if(curr_editor_field["tmo"] == 7) curr_editor_field["tmo"]++;
+            }
 
             update_channel_editor_page();
             return;
