@@ -44,6 +44,8 @@ void MainWindow::change_global_time()
     ui->seconds_2->setText(":" + s);
 
     ui->data_label->setText(QDate::currentDate().toString("dd.MM.yyyy"));
+
+    ui->label_144->setText(hm);
 }
 
 QPoint MainWindow::global_pos(QWidget* w){
@@ -310,6 +312,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(direction_editor_scan_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged);
 
+    ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Карта"));
+    ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Отправить координаты"));
+    ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Запросить координаты"));
+    ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Сохранить точку"));
+    ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Сохраненные точки..."));
+    ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Точка маршрута..."));
+    ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Настройки"));
+
+    ui->nav_menu_list->setCurrentRow(0);
+
     show3d = new QAction("3D", this);
     connect(show3d, &QAction::triggered, this, &MainWindow::show_3d);
     ui->menuBar->addAction(show3d);
@@ -539,6 +551,10 @@ void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
         volume_show();
         return;
     }
+    if(item == menu_list_item[2]){
+        navigation_screen();
+        return;
+    }
     if(item == menu_list_item[5]){
         service_menu_screen();
         return;
@@ -605,6 +621,11 @@ void MainWindow::on_channel_choice_list_itemSelectionChanged()
     selected_items["channel_choice_list"] = ui->channel_choice_list->currentItem();
 }
 
+void MainWindow::on_nav_menu_list_itemSelectionChanged()
+{
+    selected_items["nav_menu_list"] = ui->nav_menu_list->currentItem();
+}
+
 bool check_password(const QString &pw){
     return true;
 }
@@ -637,6 +658,10 @@ void MainWindow::data_editor_screen()
     ui->mainPages->setCurrentWidget(ui->data_editor_page);
     //WD
     //ui->data_editor_list->setCurrentItem(selected_items["data_editor_list"]);
+}
+
+void MainWindow::navigation_screen(){
+    ui->mainPages->setCurrentWidget(ui->navigation_page);
 }
 
 void MainWindow::RS485_PRM_screen(){
@@ -2498,6 +2523,10 @@ void MainWindow::on_left_arrow_clicked()
         ui->direction_editor_left->click();
         return;
     }
+    if(curr == ui->navigation_page){
+        ui->navigation_left->click();
+        return;
+    }
 }
 
 /*
@@ -2559,6 +2588,10 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->BL_PRM_page){
         ui->BL_PRM_right->click();
+        return;
+    }
+    if(curr == ui->navigation_page){
+        ui->navigation_right->click();
         return;
     }
 }
@@ -4155,6 +4188,11 @@ void MainWindow::on_up_arrow_clicked()
             return;
         }
     }
+    if(curr == ui->navigation_page){
+        if(ui->modals->currentWidget() == ui->navigation_menu){
+            go_up(ui->nav_menu_list, 7);
+        }
+    }
 }
 
 void go_down(QListWidget* qlw, uint size){
@@ -4423,6 +4461,11 @@ void MainWindow::on_down_arrow_clicked()
             return;
         }
     }
+    if(curr == ui->navigation_page){
+        if(ui->modals->currentWidget() == ui->navigation_menu){
+            go_down(ui->nav_menu_list, 7);
+        }
+    }
 }
 
 void MainWindow::on_left_tube_clicked()
@@ -4604,6 +4647,16 @@ void MainWindow::on_right_tube_released()
             ui->modals->setCurrentWidget(ui->no_modals);
             return;
         }
+        if(curr == ui->navigation_page){
+            if(ui->modals->currentWidget() == ui->navigation_menu){
+                ui->modals->setCurrentWidget(ui->no_modals);
+                ui->navigation_left->setText("Меню");
+                return;
+            }
+            menu_screen();
+            ui->modals->setCurrentWidget(ui->no_modals);
+            return;
+        }
     }
 }
 
@@ -4626,4 +4679,24 @@ void MainWindow::on_RS485_PRD_right_clicked()
 void MainWindow::on_BL_PRM_right_clicked()
 {
     ui->lineEdit->backspace();
+}
+
+
+void MainWindow::on_navigation_right_clicked()
+{
+    if(ui->modals->currentWidget() == ui->navigation_menu){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        ui->navigation_left->setText("Меню");
+        return;
+    }
+    menu_screen();
+}
+
+void MainWindow::on_navigation_left_clicked()
+{
+    if(ui->modals->currentWidget() != ui->navigation_menu){
+        ui->modals->setCurrentWidget(ui->navigation_menu);
+        ui->navigation_left->setText("Выбрать");
+        return;
+    }
 }

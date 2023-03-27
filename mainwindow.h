@@ -45,6 +45,8 @@ public Q_SLOTS:
     void service_menu_screen();
     void data_editor_screen();
 
+    void navigation_screen();
+
     void RS485_PRM_screen();
     void RS485_PRD_screen();
     void USB_PRM_screen();
@@ -236,6 +238,12 @@ private slots:
     void on_BL_PRM_right_clicked();
 
     void on_talk_button_released();
+
+    void on_navigation_right_clicked();
+
+    void on_navigation_left_clicked();
+
+    void on_nav_menu_list_itemSelectionChanged();
 
 private:
     void on_number_i_clicked(int);
