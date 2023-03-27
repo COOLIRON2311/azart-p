@@ -3573,6 +3573,1520 @@ background: none;</string>
                  </item>
                 </layout>
                </widget>
+               <widget class="QWidget" name="TETRA_DMO_page">
+                <layout class="QVBoxLayout" name="verticalLayout_63">
+                 <property name="spacing">
+                  <number>1</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QScrollArea" name="scrollArea">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QScrollBar {width:10px;}</string>
+                   </property>
+                   <property name="verticalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOn</enum>
+                   </property>
+                   <property name="horizontalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                   </property>
+                   <property name="widgetResizable">
+                    <bool>false</bool>
+                   </property>
+                   <widget class="QWidget" name="scrollAreaWidgetContents">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>0</y>
+                      <width>183</width>
+                      <height>460</height>
+                     </rect>
+                    </property>
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_64">
+                     <property name="spacing">
+                      <number>1</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QWidget" name="widget_60" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_98">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_125">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ППРЧ:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QCheckBox" name="dmo_pprch">
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_54" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_97">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_124">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Ретранслятор:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QCheckBox" name="dmo_retr">
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_55" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_94">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_121">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ПРД только ретр:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QCheckBox" name="dmo_prd_only_retr">
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_56" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_93">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_120">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Двухчастотный:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QCheckBox" name="dmo_dualfreq">
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_43" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_99">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_126">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>MCC:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_mcc">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>135</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>250</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_44" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_100">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_127">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>MNC:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_mnc">
+                          <property name="maximumSize">
+                           <size>
+                            <width>135</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>1</string>
+                          </property>
+                          <property name="frame">
+                           <bool>false</bool>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_42" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_95">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_122">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>GSSI:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_gssi">
+                          <property name="maximumSize">
+                           <size>
+                            <width>135</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_45" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_104">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_131">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Экстр.вызов:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_sos">
+                          <property name="maximumSize">
+                           <size>
+                            <width>135</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_39" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_82">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_108">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>F DMO:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QWidget" name="dmo_f_dmo_full" native="true">
+                          <property name="maximumSize">
+                           <size>
+                            <width>139</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_83">
+                           <property name="spacing">
+                            <number>0</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>1</number>
+                           </property>
+                           <item>
+                            <widget class="QLineEdit" name="dmo_f_dmo">
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background: white;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="label_110">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Гц</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_40" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_84">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_111">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>F Ретр.:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QWidget" name="dmo_f_retr_full" native="true">
+                          <property name="maximumSize">
+                           <size>
+                            <width>139</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_85">
+                           <property name="spacing">
+                            <number>0</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>1</number>
+                           </property>
+                           <item>
+                            <widget class="QLineEdit" name="dmo_f_retr">
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background: white;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="label_112">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Гц</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_48" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_88">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_115">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>TX DMO:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QWidget" name="dmo_tx_dmo_full" native="true">
+                          <property name="maximumSize">
+                           <size>
+                            <width>139</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_89">
+                           <property name="spacing">
+                            <number>0</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>1</number>
+                           </property>
+                           <item>
+                            <widget class="QLineEdit" name="dmo_tx_dmo">
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background: white;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="label_116">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Гц</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_41" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_86">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_113">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ЧП DMO:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_chp_dmo">
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>Не задано</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_47" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_87">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_114">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ЧП Ретр:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_chp_retr">
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>Не задано</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_59" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_108">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_135">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ЧП ПРД:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_chp_prd">
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>Не задано</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_49" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_90">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_117">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ПРМ:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QWidget" name="dmo_prm_hz_full" native="true">
+                          <property name="maximumSize">
+                           <size>
+                            <width>139</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_91">
+                           <property name="spacing">
+                            <number>0</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>1</number>
+                           </property>
+                           <item>
+                            <widget class="QLineEdit" name="dmo_prm_hz">
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background: white;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="label_118">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Гц</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_50" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_92">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_119">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ПРД:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QWidget" name="dmo_prd_hz_full" native="true">
+                          <property name="maximumSize">
+                           <size>
+                            <width>139</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <layout class="QHBoxLayout" name="horizontalLayout_101">
+                           <property name="spacing">
+                            <number>0</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>1</number>
+                           </property>
+                           <item>
+                            <widget class="QLineEdit" name="dmo_prd_hz">
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background: white;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="label_128">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <pointsize>10</pointsize>
+                              </font>
+                             </property>
+                             <property name="text">
+                              <string>Гц</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_51" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_102">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_129">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ПРМ:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_prm_net">
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>Не задано</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_52" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_106">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_133">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>ПРД:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_prd_net">
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>Не задано</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_46" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_105">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_132">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>N ретр.:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_n_retr">
+                          <property name="maximumSize">
+                           <size>
+                            <width>135</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_57" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_96">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_123">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Абон.маскирование:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QCheckBox" name="dmo_mask">
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_53" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_107">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_134">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Ключ маскир.:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_mask_key">
+                          <property name="maximumSize">
+                           <size>
+                            <width>135</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                          <property name="text">
+                           <string>Нет</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_58" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_103">
+                        <property name="spacing">
+                         <number>6</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_130">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>Имя:</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="dmo_name">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="font">
+                           <font>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background: white;</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer_13">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </widget>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
                <widget class="QWidget" name="TETRA_TMO_page">
                 <layout class="QVBoxLayout" name="verticalLayout_23">
                  <property name="spacing">

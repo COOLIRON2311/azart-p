@@ -160,6 +160,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //                         0
     editor_fields["none"] = { "type" };
     curr_editor_field["none"] = 0;
+    //                        0       1        2       3                4           5      6      7       8      9        10        11        12         13          14         15        16        17         18         19        20      21          22
+    editor_fields["dmo"] = { "type", "pprch", "retr", "prd_only_retr", "dualfreq", "mcc", "mnc", "gssi", "sos", "f_dmo", "f_retr", "tx_dmo", "chp_dmo", "chp_retr", "chp_prd", "prm_hz", "prd_hz", "prm_net", "prd_net", "n_retr", "mask", "mask_key", "name" };
+    curr_editor_field["dmo"] = 0;
     //                              0       1      2      3      4       5       6       7
     editor_fields["tmo"] = { "type", "net", "mcc", "mnc", "gssi", "vesh", "mask", "name" };
     curr_editor_field["tmo"] = 0;
@@ -338,6 +341,32 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->label_107->setVisible(false);
     ui->obp_band->setProperty("band", 1);
+
+    dmo_fields.append(QList<QWidget*>{
+                          ui->set_state, //channel_editor_state
+                          ui->widget_60, //ui->dmo_pprch
+                          ui->widget_54, //ui->dmo_f_retr
+                          ui->widget_55, //ui->dmo_prd_only_retr
+                          ui->widget_56, //ui->dmo_dualfreq
+                          ui->widget_43, //ui->dmo_mcc
+                          ui->widget_44, //ui->dmo_mnc
+                          ui->widget_42, //ui->dmo_gssi
+                          ui->widget_45, //ui->dmo_sos
+                          ui->widget_39, //ui->dmo_f_dmo
+                          ui->widget_40, //ui->dmo_f_retr
+                          ui->widget_48, //ui->dmo_tx_dmo
+                          ui->widget_41, //ui->dmo_chp_dmo
+                          ui->widget_47, //ui->dmo_chp_retr
+                          ui->widget_59, //ui->dmo_chp_prd
+                          ui->widget_49, //ui->dmo_prm_hz
+                          ui->widget_50, //ui->dmo_prd_hz
+                          ui->widget_51, //ui->dmo_prm_net
+                          ui->widget_52, //ui->dmo_prd_net
+                          ui->widget_46, //ui->dmo_n_retr
+                          ui->widget_57, //ui->dmo_mask
+                          ui->widget_53, //ui->dmo_mask_key
+                          ui->widget_58, //ui->dmo_name
+                      });
 }
 
 void MainWindow::setup(){
@@ -829,6 +858,28 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
 
 void MainWindow::set_default_channel_fields(){
     // dmo
+    ui->dmo_pprch->setChecked(false);
+    ui->dmo_retr->setChecked(false);
+    ui->dmo_prd_only_retr->setChecked(false);
+    ui->dmo_dualfreq->setChecked(false);
+    ui->dmo_mcc->setText("250");
+    ui->dmo_mnc->setText("1");
+    ui->dmo_gssi->setText("");
+    ui->dmo_sos->setText("");
+    ui->dmo_f_dmo->setText("");
+    ui->dmo_f_retr->setText("");
+    ui->dmo_tx_dmo->setText("");
+    ui->dmo_chp_dmo->setText("Не задано");
+    ui->dmo_chp_retr->setText("Не задано");
+    ui->dmo_chp_prd->setText("Не задано");
+    ui->dmo_prm_hz->setText("");
+    ui->dmo_prd_hz->setText("");
+    ui->dmo_prm_net->setText("Не задано");
+    ui->dmo_prd_net->setText("Не задано");
+    ui->dmo_n_retr->setText("");
+    ui->dmo_mask->setChecked(false);
+    ui->dmo_mask_key->setText("Нет");
+    ui->dmo_name->setText("");
 
     // tmo
     ui->tmo_mcc->setText("250");
@@ -907,6 +958,28 @@ void MainWindow::channel_editor_screen()
         break;
     case 1: // dmo not implemented
     {
+        ui->dmo_pprch->setChecked(false);
+        ui->dmo_retr->setChecked(false);
+        ui->dmo_prd_only_retr->setChecked(false);
+        ui->dmo_dualfreq->setChecked(false);
+        ui->dmo_mcc->setText("250");
+        ui->dmo_mnc->setText("1");
+        ui->dmo_gssi->setText("");
+        ui->dmo_sos->setText("");
+        ui->dmo_f_dmo->setText("");
+        ui->dmo_f_retr->setText("");
+        ui->dmo_tx_dmo->setText("");
+        ui->dmo_chp_dmo->setText("Не задано");
+        ui->dmo_chp_retr->setText("Не задано");
+        ui->dmo_chp_prd->setText("Не задано");
+        ui->dmo_prm_hz->setText("");
+        ui->dmo_prd_hz->setText("");
+        ui->dmo_prm_net->setText("Не задано");
+        ui->dmo_prd_net->setText("Не задано");
+        ui->dmo_n_retr->setText("");
+        ui->dmo_mask->setChecked(false);
+        ui->dmo_mask_key->setText("Нет");
+        ui->dmo_name->setText("");
         break;
     }
     case 2: // tmo
@@ -1011,6 +1084,85 @@ void MainWindow::on_channel_editor_right_clicked()
     }
 
     if(ui->channel_editor_state->property("chosen") == 0){
+        return;
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 1){
+        switch (curr_editor_field["dmo"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->dmo_pprch->toggle();
+            break;
+        case 2:
+            ui->dmo_retr->toggle();
+            break;
+        case 3:
+            ui->dmo_prd_only_retr->toggle();
+            break;
+        case 4:
+            ui->dmo_dualfreq->toggle();
+            break;
+        case 5:
+            ui->dmo_mcc->backspace();
+            break;
+        case 6:
+            ui->dmo_mnc->backspace();
+            break;
+        case 7:
+            ui->dmo_gssi->backspace();
+            break;
+        case 8:
+            ui->dmo_sos->backspace();
+            break;
+        case 9:
+            ui->dmo_f_dmo->backspace();
+            break;
+        case 10:
+            ui->dmo_f_retr->backspace();
+            break;
+        case 11:
+            ui->dmo_tx_dmo->backspace();
+            break;
+        case 12:
+            //ui->dmo_chp_dmo
+            break;
+        case 13:
+            //ui->dmo_chp_retr
+            break;
+        case 14:
+            //ui->dmo_chp_prd
+            break;
+        case 15:
+            ui->dmo_prm_hz->backspace();
+            break;
+        case 16:
+            ui->dmo_prd_hz->backspace();
+            break;
+        case 17:
+            //ui->dmo_prm_net
+            break;
+        case 18:
+            //ui->dmo_prd_net
+            break;
+        case 19:
+            ui->dmo_n_retr->backspace();
+            break;
+        case 20:
+            ui->dmo_mask->toggle();
+            break;
+        case 21:
+            //ui->dmo_mask_key
+            break;
+        case 22:
+            ui->dmo_name->backspace();
+            break;
+        default:
+            qCritical("crit: on_channel_editor_right_clicked");
+            return;
+        }
+        update_channel_editor_page();
         return;
     }
 
@@ -1262,15 +1414,6 @@ void MainWindow::on_channel_editor_left_clicked()
             //Выбрать
             ui->channel_editor_state->setText(selected_items["channel_editor_state_popup"]->text());
             if(ui->channel_editor_state->property("chosen") != ui->ch_type_popup->currentRow()){
-                /* useless
-                clear_chm25_fields();
-                clear_chm50_fields();
-                clear_am25_fields();
-                clear_tetra_tmo_fields();
-                clear_vpd_fields();
-                clear_obp_fields();
-                clear_fm_fields();
-                */
                 set_default_channel_fields();
             }
             ui->channel_editor_state->setProperty("chosen", ui->ch_type_popup->currentRow());
@@ -2175,7 +2318,7 @@ void MainWindow::setTransmitting(){
         ui->dej_label_2->setText(tr("TETRA_DMO"));
         break;
     case 2:
-        ui->dej_label_2->setText(tr("tmo"));
+        ui->dej_label_2->setText(tr("TETRA_TMO"));
         break;
     case 3:
         ui->dej_label_2->setText(tr("ВПД"));
@@ -2427,6 +2570,44 @@ void MainWindow::on_number_i_clicked(int i)
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->channel_editor_page){
 
+        // tetra dmo
+        if(ui->channel_editor_state->property("chosen") == 1){
+            switch (curr_editor_field["dmo"]) {
+            case 5:
+                addnle(ui->dmo_mcc, i);
+                break;
+            case 6:
+                addnle(ui->dmo_mnc, i);
+                break;
+            case 7:
+                addnle(ui->dmo_gssi, i);
+                break;
+            case 8:
+                addnle(ui->dmo_sos, i);
+                break;
+            case 9:
+                addnle(ui->dmo_f_dmo, i);
+                break;
+            case 10:
+                addnle(ui->dmo_f_retr, i);
+                break;
+            case 11:
+                addnle(ui->dmo_tx_dmo, i);
+                break;
+            case 14:
+                addnle(ui->dmo_prm_hz, i);
+                break;
+            case 15:
+                addnle(ui->dmo_prd_hz, i);
+                break;
+            case 18:
+                addnle(ui->dmo_n_retr, i);
+                break;
+            }
+
+            return;
+        }
+
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
             switch (curr_editor_field["tmo"]) {
@@ -2631,6 +2812,37 @@ void MainWindow::clear_am25_fields(){
     ui->label_60->setVisible(false);
 }
 
+void MainWindow::clear_tetra_dmo_fields(){
+    ui->channel_editor_state->setStyleSheet("background: white;");
+    ui->dmo_pprch->setStyleSheet("background: white;");
+    ui->dmo_retr->setStyleSheet("background: white;");
+    ui->dmo_prd_only_retr->setStyleSheet("background: white;");
+    ui->dmo_dualfreq->setStyleSheet("background: white;");
+    ui->dmo_mcc->setStyleSheet("background: white;");
+    ui->dmo_mnc->setStyleSheet("background: white;");
+    ui->dmo_gssi->setStyleSheet("background: white;");
+    ui->dmo_sos->setStyleSheet("background: white;");
+    ui->dmo_f_dmo_full->setStyleSheet("background: white;");
+    ui->dmo_f_retr_full->setStyleSheet("background: white;");
+    ui->dmo_tx_dmo_full->setStyleSheet("background: white;");
+    ui->dmo_chp_dmo->setStyleSheet("background: white;");
+    ui->dmo_chp_retr->setStyleSheet("background: white;");
+    ui->dmo_chp_prd->setStyleSheet("background: white;");
+    ui->dmo_prm_hz_full->setStyleSheet("background: white;");
+    ui->dmo_prd_hz_full->setStyleSheet("background: white;");
+    ui->dmo_prm_net->setStyleSheet("background: white;");
+    ui->dmo_prd_net->setStyleSheet("background: white;");
+    ui->dmo_n_retr->setStyleSheet("background: white;");
+    ui->dmo_mask->setStyleSheet("background: white;");
+    ui->dmo_mask_key->setStyleSheet("background: white;");
+    ui->dmo_name->setStyleSheet("background: white;");
+    ui->label_110->setVisible(false);
+    ui->label_112->setVisible(false);
+    ui->label_116->setVisible(false);
+    ui->label_118->setVisible(false);
+    ui->label_128->setVisible(false);
+}
+
 void MainWindow::clear_tetra_tmo_fields(){
     ui->channel_editor_state->setStyleSheet("background: white;");
     ui->tmo_net->setStyleSheet("background: white;");
@@ -2683,8 +2895,8 @@ void MainWindow::update_channel_editor_page(){
         break;
     case 1:
         // TODO: CHANGE
-        if(ui->channel_editor_states->currentWidget() != ui->empty_state_page)
-            ui->channel_editor_states->setCurrentWidget(ui->empty_state_page);
+        if(ui->channel_editor_states->currentWidget() != ui->TETRA_DMO_page)
+            ui->channel_editor_states->setCurrentWidget(ui->TETRA_DMO_page);
         break;
     case 2:
         if(ui->channel_editor_states->currentWidget() != ui->TETRA_TMO_page)
@@ -2735,6 +2947,319 @@ void MainWindow::update_channel_editor_page(){
     // none
     if(ui->channel_editor_state->property("chosen") == 0){
         ui->channel_editor_state->setStyleSheet("border: 2px solid black; background: white;");
+        return;
+    }
+
+    // tetra dmo
+    if(ui->channel_editor_state->property("chosen") == 1){
+        clear_tetra_dmo_fields();
+        switch (curr_editor_field["dmo"]) {
+        case 0:
+            // was upper
+            ui->channel_editor_state->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->dmo_pprch->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_60, 0, 10);
+            break;
+        case 2:
+            ui->dmo_retr->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_54, 0, 10);
+            break;
+        case 3:
+            ui->dmo_prd_only_retr->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_55, 0, 10);
+            break;
+        case 4:
+            ui->dmo_dualfreq->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_56, 0, 10);
+            break;
+        case 5:
+            ui->dmo_mcc->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_43, 0, 10);
+            break;
+        case 6:
+            ui->dmo_mnc->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_44, 0, 10);
+            break;
+        case 7:
+            ui->dmo_gssi->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_42, 0, 10);
+            break;
+        case 8:
+            ui->dmo_sos->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_45, 0, 10);
+            break;
+        case 9:
+            ui->dmo_f_dmo_full->setStyleSheet("#dmo_f_dmo_full {border: 2px solid black; background: white;}");
+            ui->label_110->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_39, 0, 10);
+            break;
+        case 10:
+            ui->dmo_f_retr_full->setStyleSheet("#dmo_f_retr_full {border: 2px solid black; background: white;}");
+            ui->label_112->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_40, 0, 10);
+            break;
+        case 11:
+            ui->dmo_tx_dmo_full->setStyleSheet("#dmo_tx_dmo_full {border: 2px solid black; background: white;}");
+            ui->label_116->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_48, 0, 10);
+            break;
+        case 12:
+            ui->dmo_chp_dmo->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_41, 0, 10);
+            break;
+        case 13:
+            ui->dmo_chp_retr->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_47, 0, 10);
+            break;
+        case 14:
+            ui->dmo_chp_prd->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_59, 0, 10);
+            break;
+        case 15:
+            ui->dmo_prm_hz_full->setStyleSheet("#dmo_prm_hz_full {border: 2px solid black; background: white;}");
+            ui->label_118->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_49, 0, 10);
+            break;
+        case 16:
+            ui->dmo_prd_hz_full->setStyleSheet("#dmo_prd_hz_full {border: 2px solid black; background: white;}");
+            ui->label_128->setVisible(true);
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_50, 0, 10);
+            break;
+        case 17:
+            ui->dmo_prm_net->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_51, 0, 10);
+            break;
+        case 18:
+            ui->dmo_prd_net->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_52, 0, 10);
+            break;
+        case 19:
+            ui->dmo_n_retr->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_46, 0, 10);
+            break;
+        case 20:
+            ui->dmo_mask->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Изменить");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_57, 0, 10);
+            break;
+        case 21:
+            ui->dmo_mask_key->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Выбрать");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_53, 0, 10);
+            break;
+        case 22:
+            ui->dmo_name->setStyleSheet("border: 2px solid black; background: white;");
+            ui->channel_editor_left->setText("Сохранить");
+            ui->channel_editor_right->setText("Стереть");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_58, 0, 10);
+            ui->dmo_name->setFocus();
+            break;
+        default:
+            qCritical("dmo: update_channel_editor_page: no way");
+        }
+
+        bool pprch = ui->dmo_pprch->isChecked();
+        bool retr = ui->dmo_retr->isChecked();
+        //bool prd_only_retr = ui->dmo_prd_only_retr->isChecked();
+        bool dualfreq = ui->dmo_dualfreq->isChecked();
+
+        if(!pprch && !retr && !dualfreq){
+            ui->widget_60->setVisible(true); 	//ui->dmo_pprch
+            ui->widget_54->setVisible(true); 	//ui->dmo_f_retr
+            ui->widget_55->setVisible(true); 	//ui->dmo_prd_only_retr
+            ui->widget_56->setVisible(true);    //ui->dmo_dualfreq
+            ui->widget_43->setVisible(true); 	//ui->dmo_mcc
+            ui->widget_44->setVisible(true); 	//ui->dmo_mnc
+            ui->widget_42->setVisible(true); 	//ui->dmo_gssi
+            ui->widget_45->setVisible(true); 	//ui->dmo_sos
+            ui->widget_39->setVisible(true); 	//ui->dmo_f_dmo
+            ui->widget_40->setVisible(true); 	//ui->dmo_f_retr
+            ui->widget_48->setVisible(false); 	//ui->dmo_tx_dmo
+            ui->widget_41->setVisible(false); 	//ui->dmo_chp_dmo
+            ui->widget_47->setVisible(false); 	//ui->dmo_chp_retr
+            ui->widget_59->setVisible(false);	//ui->dmo_chp_prd
+            ui->widget_49->setVisible(false); 	//ui->dmo_prm_hz
+            ui->widget_50->setVisible(false); 	//ui->dmo_prd_hz
+            ui->widget_51->setVisible(false); 	//ui->dmo_prm_net
+            ui->widget_52->setVisible(false); 	//ui->dmo_prd_net
+            ui->widget_46->setVisible(true); 	//ui->dmo_n_retr
+            ui->widget_57->setVisible(true); 	//ui->dmo_mask
+            ui->widget_53->setVisible(ui->dmo_mask->isChecked()); 	//ui->dmo_mask_key
+            ui->widget_58->setVisible(true); 	//ui->dmo_name
+            return;
+        }
+
+        if(pprch && !retr && !dualfreq){
+            ui->widget_60->setVisible(true); 	//ui->dmo_pprch
+            ui->widget_54->setVisible(true); 	//ui->dmo_f_retr
+            ui->widget_55->setVisible(true); 	//ui->dmo_prd_only_retr
+            ui->widget_56->setVisible(true);       //ui->dmo_dualfreq
+            ui->widget_43->setVisible(true); 	//ui->dmo_mcc
+            ui->widget_44->setVisible(true); 	//ui->dmo_mnc
+            ui->widget_42->setVisible(true); 	//ui->dmo_gssi
+            ui->widget_45->setVisible(true); 	//ui->dmo_sos
+            ui->widget_39->setVisible(false); 	//ui->dmo_f_dmo
+            ui->widget_40->setVisible(false); 	//ui->dmo_f_retr
+            ui->widget_48->setVisible(false); 	//ui->dmo_tx_dmo
+            ui->widget_41->setVisible(true); 	//ui->dmo_chp_dmo
+            ui->widget_47->setVisible(true); 	//ui->dmo_chp_retr
+            ui->widget_59->setVisible(false);	//ui->dmo_chp_prd
+            ui->widget_49->setVisible(false); 	//ui->dmo_prm_hz
+            ui->widget_50->setVisible(false); 	//ui->dmo_prd_hz
+            ui->widget_51->setVisible(false); 	//ui->dmo_prm_net
+            ui->widget_52->setVisible(false); 	//ui->dmo_prd_net
+            ui->widget_46->setVisible(true); 	//ui->dmo_n_retr
+            ui->widget_57->setVisible(true); 	//ui->dmo_mask
+            ui->widget_53->setVisible(ui->dmo_mask->isChecked()); 	//ui->dmo_mask_key
+            ui->widget_58->setVisible(true); 	//ui->dmo_name
+            return;
+        }
+
+        if(!pprch && retr && !dualfreq){
+            ui->widget_60->setVisible(true); 	//ui->dmo_pprch
+            ui->widget_54->setVisible(true); 	//ui->dmo_f_retr
+            ui->widget_55->setVisible(false); 	//ui->dmo_prd_only_retr
+            ui->widget_56->setVisible(false);       //ui->dmo_dualfreq
+            ui->widget_43->setVisible(true); 	//ui->dmo_mcc
+            ui->widget_44->setVisible(true); 	//ui->dmo_mnc
+            ui->widget_42->setVisible(false); 	//ui->dmo_gssi
+            ui->widget_45->setVisible(false); 	//ui->dmo_sos
+            ui->widget_39->setVisible(false); 	//ui->dmo_f_dmo
+            ui->widget_40->setVisible(false); 	//ui->dmo_f_retr
+            ui->widget_48->setVisible(false); 	//ui->dmo_tx_dmo
+            ui->widget_41->setVisible(false); 	//ui->dmo_chp_dmo
+            ui->widget_47->setVisible(false); 	//ui->dmo_chp_retr
+            ui->widget_59->setVisible(false);	//ui->dmo_chp_prd
+            ui->widget_49->setVisible(true); 	//ui->dmo_prm_hz
+            ui->widget_50->setVisible(true); 	//ui->dmo_prd_hz
+            ui->widget_51->setVisible(false); 	//ui->dmo_prm_net
+            ui->widget_52->setVisible(false); 	//ui->dmo_prd_net
+            ui->widget_46->setVisible(true); 	//ui->dmo_n_retr
+            ui->widget_57->setVisible(false); 	//ui->dmo_mask
+            ui->widget_53->setVisible(false); 	//ui->dmo_mask_key
+            ui->widget_58->setVisible(true); 	//ui->dmo_name
+            return;
+        }
+
+        if(pprch && retr && !dualfreq){
+            ui->widget_60->setVisible(true); 	//ui->dmo_pprch
+            ui->widget_54->setVisible(true); 	//ui->dmo_f_retr
+            ui->widget_55->setVisible(false); 	//ui->dmo_prd_only_retr
+            ui->widget_56->setVisible(false);       //ui->dmo_dualfreq
+            ui->widget_43->setVisible(true); 	//ui->dmo_mcc
+            ui->widget_44->setVisible(true); 	//ui->dmo_mnc
+            ui->widget_42->setVisible(false); 	//ui->dmo_gssi
+            ui->widget_45->setVisible(false); 	//ui->dmo_sos
+            ui->widget_39->setVisible(false); 	//ui->dmo_f_dmo
+            ui->widget_40->setVisible(false); 	//ui->dmo_f_retr
+            ui->widget_48->setVisible(false); 	//ui->dmo_tx_dmo
+            ui->widget_41->setVisible(false); 	//ui->dmo_chp_dmo
+            ui->widget_47->setVisible(false); 	//ui->dmo_chp_retr
+            ui->widget_59->setVisible(false);	//ui->dmo_chp_prd
+            ui->widget_49->setVisible(false); 	//ui->dmo_prm_hz
+            ui->widget_50->setVisible(false); 	//ui->dmo_prd_hz
+            ui->widget_51->setVisible(true); 	//ui->dmo_prm_net
+            ui->widget_52->setVisible(true); 	//ui->dmo_prd_net
+            ui->widget_46->setVisible(true); 	//ui->dmo_n_retr
+            ui->widget_57->setVisible(false); 	//ui->dmo_mask
+            ui->widget_53->setVisible(false); 	//ui->dmo_mask_key
+            ui->widget_58->setVisible(true); 	//ui->dmo_name
+            return;
+        }
+
+        if(!pprch && !retr && dualfreq){
+            ui->widget_60->setVisible(true); 	//ui->dmo_pprch
+            ui->widget_54->setVisible(false); 	//ui->dmo_f_retr
+            ui->widget_55->setVisible(false); 	//ui->dmo_prd_only_retr
+            ui->widget_56->setVisible(true);       //ui->dmo_dualfreq
+            ui->widget_43->setVisible(true); 	//ui->dmo_mcc
+            ui->widget_44->setVisible(true); 	//ui->dmo_mnc
+            ui->widget_42->setVisible(true); 	//ui->dmo_gssi
+            ui->widget_45->setVisible(true); 	//ui->dmo_sos
+            ui->widget_39->setVisible(true); 	//ui->dmo_f_dmo
+            ui->widget_40->setVisible(false); 	//ui->dmo_f_retr
+            ui->widget_48->setVisible(true); 	//ui->dmo_tx_dmo
+            ui->widget_41->setVisible(false); 	//ui->dmo_chp_dmo
+            ui->widget_47->setVisible(false); 	//ui->dmo_chp_retr
+            ui->widget_59->setVisible(false);	//ui->dmo_chp_prd
+            ui->widget_49->setVisible(false); 	//ui->dmo_prm_hz
+            ui->widget_50->setVisible(false); 	//ui->dmo_prd_hz
+            ui->widget_51->setVisible(false); 	//ui->dmo_prm_net
+            ui->widget_52->setVisible(false); 	//ui->dmo_prd_net
+            ui->widget_46->setVisible(false); 	//ui->dmo_n_retr
+            ui->widget_57->setVisible(true); 	//ui->dmo_mask
+            ui->widget_53->setVisible(ui->dmo_mask->isChecked()); 	//ui->dmo_mask_key
+            ui->widget_58->setVisible(true); 	//ui->dmo_name
+            return;
+        }
+
+        if(pprch && !retr && dualfreq){
+            ui->widget_60->setVisible(true); 	//ui->dmo_pprch
+            ui->widget_54->setVisible(false); 	//ui->dmo_f_retr
+            ui->widget_55->setVisible(false); 	//ui->dmo_prd_only_retr
+            ui->widget_56->setVisible(true);       //ui->dmo_dualfreq
+            ui->widget_43->setVisible(true); 	//ui->dmo_mcc
+            ui->widget_44->setVisible(true); 	//ui->dmo_mnc
+            ui->widget_42->setVisible(true); 	//ui->dmo_gssi
+            ui->widget_45->setVisible(true); 	//ui->dmo_sos
+            ui->widget_39->setVisible(false); 	//ui->dmo_f_dmo
+            ui->widget_40->setVisible(false); 	//ui->dmo_f_retr
+            ui->widget_48->setVisible(false); 	//ui->dmo_tx_dmo
+            ui->widget_41->setVisible(true); 	//ui->dmo_chp_dmo
+            ui->widget_47->setVisible(false); 	//ui->dmo_chp_retr
+            ui->widget_59->setVisible(true);	//ui->dmo_chp_prd
+            ui->widget_49->setVisible(false); 	//ui->dmo_prm_hz
+            ui->widget_50->setVisible(false); 	//ui->dmo_prd_hz
+            ui->widget_51->setVisible(false); 	//ui->dmo_prm_net
+            ui->widget_52->setVisible(false); 	//ui->dmo_prd_net
+            ui->widget_46->setVisible(false); 	//ui->dmo_n_retr
+            ui->widget_57->setVisible(true); 	//ui->dmo_mask
+            ui->widget_53->setVisible(ui->dmo_mask->isChecked()); 	//ui->dmo_mask_key
+            ui->widget_58->setVisible(true); 	//ui->dmo_name
+            return;
+        }
         return;
     }
 
@@ -3429,6 +3954,18 @@ void MainWindow::on_up_arrow_clicked()
             return;
         }
 
+        // tetra dmo
+        if(ui->channel_editor_state->property("chosen") == 1){
+            uint sz = editor_fields["dmo"].size();
+            curr_editor_field["dmo"] = (curr_editor_field["dmo"] - 1 + sz) % sz;
+            while(!dmo_fields.at(curr_editor_field["dmo"])->isVisible()){
+                curr_editor_field["dmo"] = (curr_editor_field["dmo"] - 1 + sz) % sz;
+            }
+
+            update_channel_editor_page();
+            return;
+        }
+
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
             uint sz = editor_fields["tmo"].size();
@@ -3672,6 +4209,19 @@ void MainWindow::on_down_arrow_clicked()
 
         // none
         if(ui->channel_editor_state->property("chosen") == 0){
+            return;
+        }
+
+        // tetra dmo
+        if(ui->channel_editor_state->property("chosen") == 1){
+            uint sz = editor_fields["dmo"].size();
+            curr_editor_field["dmo"] = (curr_editor_field["dmo"] + 1) % sz;
+            while(!dmo_fields.at(curr_editor_field["dmo"])->isVisible()){
+                qDebug() << dmo_fields.at(curr_editor_field["dmo"])->objectName();
+                curr_editor_field["dmo"] = (curr_editor_field["dmo"] + 1) % sz;
+            }
+
+            update_channel_editor_page();
             return;
         }
 

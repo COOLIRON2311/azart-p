@@ -14,6 +14,7 @@
 #include "modalwindowrd.h"
 #include "modalwindow3d.h"
 #include "modalwindownorm.h"
+#include <QList>
 
 namespace Ui {
     class MainWindow;
@@ -240,6 +241,7 @@ private:
     void clear_chm25_d_fields();
     void clear_chm50_fields();
     void clear_am25_fields();
+    void clear_tetra_dmo_fields();
     void clear_tetra_tmo_fields();
     void clear_vpd_fields();
     void clear_obp_fields();
@@ -318,6 +320,7 @@ private:
     //kostil
     ref chosen_ref_d = 0;
     std::queue<QTimer*> timers;
+    QList<QWidget*> dmo_fields;
 
     QUdpSocket udpSocket;
     const QString ADDR = "26.115.163.75";
