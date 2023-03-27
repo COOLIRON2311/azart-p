@@ -235,6 +235,8 @@ private slots:
 
     void on_BL_PRM_right_clicked();
 
+    void on_talk_button_released();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
@@ -388,6 +390,7 @@ struct MainWindow::Channel
 
 struct MainWindow::Direction
 {
+    bool is_idle = false;
     Channel* ch = nullptr;
     bool PRD = false;
     bool tone_call = false;

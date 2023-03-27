@@ -682,7 +682,12 @@ void MainWindow::update_channel_list_screen()
 
 void MainWindow::update_direction_list_screen()
 {
-    //TODO
+    if(selected_items["direction_list"] == nullptr){
+        ui->empty_direction_list_label->setVisible(true);
+    }
+    else{
+        ui->empty_direction_list_label->setVisible(false);
+    }
 }
 
 void MainWindow::channel_list_screen()
@@ -1651,7 +1656,7 @@ void MainWindow::on_channel_editor_left_clicked()
     switch (curr->state)
     {
     case 0: // none
-        // skip
+        curr->name = tr("Не задано 0.000");
         break;
     case 1: // dmo not implemented
         break;
@@ -1974,6 +1979,7 @@ void MainWindow::on_direction_editor_left_clicked()
         curr->ch->state = 0;
         curr->ch->name = "Канал не определен";
         curr->name = "Idle";
+        curr->is_idle = true;
         selected_items["direction_list"]->setText(curr->name + "\n ");
         selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
         direction_map[selected_items["direction_list"]].ref2->setText(curr->name);
@@ -2054,6 +2060,7 @@ void MainWindow::on_direction_editor_right_clicked()
             return;
         }
         else{
+            if(direction_map[selected_items["direction_list"]].direction->is_idle) return;
             //Выбрать
             ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);
             update_direction_editor_page();
@@ -2348,6 +2355,7 @@ void MainWindow::setTransmitting(){
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    /*
     if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         if(event->key() == Qt::Key_1 && !transmitting)
@@ -2365,10 +2373,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                                this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
         }
     }
+    */
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
+    /*
     if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         if(event->key() == Qt::Key_1 && !event->isAutoRepeat())
@@ -2383,7 +2393,48 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
             disconnect(inptConn);
         }
     }
+*/
 }
+
+void MainWindow::on_talk_button_pressed()
+{
+    if(current_direction != nullptr && current_direction->ch != nullptr)
+    {
+        if(!transmitting)
+        {
+            transmitting = true;
+
+            setTransmitting();
+            hide_dej_labels();
+            if(ui->mainPages->currentWidget() == ui->main_page){
+                ui->modals->setCurrentWidget(ui->pr_per);
+            }
+
+            inptDev = inpt->start();
+            inptConn = connect(inptDev, &QIODevice::readyRead,
+                               this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
+        }
+    }
+}
+
+void MainWindow::on_talk_button_released()
+{
+    if(current_direction != nullptr && current_direction->ch != nullptr)
+    {
+        if(true)
+        {
+            transmitting = false;
+
+            ui->modals->setCurrentWidget(ui->no_modals);
+            show_dej_labels();
+
+            inptDev->close();
+            inpt->stop();
+            disconnect(inptConn);
+        }
+    }
+}
+
 
 inline int MainWindow::getFreq(){
     if(current_direction == nullptr || current_direction->ch == nullptr) return 0;
@@ -2962,6 +3013,7 @@ void MainWindow::update_channel_editor_page(){
         case 0:
             // was upper
             ui->channel_editor_state->setStyleSheet("border: 2px solid black; background: white;");
+            ui->scrollArea->ensureWidgetVisible(ui->widget_60, 0, 10);
             break;
         case 1:
             ui->dmo_pprch->setStyleSheet("border: 2px solid black; background: white;");
@@ -3734,9 +3786,11 @@ void MainWindow::update_direction_editor_page(){
         }
         else{
             ui->direction_editor_left->setText("Сохранить");
-            // TODO
-            // need to erase Вставить when we have loaded an Idle direction
-            ui->direction_editor_right->setText("Выбрать");
+            if(direction_map[selected_items["direction_list"]].direction->is_idle){
+                ui->direction_editor_right->setText("");
+            }else{
+                ui->direction_editor_right->setText("Выбрать");
+            }
 
         }
         return;
@@ -4393,11 +4447,6 @@ void MainWindow::on_chm25_dualfreq_clicked()
         ui->widget_9->setVisible(false);
         ui->widget_4->setVisible(true);
     }
-}
-
-void MainWindow::on_talk_button_pressed()
-{
-
 }
 
 void MainWindow::check_holded_right_tube(int i){
