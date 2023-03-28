@@ -350,10 +350,9 @@ private:
     char freq_bytes[4];
 
     int volume = 6;
-    int noise = 6;
     int MAX_VOLUME = 16;
     int MAX_NOISE = 16;
-    int MIN_VOLUME = 0;
+    int MIN_VOLUME = 1;
     int MIN_NOISE = 0;
 
 protected:
@@ -441,10 +440,12 @@ struct MainWindow::Channel
 struct MainWindow::Direction
 {
     bool is_idle = false;
+    int noise = 2;
+
     Channel* ch = nullptr;
     bool PRD = false;
     bool tone_call = false;
-    quint32 scan_list = 0; //0 - 31
+    quint32 scan_list = 0; //0 - 32
     qint32 economizer = 3; //0 - 3
     QString name = "";
     quint32 background = 0; //1 - 10

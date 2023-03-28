@@ -495,8 +495,8 @@ void MainWindow::main_screen()
     if(current_direction != nullptr && current_direction->is_idle){
         ui->main_background->setStyleSheet("background-color: black");
         hide_dej_labels();
-        ui->direction_label->setText(current_direction->name);
-        ui->channel_label->setText("");
+        ui->direction_label->setText("");
+        ui->channel_label->setText(current_direction->name);
         return;
     }
 
@@ -546,10 +546,13 @@ void MainWindow::on_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     if(item == menu_list_item[0]){
         main_screen();
-        ui->atuners->setCurrentWidget(ui->noise);
-        ui->noise->setProperty("from_menu", true);
-        noise_show();
-        return;
+        if(current_direction != nullptr && current_direction->ch != nullptr && !current_direction->is_idle){
+            ui->label_94->setText(current_direction->ch->name);
+            ui->atuners->setCurrentWidget(ui->noise);
+            ui->noise->setProperty("from_menu", true);
+            noise_show();
+            return;
+        }
     }
     if(item == menu_list_item[1]){
         main_screen();
@@ -4047,9 +4050,9 @@ void MainWindow::on_up_arrow_clicked()
             return;
         }
         if(ui->atuners->currentWidget() == ui->noise){
-            noise++;
-            if(noise > MAX_NOISE) noise = MAX_NOISE;
-            ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(noise) + ".png)");
+            current_direction->noise++;
+            if(current_direction->noise > MAX_NOISE) current_direction->noise = MAX_NOISE;
+            ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(current_direction->noise) + ".png)");
             noise_show();
             return;
         }
@@ -4303,8 +4306,11 @@ void MainWindow::on_down_arrow_clicked()
     }
     if(curr == ui->main_page){
         if(ui->atuners->currentWidget() == ui->no_tuners){
-            ui->atuners->setCurrentWidget(ui->noise);
-            noise_show();
+            if(current_direction != nullptr && current_direction->ch != nullptr && !current_direction->is_idle){
+                ui->label_94->setText(current_direction->ch->name);
+                ui->atuners->setCurrentWidget(ui->noise);
+                noise_show();
+            }
             return;
         }
         if(ui->atuners->currentWidget() == ui->volume){
@@ -4315,9 +4321,9 @@ void MainWindow::on_down_arrow_clicked()
             return;
         }
         if(ui->atuners->currentWidget() == ui->noise){
-            noise--;
-            if(noise < MIN_NOISE) noise = MIN_NOISE;
-            ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(noise) + ".png)");
+            current_direction->noise--;
+            if(current_direction->noise < MIN_NOISE) current_direction->noise = MIN_NOISE;
+            ui->label_92->setStyleSheet("image: url(:/resources/volume_" + QString::number(current_direction->noise) + ".png)");
             noise_show();
             return;
         }
