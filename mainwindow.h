@@ -266,6 +266,9 @@ private:
     void set_default_channel_fields();
     void set_default_direction_fields();
 
+    QString getFormatFreq(int freq);
+    QString getNewDirectionName();
+
 private:
     struct Channel;
     struct Direction;

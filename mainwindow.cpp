@@ -10,6 +10,8 @@
 #include <QHBoxLayout>
 #include <QWidget>
 #include <QGraphicsDropShadowEffect>
+#include <sstream>
+#include <set>
 /*
 
 PA - pay attention
@@ -1547,10 +1549,12 @@ void MainWindow::on_channel_editor_left_clicked()
         {
             ERR
         }
+        /*
         if (ui->tmo_name->text().isEmpty())
         {
             ERR
         }
+*/
         break;
     }
     case 3: // vpd
@@ -1569,10 +1573,12 @@ void MainWindow::on_channel_editor_left_clicked()
         {
             ERR
         }
+        /*
         if (ui->vpd_name->text().isEmpty())
         {
             ERR
         }
+*/
         break;
     }
     case 4: // am25
@@ -1596,10 +1602,12 @@ void MainWindow::on_channel_editor_left_clicked()
                 ERR
             }
         }
+        /*
         if (ui->am25_name->text().isEmpty())
         {
             ERR
         }
+*/
         break;
     }
     case 5: // chm25
@@ -1623,11 +1631,12 @@ void MainWindow::on_channel_editor_left_clicked()
                 ERR
             }
         }
-
+        /*
         if (ui->chm25_name->text().isEmpty())
         {
             ERR
         }
+*/
         break;
     }
     case 6: // chm50
@@ -1651,11 +1660,12 @@ void MainWindow::on_channel_editor_left_clicked()
                 ERR
             }
         }
-
+        /*
         if (ui->chm25_name->text().isEmpty())
         {
             ERR
         }
+*/
         break;
     }
     case 7: // obp
@@ -1667,11 +1677,12 @@ void MainWindow::on_channel_editor_left_clicked()
         {
             ERR
         }
-
+        /*
         if (ui->obp_name->text().isEmpty())
         {
             ERR
         }
+*/
         break;
     }
     case 8: // fm
@@ -1695,10 +1706,12 @@ void MainWindow::on_channel_editor_left_clicked()
                 ERR
             }
         }
+        /*
         if (ui->fm_name->text().isEmpty())
         {
             ERR
         }
+*/
         break;
     }
     }
@@ -1715,28 +1728,33 @@ void MainWindow::on_channel_editor_left_clicked()
         break;
     case 1: // dmo
     {
-        ui->dmo_pprch->setChecked(curr->pprch);
-        ui->dmo_retr->setChecked(curr->retr);
-        ui->dmo_prd_only_retr->setChecked(curr->prd_only_retr);
-        ui->dmo_dualfreq->setChecked(curr->dualfreq);
-        ui->dmo_mcc->setText(curr->mcc);
-        ui->dmo_mnc->setText(curr->mnc);
-        ui->dmo_gssi->setText(curr->gssi);
-        ui->dmo_sos->setText(curr->sos);
-        ui->dmo_f_dmo->setText(curr->f_dmo);
-        ui->dmo_f_retr->setText(curr->f_retr);
-        ui->dmo_tx_dmo->setText(curr->tx_dmo);
-        ui->dmo_chp_dmo->setText(curr->chp_dmo);
-        ui->dmo_chp_retr->setText(curr->chp_retr);
-        ui->dmo_chp_prd->setText(curr->chp_prd);
-        ui->dmo_prm_hz->setText(curr->prm_hz);
-        ui->dmo_prd_hz->setText(curr->prd_hz);
-        ui->dmo_prm_net->setText(curr->prm_net);
-        ui->dmo_prd_net->setText(curr->prd_net);
-        ui->dmo_n_retr->setText(curr->n_retr);
-        ui->dmo_mask->setChecked(curr->mask);
-        ui->dmo_mask_key->setText(curr->mask_key);
-        ui->dmo_name->setText(curr->name);
+        curr->pprch = ui->dmo_pprch->isChecked();
+        curr->retr = ui->dmo_retr->isChecked();
+        curr->prd_only_retr = ui->dmo_prd_only_retr->isChecked();
+        curr->dualfreq = ui->dmo_dualfreq->isChecked();
+        curr->mcc = ui->dmo_mcc->text().trimmed();
+        curr->mnc = ui->dmo_mnc->text().trimmed();
+        curr->gssi = ui->dmo_gssi->text().trimmed();
+        curr->sos = ui->dmo_sos->text().trimmed();
+        curr->f_dmo = ui->dmo_f_dmo->text().trimmed();
+        curr->f_retr = ui->dmo_f_retr->text().trimmed();
+        curr->tx_dmo = ui->dmo_tx_dmo->text().trimmed();
+        curr->chp_dmo = ui->dmo_chp_dmo->text().trimmed();
+        curr->chp_retr = ui->dmo_chp_retr->text().trimmed();
+        curr->chp_prd = ui->dmo_chp_prd->text().trimmed();
+        curr->prm_hz = ui->dmo_prm_hz->text().trimmed();
+        curr->prd_hz = ui->dmo_prd_hz->text().trimmed();
+        curr->prm_net = ui->dmo_prm_net->text().trimmed();
+        curr->prd_net = ui->dmo_prd_net->text().trimmed();
+        curr->n_retr = ui->dmo_n_retr->text().trimmed();
+        curr->mask = ui->dmo_mask->isChecked();
+        curr->mask_key = ui->dmo_mask_key->text().trimmed();
+
+        if(ui->dmo_name->text().isEmpty()){
+
+        }else{
+            ui->dmo_name->setText(curr->name);
+        }
         break;
     }
     case 2: // tmo
@@ -1746,7 +1764,11 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->gssi = ui->tmo_gssi->text().trimmed();
         curr->vesh = ui->tmo_vesh->isChecked();
         curr->mask = ui->tmo_mask->isChecked();
-        curr->name = ui->tmo_name->text();
+        if(ui->tmo_name->text().isEmpty()){
+            curr->name = "TMO N" + curr->gssi;
+        }else{
+            curr->name = ui->tmo_name->text();
+        }
         break;
     }
     case 3:  // vpd
@@ -1755,7 +1777,11 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->mnc = ui->vpd_mnc->text().trimmed();
         curr->gssi = ui->vpd_gssi->text().trimmed();
         curr->freq = ui->vpd_freq->text().toInt();
-        curr->name = ui->vpd_name->text();
+        if(ui->vpd_name->text().isEmpty()){
+            curr->name = "ВПД " + getFormatFreq(curr->freq);
+        }else{
+            curr->name = ui->vpd_name->text();
+        }
         break;
     }
     case 4: // am25
@@ -1765,7 +1791,11 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->freq = ui->am25_freq->text().toInt();
         curr->prm_freq = ui->am25_prm_freq->text().toInt();
         curr->prd_freq = ui->am25_prd_freq->text().toInt();
-        curr->name = ui->am25_name->text();
+        if(ui->am25_name->text().isEmpty()){
+            curr->name = "АМ50 " + getFormatFreq(curr->dualfreq ? curr->prd_freq : curr->freq);
+        }else{
+            curr->name = ui->am25_name->text();
+        }
         break;
     }
     case 5: // chm25
@@ -1776,7 +1806,11 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->prm_freq = ui->chm25_prm_freq->text().toInt();
         curr->prd_freq = ui->chm25_prd_freq->text().toInt();
         curr->ctcss = ui->chm25_ctcss->property("chosen").toInt();
-        curr->name = ui->chm25_name->text();
+        if(ui->chm25_name->text().isEmpty()){
+            curr->name = "ЧМ25 " + getFormatFreq(curr->dualfreq ? curr->prd_freq : curr->freq);
+        }else{
+            curr->name = ui->chm25_name->text();
+        }
         break;
     }
     case 6: // chm50
@@ -1787,7 +1821,11 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->prm_freq = ui->chm50_prm_freq->text().toInt();
         curr->prd_freq = ui->chm50_prd_freq->text().toInt();
         curr->ctcss = ui->chm50_ctcss->property("chosen").toInt();
-        curr->name = ui->chm50_name->text();
+        if(ui->chm50_name->text().isEmpty()){
+            curr->name = "ЧМ50 " + getFormatFreq(curr->dualfreq ? curr->prd_freq : curr->freq);
+        }else{
+            curr->name = ui->chm50_name->text();
+        }
         break;
     }
     case 7: // obp
@@ -1795,7 +1833,11 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->PRD = ui->obp_prd->isChecked();
         curr->band = ui->obp_band->property("band") == 1 ? 1 : 0;
         curr->freq = ui->obp_freq->text().toInt();
-        curr->name = ui->obp_name->text();
+        if(ui->obp_name->text().isEmpty()){
+            curr->name = "ОБП " + getFormatFreq(curr->freq);
+        }else{
+            curr->name = ui->obp_name->text();
+        }
         break;
     }
     case 8: // fm
@@ -1805,7 +1847,11 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->freq = ui->fm_freq->text().toInt();
         curr->prm_freq = ui->fm_prm_freq->text().toInt();
         curr->prd_freq = ui->fm_prd_freq->text().toInt();
-        curr->name = ui->fm_name->text();
+        if(ui->fm_name->text().isEmpty()){
+            curr->name = "FM " + getFormatFreq(curr->dualfreq ? curr->prd_freq : curr->freq);
+        }else{
+            curr->name = ui->fm_name->text();
+        }
         break;
     }
     }
@@ -1916,6 +1962,65 @@ void MainWindow::set_default_direction_fields(){
     // fm
 }
 
+std::string intTo3d(int i){
+    std::stringstream ss;
+    if(i < 10){
+        ss << "00" << i;
+        return ss.str();
+    }
+    if(i < 100){
+        ss << "0" << i;
+        return ss.str();
+    }
+    if(i < 1000){
+        ss << i;
+        return ss.str();
+    }
+}
+
+QString MainWindow::getFormatFreq(int freq){
+    if(freq == 0) return tr("0.000");
+    int n =0;
+    int freq2 = freq;
+    while(freq % 10 == 0){
+        n++;
+        freq /= 10;
+    }
+    std::stringstream ss;
+    if(n >= 3){
+        freq2 /= 1000;
+        ss << freq2 / 1000 << '.' << intTo3d(freq2 % 1000);
+        return QString(ss.str().c_str());
+    }
+
+    if(n == 2){
+        freq2 /= 1000;
+        ss << freq / 10000 << '.' << intTo3d((freq % 10000) / 10) << '.' << freq % 10;
+        return QString(ss.str().c_str());
+    }
+
+    if(n == 1){
+        ss << freq / 100000 << '.' << intTo3d((freq % 100000) / 100) << '.' << freq % 100;
+        return QString(ss.str().c_str());
+    }
+
+    if(n == 0){
+        ss << freq / 1000000 << '.' << intTo3d((freq % 1000000) / 1000) << '.' << freq % 1000;
+        return QString(ss.str().c_str());
+    }
+}
+
+QString MainWindow::getNewDirectionName(){
+    int n = 1;
+    std::set<QString> dname_set;
+    for(auto kv : direction_map){
+        dname_set.insert(kv.second.direction->name);
+    }
+    QString newname = "Направление ";
+    while(dname_set.find(newname + QString::number(n)) != dname_set.end()) n++;
+    return newname + QString::number(n);
+}
+
 // direction loading
 void MainWindow::direction_editor_screen()
 {
@@ -1977,7 +2082,12 @@ void MainWindow::direction_editor_screen()
         ui->economizer->setProperty("num", curr->economizer);
         ui->economizer->setNum(curr->economizer);
         _on_economizer_numChanged();
-        ui->name_d->setText(curr->name);
+        if(curr->name.isEmpty()){
+            ui->name_d->setText(curr->name = getNewDirectionName());
+        }
+        else{
+            ui->name_d->setText(curr->name);
+        }
         ui->background_dir_picture->setProperty("num", curr->background);
         ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
         _on_direction_background_numChanged();
@@ -2412,9 +2522,7 @@ void MainWindow::setTransmitting(){
     ui->arrow->setStyleSheet("border-image: url(:/resources/per.png)");
 
     Channel *ch = current_direction->ch;
-    char buf[300] = "";
-    sprintf(buf, "ПЕРЕДАЧА %d.%03d", (ch->dualfreq ? ch->prd_freq / 1000000 : ch->freq / 1000000), (ch->dualfreq ? (ch->prd_freq / 1000) % 1000 : (ch->freq / 1000) % 1000));
-    ui->dej_label_1->setText(tr(buf));
+    ui->dej_label_1->setText("ПЕРЕДАЧА " + ch->dualfreq ? getFormatFreq(ch->prd_freq) : getFormatFreq(ch->freq));
     switch (ch->state) {
     case 1:
         ui->dej_label_2->setText(tr("TETRA_DMO"));
