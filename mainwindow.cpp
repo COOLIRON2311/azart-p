@@ -2055,6 +2055,7 @@ void MainWindow::on_direction_editor_left_clicked()
         curr->ch->name = "Канал не определен";
         curr->name = "Idle";
         curr->is_idle = true;
+        curr->PRD = true;
         selected_items["direction_list"]->setText(curr->name + "\n ");
         selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
         direction_map[selected_items["direction_list"]].ref2->setText(curr->name);
@@ -2355,7 +2356,7 @@ void MainWindow::recieveDatagrams()
     if (incoming_freq == freq && !transmitting)
     {
         setReceiving();
-        if(ui->mainPages->currentWidget() == ui->main_page){
+        if(ui->mainPages->currentWidget() == ui->main_page){            
             ui->modals->setCurrentWidget(ui->pr_per);
         }
         hide_dej_labels();
@@ -2392,17 +2393,29 @@ void MainWindow::setReceiving(){
 }
 
 void MainWindow::setTransmitting(){
+
+    if(current_direction->PRD || current_direction->ch->PRD){
+        ui->dej->setStyleSheet("#dej {"
+                               "  background:white;"
+                               "  image: url(:/resources/red_alert.png);"
+                           "}");
+        ui->forb_transm_label->setText("ЗАПРЕЩЕНА ПЕРЕДАЧА");
+    }
+
+    if(current_direction->is_idle){
+        ui->dej_label_1->setText("");
+        ui->dej_label_2->setText("");
+        ui->arrow->setStyleSheet("");
+        return;
+    }
+
     ui->arrow->setStyleSheet("border-image: url(:/resources/per.png)");
+
+    Channel *ch = current_direction->ch;
     char buf[300] = "";
-    Channel *ch = direction_map_d[selected_items["direction_selection_list"]]->ch;
-    //ui->dej_label_1->setText(tr("ПРИЕМ 59.000"));
-    //ui->dej_label_2->setText(tr("ЧМ25"));
     sprintf(buf, "ПЕРЕДАЧА %d.%03d", (ch->dualfreq ? ch->prd_freq / 1000000 : ch->freq / 1000000), (ch->dualfreq ? (ch->prd_freq / 1000) % 1000 : (ch->freq / 1000) % 1000));
     ui->dej_label_1->setText(tr(buf));
     switch (ch->state) {
-    case 0:
-        ui->dej_label_2->setText(tr("Idle"));
-        break;
     case 1:
         ui->dej_label_2->setText(tr("TETRA_DMO"));
         break;
@@ -2432,50 +2445,15 @@ void MainWindow::setTransmitting(){
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    /*
-    if(current_direction != nullptr && current_direction->ch != nullptr)
-    {
-        if(event->key() == Qt::Key_1 && !transmitting)
-        {
-            transmitting = true;
-
-            setTransmitting();
-            hide_dej_labels();
-            if(ui->mainPages->currentWidget() == ui->main_page){
-                ui->modals->setCurrentWidget(ui->pr_per);
-            }
-
-            inptDev = inpt->start();
-            inptConn = connect(inptDev, &QIODevice::readyRead,
-                               this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
-        }
-    }
-    */
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-    /*
-    if(current_direction != nullptr && current_direction->ch != nullptr)
-    {
-        if(event->key() == Qt::Key_1 && !event->isAutoRepeat())
-        {
-            transmitting = false;
-
-            ui->modals->setCurrentWidget(ui->no_modals);
-            show_dej_labels();
-
-            inptDev->close();
-            inpt->stop();
-            disconnect(inptConn);
-        }
-    }
-*/
 }
 
 void MainWindow::on_talk_button_pressed()
 {
-    if(current_direction != nullptr && current_direction->ch != nullptr && !current_direction->is_idle)
+    if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         if(!transmitting)
         {
@@ -2483,9 +2461,11 @@ void MainWindow::on_talk_button_pressed()
 
             setTransmitting();
             hide_dej_labels();
-            if(ui->mainPages->currentWidget() == ui->main_page){
+            if(ui->mainPages->currentWidget() == ui->main_page){                
                 ui->modals->setCurrentWidget(ui->pr_per);
             }
+
+            if(current_direction->PRD || current_direction->ch->PRD) return;
 
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
@@ -2496,14 +2476,16 @@ void MainWindow::on_talk_button_pressed()
 
 void MainWindow::on_talk_button_released()
 {
-    if(current_direction != nullptr && current_direction->ch != nullptr && !current_direction->is_idle)
+    if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         if(true)
         {
             transmitting = false;
 
             ui->modals->setCurrentWidget(ui->no_modals);
-            show_dej_labels();
+            if(!current_direction->is_idle) show_dej_labels();
+
+            if(current_direction->PRD || current_direction->ch->PRD) return;
 
             inptDev->close();
             inpt->stop();
