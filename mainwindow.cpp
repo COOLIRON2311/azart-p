@@ -331,7 +331,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     broadcast_init();
 
-    //ui->dej->setVisible(false);
     ui->modals->setCurrentWidget(ui->no_modals);
 
     QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
@@ -493,10 +492,21 @@ void MainWindow::main_screen()
 {
     ui->mainPages->setCurrentWidget(ui->main_page);
 
+    if(current_direction != nullptr && current_direction->is_idle){
+        ui->main_background->setStyleSheet("background-color: black");
+        hide_dej_labels();
+        ui->direction_label->setText(current_direction->name);
+        ui->channel_label->setText("");
+        return;
+    }
+
     if(current_direction != nullptr){
         ui->direction_label->setText(current_direction->name);
         if(current_direction->ch != nullptr){
             ui->channel_label->setText(current_direction->ch->name);
+        }
+        else{
+            ui->channel_label->setText("");
         }
 
         ui->main_background->setStyleSheet(
@@ -509,6 +519,8 @@ void MainWindow::main_screen()
     else{
         ui->main_background->setStyleSheet("background-color: black");
         hide_dej_labels();
+        ui->direction_label->setText("");
+        ui->channel_label->setText("");
     }
 }
 
@@ -753,11 +765,10 @@ void MainWindow::on_service_menu_right_clicked()
         ui->password->setProperty("password", temp);
         return;
     }
-    QTimer *t;
-    timers.push(t = new QTimer());
     ui->modals->setCurrentWidget(ui->wait);
-    connect(t, &QTimer::timeout, this, [t, this](){ ui->modals->setCurrentWidget(ui->no_modals); menu_screen(); t->stop(); });
-    t->start(1000);
+    delay(1000);
+    ui->modals->setCurrentWidget(ui->no_modals);
+    menu_screen();
 }
 
 void MainWindow::on_service_menu_left_clicked()
@@ -2461,7 +2472,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 
 void MainWindow::on_talk_button_pressed()
 {
-    if(current_direction != nullptr && current_direction->ch != nullptr)
+    if(current_direction != nullptr && current_direction->ch != nullptr && !current_direction->is_idle)
     {
         if(!transmitting)
         {
@@ -2482,7 +2493,7 @@ void MainWindow::on_talk_button_pressed()
 
 void MainWindow::on_talk_button_released()
 {
-    if(current_direction != nullptr && current_direction->ch != nullptr)
+    if(current_direction != nullptr && current_direction->ch != nullptr && !current_direction->is_idle)
     {
         if(true)
         {
