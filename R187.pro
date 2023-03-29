@@ -30,6 +30,7 @@ SOURCES += \
         modalwindow3d.cpp \
         modalwindownorm.cpp \
         modalwindowrd.cpp \
+        modalwindowrules.cpp \
         styles.cpp
 
 HEADERS += \
@@ -38,12 +39,14 @@ HEADERS += \
         modalwindow3d.h \
         modalwindownorm.h \
         modalwindowrd.h \
+        modalwindowrules.h \
         protocol.h
 
 FORMS += \
         mainwindow.ui \
         modalwindownorm.ui \
-        modalwindowrd.ui
+        modalwindowrd.ui \
+        modalwindowrules.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

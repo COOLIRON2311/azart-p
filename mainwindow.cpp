@@ -327,9 +327,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(showrd, &QAction::triggered, this, &MainWindow::show_radiodata);
     ui->menuBar->addAction(showrd);
 
-    shownorm = new QAction("Норматив", this);
+    shownorm = new QAction("Нормативы", this);
     connect(shownorm, &QAction::triggered, this, &MainWindow::show_normative);
     ui->menuBar->addAction(shownorm);
+
+    showrules = new QAction("Правила ведения переговоров", this);
+    connect(showrules, &QAction::triggered, this, &MainWindow::show_rules);
+    ui->menuBar->addAction(showrules);
 
     broadcast_init();
 
@@ -395,6 +399,11 @@ void MainWindow::show_radiodata()
 void MainWindow::show_normative()
 {
     normwin.show();
+}
+
+void MainWindow::show_rules()
+{
+    ruleswin.show();
 }
 
 MainWindow::~MainWindow()
