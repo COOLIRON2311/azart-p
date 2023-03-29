@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>770</width>
+    <width>515</width>
     <height>989</height>
    </rect>
   </property>
@@ -12204,7 +12204,7 @@ QListView::item:selected:!active {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>770</width>
+     <width>515</width>
      <height>21</height>
     </rect>
    </property>

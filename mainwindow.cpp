@@ -1807,7 +1807,7 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->prm_freq = ui->am25_prm_freq->text().toInt();
         curr->prd_freq = ui->am25_prd_freq->text().toInt();
         if(ui->am25_name->text().isEmpty()){
-            curr->name = "АМ50 " + getFormatFreq(curr->dualfreq ? curr->prd_freq : curr->freq);
+            curr->name = "АМ25 " + getFormatFreq(curr->dualfreq ? curr->prd_freq : curr->freq);
         }else{
             curr->name = ui->am25_name->text();
         }
@@ -1929,14 +1929,16 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
     if(item == direction_popup_menu_list_item[2]){
         if(selected_items["direction_list"] != nullptr){
 
-            direction_map[item].direction->ch->used_by.erase(direction_map[item].direction);
-            if(direction_map[item].direction->ch->used_by.empty()){
-                auto ch = direction_map[item].direction->ch;
-                for(auto kv : channel_map){
-                    if(kv.second.channel == ch){
-                        kv.first->setIcon(QIcon(":/resources/white16.png"));
-                        kv.second.ref2->setIcon(QIcon(":/resources/white16.png"));
-                        break;
+            if(direction_map[item].direction->ch){
+                direction_map[item].direction->ch->used_by.erase(direction_map[item].direction);
+                if(direction_map[item].direction->ch->used_by.empty()){
+                    auto ch = direction_map[item].direction->ch;
+                    for(auto kv : channel_map){
+                        if(kv.second.channel == ch){
+                            kv.first->setIcon(QIcon(":/resources/white16.png"));
+                            kv.second.ref2->setIcon(QIcon(":/resources/white16.png"));
+                            break;
+                        }
                     }
                 }
             }
@@ -2624,7 +2626,7 @@ void MainWindow::on_direction_selection_left_clicked()
 {
     if(selected_items["direction_selection_list"] != nullptr){
         current_direction = direction_map_d[selected_items["direction_selection_list"]];
-        broadcast_init();
+        //broadcast_init();
     }
     else{
         current_direction = nullptr;
@@ -2769,6 +2771,36 @@ void MainWindow::sendDatagrams()
 void MainWindow::setReceiving(){
     ui->arrow->setStyleSheet("border-image: url(:/resources/pr.png)");
 
+    Channel *ch = current_direction->ch;
+    auto t = ch->dualfreq ? getFormatFreq(ch->prd_freq) : getFormatFreq(ch->freq);
+    ui->dej_label_1->setText(tr("ПРИЕМ ") + t);
+    switch (ch->state) {
+    case 1:
+        ui->dej_label_2->setText(tr("TETRA_DMO"));
+        break;
+    case 2:
+        ui->dej_label_2->setText(tr("TETRA_TMO"));
+        break;
+    case 3:
+        ui->dej_label_2->setText(tr("ВПД"));
+        break;
+    case 4:
+        ui->dej_label_2->setText(tr("АМ25"));
+        break;
+    case 5:
+        ui->dej_label_2->setText(tr("ЧМ25"));
+        break;
+    case 6:
+        ui->dej_label_2->setText(tr("ЧМ50"));
+        break;
+    case 7:
+        ui->dej_label_2->setText(tr("ОБП"));
+        break;
+    case 8:
+        ui->dej_label_2->setText(tr("FM радио"));
+        break;
+    }
+
 }
 
 void MainWindow::setTransmitting(){
@@ -2859,7 +2891,6 @@ void MainWindow::on_talk_button_released()
         if(true)
         {
             transmitting = false;
-
             ui->modals->setCurrentWidget(ui->no_modals);
             if(!current_direction->is_idle) show_dej_labels();
 
