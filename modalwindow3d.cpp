@@ -75,7 +75,8 @@ void ModalWindow3D::show()
     QMainWindow::show();
 }
 
-void ModalWindow3D::closeEvent(QEvent* event){
+void ModalWindow3D::closeEvent(QCloseEvent* event)
+{
     Q_UNUSED(event);
     this->hide();
 }
@@ -83,6 +84,7 @@ void ModalWindow3D::closeEvent(QEvent* event){
 bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
 {
     Q_UNUSED(watched);
+    bool ret = false;
 //    if (event->type() == QEvent::Resize)
 //    {
 //        qDebug() << size();
@@ -97,39 +99,33 @@ bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
 
         if (keyEvent->key() == Qt::Key_W)
         {
-            dy++;
-            trans->setTranslation(QVector3D(dx, dy, dz));
-            return true;
+            bW = true;
+            ret = true;
         }
         else if (keyEvent->key() == Qt::Key_S)
         {
-            dy--;
-            trans->setTranslation(QVector3D(dx, dy, dz));
-            return true;
+            bS = true;
+            ret = true;
         }
         else if (keyEvent->key() == Qt::Key_A)
         {
-            dx--;
-            trans->setTranslation(QVector3D(dx, dy, dz));
-            return true;
+            bA = true;
+            ret = true;
         }
         else if (keyEvent->key() == Qt::Key_D)
-        {
-            dx++;
-            trans->setTranslation(QVector3D(dx, dy, dz));
-            return true;
+        {;
+            bD = true;
+            ret = true;
         }
         else if (keyEvent->key() == Qt::Key_Z)
         {
-            dz--;
-            trans->setTranslation(QVector3D(dx, dy, dz));
-            return true;
+            bZ = true;
+            ret = true;
         }
         else if (keyEvent->key() == Qt::Key_X)
         {
-            dz++;
-            trans->setTranslation(QVector3D(dx, dy, dz));
-            return true;
+            bX = true;
+            ret = true;
         }
 
         // --------
@@ -138,42 +134,41 @@ bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
 
         else if (keyEvent->key() == Qt::Key_Up)
         {
-            rx = (rx + 1) % 360;
-            trans->setRotationX(rx);
-            return true;
+
+            bUp = true;
+            ret = true;
         }
 
         else if (keyEvent->key() == Qt::Key_Down)
         {
-            rx = (rx - 1) % 360;
-            trans->setRotationX(rx);
-            return true;
+            bDo = true;
+            ret = true;
         }
 
         else if (keyEvent->key() == Qt::Key_Right)
         {
-            ry = (ry + 1) % 360;
-            trans->setRotationY(ry);
-            return true;
+            bRi = true;
+            ret = true;
         }
 
         else if (keyEvent->key() == Qt::Key_Left)
         {
-            ry = (ry - 1) % 360;
-            trans->setRotationY(ry);
-            return true;
+            bLe = true;
+            ret = true;
         }
 
         else if (keyEvent->key() == Qt::Key_Escape)
         {
             rx = 0, ry = 180, rz = 0;
             dx = 0, dy = -7, dz = 0;
+            bLe = false, bRi = false, bUp = false, bDo = false;
+            bA = false, bD = false, bW = false, bS = false, bZ = false, bX = false;
             trans->setTranslation(QVector3D(dx, dy, dz));
             trans->setRotationX(rx);
             trans->setRotationY(ry);
             trans->setRotationZ(rz);
 
-            return true;
+            ret = true;
         }
         else if (keyEvent->key() == Qt::Key_F11 || keyEvent->key() == Qt::Key_F)
         {
@@ -181,11 +176,109 @@ bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
                 showNormal();
             else
                 showMaximized();
+            ret = true;
         }
-        else
-            return false;
     }
-    return false;
+    else if (event->type() == QEvent::KeyRelease)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        // --------
+        // Movement
+        // --------
+
+        if (keyEvent->key() == Qt::Key_W)
+        {
+            bW = false;
+            ret = true;
+        }
+        else if (keyEvent->key() == Qt::Key_S)
+        {
+            bS = false;
+            ret = true;
+        }
+        else if (keyEvent->key() == Qt::Key_A)
+        {
+            bA = false;
+            ret = true;
+        }
+        else if (keyEvent->key() == Qt::Key_D)
+        {
+            bD = false;
+            ret = true;
+        }
+        else if (keyEvent->key() == Qt::Key_Z)
+        {
+            bZ = false;
+            ret = true;
+        }
+        else if (keyEvent->key() == Qt::Key_X)
+        {
+            bX = false;
+            ret = true;
+        }
+
+        // --------
+        // Rotation
+        // --------
+
+        else if (keyEvent->key() == Qt::Key_Up)
+        {
+            bUp = false;
+            ret = true;
+        }
+
+        else if (keyEvent->key() == Qt::Key_Down)
+        {
+            bDo = false;
+            ret = true;
+        }
+
+        else if (keyEvent->key() == Qt::Key_Right)
+        {
+            bRi = false;
+            ret = true;
+        }
+
+        else if (keyEvent->key() == Qt::Key_Left)
+        {
+            bLe = false;
+            ret = true;
+        }
+    }
+
+    if (bA || bD || bS || bW || bX || bZ)
+    {
+        if (bA)
+            dx--;
+        if (bD)
+            dx++;
+        if (bS)
+            dy--;
+        if (bW)
+            dy++;
+        if (bZ)
+            dz--;
+        if (bX)
+            dz++;
+        trans->setTranslation(QVector3D(dx, dy, dz));
+    }
+    if (bLe || bRi || bDo || bUp)
+    {
+        if (bLe)
+            ry = (ry - 1) % 360;
+        if (bRi)
+            ry = (ry + 1) % 360;
+        if (bDo)
+            rx = (rx - 1) % 360;
+        if (bUp)
+            rx = (rx + 1) % 360;
+
+        trans->setRotationX(rx);
+        trans->setRotationY(ry);
+        trans->setRotationZ(rz);
+    }
+    return ret;
 }
 
 void ModalWindow3D::loading()
