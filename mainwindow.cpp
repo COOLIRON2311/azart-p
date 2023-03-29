@@ -847,6 +847,13 @@ void MainWindow::on_channel_list_left_clicked()
 bool MainWindow::delete_channel(QListWidgetItem *item){
     if(item == nullptr) return false;
 
+    for(auto d : channel_map[item].channel->used_by){
+        d->is_idle = true;
+        d->name = "Idle";
+        d->ch = new Channel();
+        d->ch->name = "Не определен";
+    }
+
     // for channel
     ui->channel_list->removeItemWidget(item);
     // for directions
@@ -883,8 +890,8 @@ void MainWindow::on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *i
     }
     // ADD
     if(item == channel_popup_menu_list_item[1]){
-        QListWidgetItem* ref = new QListWidgetItem(QIcon(""), "");
-        QListWidgetItem* ref2 = new QListWidgetItem(QIcon(""), "");
+        QListWidgetItem* ref = new QListWidgetItem(QIcon(":/resources/white16.png"), "");
+        QListWidgetItem* ref2 = new QListWidgetItem(QIcon(":/resources/white16.png"), "");
         Channel* new_ch = new Channel();
         channel_map[ref] = {new_ch, ref2};
         channel_map_d[ref2] = new_ch;
@@ -1531,7 +1538,7 @@ void MainWindow::on_channel_editor_left_clicked()
     switch (state)
     {
     case 0: // none
-        // skip
+        // skip        
         break;
     case 1: // dmo
     {
@@ -1921,6 +1928,19 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
     // DELETE
     if(item == direction_popup_menu_list_item[2]){
         if(selected_items["direction_list"] != nullptr){
+
+            direction_map[item].direction->ch->used_by.erase(direction_map[item].direction);
+            if(direction_map[item].direction->ch->used_by.empty()){
+                auto ch = direction_map[item].direction->ch;
+                for(auto kv : channel_map){
+                    if(kv.second.channel == ch){
+                        kv.first->setIcon(QIcon(":/resources/white16.png"));
+                        kv.second.ref2->setIcon(QIcon(":/resources/white16.png"));
+                        break;
+                    }
+                }
+            }
+
             ui->direction_list->removeItemWidget(selected_items["direction_list"]);
             ui->direction_selection_list->removeItemWidget(direction_map[selected_items["direction_list"]].ref2);
             direction_map_d.erase(direction_map[selected_items["direction_list"]].ref2);
@@ -2135,6 +2155,7 @@ void MainWindow::on_direction_editor_left_clicked()
                 return;
             }
             //Выбрать
+            if(channel_map_d[selected_items["channel_choice_list"]]->state == 0) return;
             chosen_ref_d = selected_items["channel_choice_list"];
             ui->channel_in_dir_name->setText(channel_map_d[chosen_ref_d]->name);
             swap_direction_page();
@@ -2176,12 +2197,29 @@ void MainWindow::on_direction_editor_left_clicked()
     Direction* curr = direction_map[selected_items["direction_list"]].direction;
     if(curr->ch){
         curr->ch->used_by.erase(curr);
+        if(curr->ch->used_by.empty()){
+            for(auto kv : channel_map){
+                if(kv.second.channel == curr->ch){
+                    kv.first->setIcon(QIcon(":/resources/white16.png"));
+                    kv.second.ref2->setIcon(QIcon(":/resources/white16.png"));
+                    break;
+                }
+            }
+        }
     }
     // clearing before saving
     curr->clear();
     // REFACTOR
     curr->ch = channel; //channel_map_d[selected_items["channel_choice_list"]];
     curr->ch->used_by.insert(curr);
+
+    for(auto kv : channel_map){
+        if(kv.second.channel == curr->ch){
+            kv.first->setIcon(QIcon(":/resources/yellow_star.png"));
+            kv.second.ref2->setIcon(QIcon(":/resources/yellow_star.png"));
+            break;
+        }
+    }
 
     curr->PRD = ui->is_forbidden_prd_d->isChecked();
     curr->tone_call = ui->is_tone_call->isChecked();
@@ -2753,7 +2791,8 @@ void MainWindow::setTransmitting(){
     ui->arrow->setStyleSheet("border-image: url(:/resources/per.png)");
 
     Channel *ch = current_direction->ch;
-    ui->dej_label_1->setText("ПЕРЕДАЧА " + ch->dualfreq ? getFormatFreq(ch->prd_freq) : getFormatFreq(ch->freq));
+    auto t = ch->dualfreq ? getFormatFreq(ch->prd_freq) : getFormatFreq(ch->freq);
+    ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
     switch (ch->state) {
     case 1:
         ui->dej_label_2->setText(tr("TETRA_DMO"));
