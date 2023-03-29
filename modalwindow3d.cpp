@@ -19,7 +19,7 @@ void ModalWindow3D::setup()
     container = QWidget::createWindowContainer(view);
     QSize sz = view->screen()->size();
     this->setCentralWidget(QWidget::createWindowContainer(view));
-    this->centralWidget()->setMinimumSize(QSize(200, 100));
+    this->centralWidget()->setMinimumSize(QSize(500, 800));
     this->centralWidget()->setMaximumSize(sz);
 
     this->setWindowTitle("Загрузка...");
@@ -57,7 +57,7 @@ void ModalWindow3D::setup()
 
     // Set root object of the scene
     view->setRootEntity(rootEntity);
-    this->resize(1200, 800);
+    this->resize(500, 800);
 }
 
 ModalWindow3D::ModalWindow3D() : QMainWindow()
@@ -83,6 +83,10 @@ void ModalWindow3D::closeEvent(QEvent* event){
 bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
 {
     Q_UNUSED(watched);
+//    if (event->type() == QEvent::Resize)
+//    {
+//        qDebug() << size();
+//    }
     if (event->type() == QEvent::KeyPress)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
@@ -170,6 +174,13 @@ bool ModalWindow3D::eventFilter(QObject *watched, QEvent *event)
             trans->setRotationZ(rz);
 
             return true;
+        }
+        else if (keyEvent->key() == Qt::Key_F11 || keyEvent->key() == Qt::Key_F)
+        {
+            if (isMaximized())
+                showNormal();
+            else
+                showMaximized();
         }
         else
             return false;
