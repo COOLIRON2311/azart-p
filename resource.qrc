@@ -53,5 +53,7 @@
         <file>resources/toggler.png</file>
         <file>resources/блютус.png</file>
         <file>resources/red_alert.png</file>
+        <file>resources/black32.png</file>
+        <file>resources/white16.png</file>
     </qresource>
 </RCC>

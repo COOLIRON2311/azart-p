@@ -15,6 +15,7 @@
 #include "modalwindow3d.h"
 #include "modalwindownorm.h"
 #include <QList>
+#include <set>
 
 namespace Ui {
     class MainWindow;
@@ -151,8 +152,6 @@ private slots:
     void on_direction_editor_left_clicked(); //
     void on_direction_editor_right_clicked(); //
 
-    void on_channel_in_dir_name_clicked();
-
     void on_channel_choice_list_itemClicked(QListWidgetItem *item);
 
     void on_direction_list_itemClicked(QListWidgetItem *item);
@@ -204,10 +203,6 @@ private slots:
 
     void _on_channel_editor_state_popup_itemSelectionChanged();
 
-    void _on_channel_editor_ctcss_popup_itemSelectionChanged();
-
-    void _on_direction_editor_scan_popup_itemSelectionChanged();
-
     void on_direction_list_itemSelectionChanged();
 
     void on_channel_choice_list_itemSelectionChanged();
@@ -248,10 +243,14 @@ private slots:
 
     void on_rec_msgs_right_clicked();
 
+    void on_scan_popup_itemSelectionChanged();
+
+    void on_ctcss_popup_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
-    void clear_chm25_d_fields();
+    void clear_direction_fields();
     void clear_chm50_fields();
     void clear_am25_fields();
     void clear_tetra_dmo_fields();
@@ -337,6 +336,7 @@ private:
     ref chosen_ref_d = 0;
     std::queue<QTimer*> timers;
     QList<QWidget*> dmo_fields;
+    QList<QWidget*> direction_fields;
 
     QUdpSocket udpSocket;
     const QString ADDR = "26.115.163.75";
@@ -366,6 +366,7 @@ protected:
 
 struct MainWindow::Channel
 {
+    std::set<Direction*> used_by;
     bool is_new = true;
     quint32 state = 0; //"Не задано"
     bool PRD = false;
@@ -452,6 +453,8 @@ struct MainWindow::Direction
     qint32 economizer = 3; //0 - 3
     QString name = "";
     quint32 background = 0; //1 - 10
+    int priority = 0;
+    int timeout = 0;
 
     // set default all fields
     void clear(){
@@ -462,6 +465,8 @@ struct MainWindow::Direction
         economizer = 3;
         name = "";
         background = 0;
+        priority = 0;
+        timeout = 0;
     }
 };
 

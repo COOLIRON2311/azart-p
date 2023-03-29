@@ -154,8 +154,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //                0       1      2      3      4       5        6        7      8
     channel_types = {"none", "dmo", "tmo", "vpd", "am25", "chm25", "chm50", "obp", "fm"};
-    //                0       1      2      3      4       5        6        7      8
-    direction_types = {"none_d", "dmo_d", "tmo_d", "vpd_d", "am25_d", "chm25_d", "chm50_d", "obp_d", "fm_d"};
+
     //                         0
     editor_fields["none"] = { "type" };
     curr_editor_field["none"] = 0;
@@ -184,13 +183,9 @@ MainWindow::MainWindow(QWidget *parent) :
     editor_fields["fm"] = { "type", "prd", "2freq", "freq", "prm_freq", "prd_freq", "name" };
     curr_editor_field["fm"] = 0;
 
-    //                         0
-    editor_fields["none_d"] = { "type" };
-    curr_editor_field["none_d"] = 0;
-    //                            0          1      2       3       4             5       6
-    editor_fields["chm25_d"] = { "channel", "prd", "tone", "scan", "economizer", "name", "background" };
-    curr_editor_field["chm25_d"] = 0;
-    curr_editor_field["chm50_d"] = 0;
+    //                        0          1      2       3           4       5          6             7       8
+    editor_fields["dir"] = { "channel", "prd", "tone", "priority", "scan", "timeout", "economizer", "name", "background"  };
+    curr_editor_field["dir"] = 0;
 
     //channel_editor_state
     ui->ch_type_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
@@ -292,22 +287,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     set_styles();
 
-    connect(ui->ctcss_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged);
-
     ui->scan->setProperty("chosen", 0);
-    direction_editor_scan_popup = new QListWidget(this);
-    direction_editor_scan_popup->resize(95, 120);
-    direction_editor_scan_popup->move(ui->scan->mapToGlobal(ui->scan->rect().bottomLeft()) + QPoint(100, 100));
-    direction_editor_scan_popup->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
-    direction_editor_scan_popup->verticalScrollBar()->setStyleSheet("QScrollBar {width:3px;}");
-    direction_editor_scan_popup->setVisible(false);
 
-    direction_editor_scan_popup->addItem("Нет");
+    ui->scan_popup->addItem("Нет");
     for(int i = 1; i <= 32; i++){
-        direction_editor_scan_popup->addItem(QString::number(i));
+       ui->scan_popup->addItem(QString::number(i));
     }
-
-    connect(direction_editor_scan_popup, &QListWidget::itemSelectionChanged, this, &MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged);
 
     ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Карта"));
     ui->nav_menu_list->addItem(new QListWidgetItem(QIcon(""), "Отправить координаты"));
@@ -376,6 +361,19 @@ MainWindow::MainWindow(QWidget *parent) :
                           ui->widget_53, //ui->dmo_mask_key
                           ui->widget_58, //ui->dmo_name
                       });
+
+    direction_fields.append(
+                QList<QWidget*>{
+                    ui->widget_77,
+                    ui->widget_67, // prd
+                    ui->widget_68, // tone
+                    ui->widget_74, // priority
+                    ui->widget_69, // scan
+                    ui->widget_73, // timeout
+                    ui->widget_75, // eco
+                    ui->widget_71, // name
+                    ui->widget_76  // back
+                        });
 }
 
 void MainWindow::setup(){
@@ -617,15 +615,16 @@ void MainWindow::_on_channel_editor_state_popup_itemSelectionChanged()
     selected_items["channel_editor_state_popup"] = ui->ch_type_popup->currentItem();
 }
 
-void MainWindow::_on_channel_editor_ctcss_popup_itemSelectionChanged()
+void MainWindow::on_ctcss_popup_itemSelectionChanged()
 {
     selected_items["channel_editor_ctcss_popup"] = ui->ctcss_popup->currentItem();
 }
-void MainWindow::_on_direction_editor_scan_popup_itemSelectionChanged()
-{
 
-    selected_items["direction_editor_scan_popup"] = direction_editor_scan_popup->currentItem();
+void MainWindow::on_scan_popup_itemSelectionChanged()
+{
+    selected_items["direction_editor_scan_popup"] = ui->scan_popup->currentItem();
 }
+
 
 void MainWindow::on_direction_list_itemSelectionChanged()
 {
@@ -1938,28 +1937,27 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
 }
 
 void MainWindow::set_default_direction_fields(){
-    // dmo
-    // tmo
-    // vpd
-    // am25
-    // chm25
-
     ui->is_forbidden_prd_d->setCheckState(Qt::Unchecked);
     ui->is_tone_call->setCheckState(Qt::Unchecked);
+
     ui->scan->setProperty("chosen", 0);
-    direction_editor_scan_popup->setCurrentRow(0);
-    ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
+    ui->scan_popup->setCurrentRow(0);
+    ui->scan->setText(ui->scan_popup->currentItem()->text());
+
     ui->economizer->setProperty("num", 3);
     ui->economizer->setNum(3);
     _on_economizer_numChanged();
-    ui->name_d->setText("");
+
+    ui->name_d->setText(getNewDirectionName());
     ui->background_dir_picture->setProperty("num", 0);
     ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
     _on_direction_background_numChanged();
 
-    // chm50
-    // obp
-    // fm
+    ui->priority_d->setText("Нет");
+    ui->priority_d->setProperty("chosen", 0);
+
+    ui->timeout_d->setText("0");
+    ui->timeout_d->setProperty("chosen", 0);
 }
 
 std::string intTo3d(int i){
@@ -2026,9 +2024,9 @@ void MainWindow::direction_editor_screen()
 {
     ui->mainPages->setCurrentWidget(ui->direction_editor_page);
 
-    Direction* curr = direction_map[selected_items["direction_list"]].direction;
-
     set_default_direction_fields();
+
+    Direction* curr = direction_map[selected_items["direction_list"]].direction;
 
     if(curr->ch == nullptr){
         ui->channel_in_dir_name->setText("Не задано(Idle)");
@@ -2036,7 +2034,6 @@ void MainWindow::direction_editor_screen()
         ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
         return;
     }
-
     ui->channel_in_dir_name->setText(curr->ch->name);
 
     if(curr->ch->state == 0){
@@ -2056,55 +2053,35 @@ void MainWindow::direction_editor_screen()
     swap_direction_page();
     update_direction_editor_page();
 
+    ui->is_forbidden_prd_d->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
+    ui->is_tone_call->setCheckState(curr->tone_call ? Qt::Checked : Qt::Unchecked);
+    ui->scan->setProperty("chosen", curr->scan_list);
+    ui->scan_popup->setCurrentRow(curr->scan_list);
+    ui->scan->setText(ui->scan_popup->currentItem()->text());
+    ui->economizer->setProperty("num", curr->economizer);
+    ui->economizer->setNum(curr->economizer);
+    _on_economizer_numChanged();
 
-    switch (curr->ch->state) {
-    case 0:
+    ui->priority_d->setProperty("chosen", curr->priority);
+    ui->priority_d->setText(!curr->priority ? "Нет" : QString::number(curr->priority));
 
-        break;
-    case 1:
 
-        break;
-    case 2:
+    ui->timeout_d->setProperty("chosen", curr->timeout);
+    ui->timeout_d->setText(QString::number(curr->timeout));
 
-        break;
-    case 3:
+    //if(curr->name.isEmpty()){
+    //    ui->name_d->setText(getNewDirectionName());
+    //}
+    //else{
+        ui->name_d->setText(curr->name);
+    //}
+    ui->background_dir_picture->setProperty("num", curr->background);
+    ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+    _on_direction_background_numChanged();
 
-        break;
-    case 4:
-
-        break;
-    case 5:
-        ui->is_forbidden_prd_d->setCheckState(curr->PRD ? Qt::Checked : Qt::Unchecked);
-        ui->is_tone_call->setCheckState(curr->tone_call ? Qt::Checked : Qt::Unchecked);
-        ui->scan->setProperty("chosen", curr->scan_list);
-        direction_editor_scan_popup->setCurrentRow(curr->scan_list);
-        ui->scan->setText(direction_editor_scan_popup->currentItem()->text());
-        ui->economizer->setProperty("num", curr->economizer);
-        ui->economizer->setNum(curr->economizer);
-        _on_economizer_numChanged();
-        if(curr->name.isEmpty()){
-            ui->name_d->setText(curr->name = getNewDirectionName());
-        }
-        else{
-            ui->name_d->setText(curr->name);
-        }
-        ui->background_dir_picture->setProperty("num", curr->background);
-        ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
-        _on_direction_background_numChanged();
-        break;
-    case 6:
-
-        break;
-    case 7:
-
-        break;
-    case 8:
-
-        break;
-    }
 
     // Always point to the first field first
-    curr_editor_field[direction_types[curr->ch->state]] = 0;
+    curr_editor_field["dir"] = 0;
 }
 
 void MainWindow::on_channel_choice_list_itemDoubleClicked(QListWidgetItem *item)
@@ -2143,7 +2120,7 @@ void MainWindow::_on_direction_background_numChanged()
 // direction saving
 void MainWindow::on_direction_editor_left_clicked()
 {
-    if(chosen_ref_d == 0 || curr_editor_field[direction_types[channel_map_d[chosen_ref_d]->state]] == 0){
+    if(chosen_ref_d == 0 || curr_editor_field["dir"] == 0){
         if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
             if(selected_items["channel_choice_list"] == 0){
                 return;
@@ -2175,69 +2152,48 @@ void MainWindow::on_direction_editor_left_clicked()
     }
 
     Channel* channel = channel_map_d[chosen_ref_d];
-    if(channel->state == 5){
-        if(curr_editor_field["chm25_d"] == 3){
-            if(direction_editor_scan_popup->isVisible()){
-                //Выбрать
-                ui->scan->setText(selected_items["direction_editor_scan_popup"]->text());
-                ui->scan->setProperty("chosen", direction_editor_scan_popup->currentRow());
-                direction_editor_scan_popup->setVisible(false);
-                update_direction_editor_page();
-                return;
-            }
+    if(curr_editor_field["dir"] == 4){
+        if(ui->modals->currentWidget() == ui->scan_modal){
+            //Выбрать
+            ui->scan->setText(selected_items["direction_editor_scan_popup"]->text());
+            ui->scan->setProperty("chosen",ui->scan_popup->currentRow());
+            ui->modals->setCurrentWidget(ui->no_modals);
+            update_direction_editor_page();
+            return;
         }
     }
 
     // direction saving
     Direction* curr = direction_map[selected_items["direction_list"]].direction;
+    if(curr->ch){
+        curr->ch->used_by.erase(curr);
+    }
     // clearing before saving
     curr->clear();
     // REFACTOR
     curr->ch = channel; //channel_map_d[selected_items["channel_choice_list"]];
+    curr->ch->used_by.insert(curr);
 
-    if(curr->ch){
-        switch (curr->ch->state) {
-        case 0:
-            // skip
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            curr->PRD = ui->is_forbidden_prd_d->isChecked();
-            curr->tone_call = ui->is_tone_call->isChecked();
-            curr->scan_list = ui->scan->property("chosen").toInt();
-            curr->economizer = ui->economizer->property("num").toInt();
-            curr->name = ui->name_d->text();
-            curr->background = ui->background_dir_picture->property("num").toInt();
-            break;
-        case 6:
-            break;
-        case 7:
-            break;
-        case 8:
-            break;
-        }
+    curr->PRD = ui->is_forbidden_prd_d->isChecked();
+    curr->tone_call = ui->is_tone_call->isChecked();
+    curr->scan_list = ui->scan->property("chosen").toInt();
+    curr->economizer = ui->economizer->property("num").toInt();
+    curr->priority = ui->priority_d->property("chosen").toInt();
+    curr->timeout = ui->timeout_d->property("chosen").toInt();
+    curr->name = ui->name_d->text();
+    curr->background = ui->background_dir_picture->property("num").toInt();
 
-        selected_items["direction_list"]->setText(curr->name + "\n" + curr->ch->name);
-        selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
-        direction_map[selected_items["direction_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
-        direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
-    }
+    selected_items["direction_list"]->setText(curr->name + "\n" + curr->ch->name);
+    selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
+    direction_map[selected_items["direction_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
+    direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
+
     direction_list_screen();
 }
 
 void MainWindow::on_direction_editor_right_clicked()
 {
-    // TODO
-    // need to erase Выбрать when we have loaded an Idle direction
-
-    if(chosen_ref_d == 0 || curr_editor_field[direction_types[channel_map_d[chosen_ref_d]->state]] == 0){
+    if(chosen_ref_d == 0 || curr_editor_field["dir"] == 0){
         if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
             //Назад
             if(chosen_ref_d) ui->channel_choice_list->setCurrentItem(chosen_ref_d);
@@ -2248,40 +2204,39 @@ void MainWindow::on_direction_editor_right_clicked()
         else{
             if(direction_map[selected_items["direction_list"]].direction->is_idle) return;
             //Выбрать
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);            
             update_direction_editor_page();
             return;
         }
     }
 
-    if(channel_map_d[chosen_ref_d]->state == 5){
-        switch (curr_editor_field["chm25_d"]) {
+    if(channel_map_d[chosen_ref_d]->state == 1){
+        switch (curr_editor_field["dir"]) {
         case 0:
             // skip
             break;
         case 1:
             ui->is_forbidden_prd_d->toggle();
             break;
-        case 2:
-            ui->is_tone_call->toggle();
-            break;
         case 3:
-            if(direction_editor_scan_popup->isVisible()){
-                direction_editor_scan_popup->setVisible(false);
-            }
-            else{
-                direction_editor_scan_popup->setVisible(true);
-            }
+            // ui->priority_d
             break;
         case 4:
-            ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
-            ui->economizer->setNum(ui->economizer->property("num").toInt());
-            _on_economizer_numChanged();
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
             break;
         case 5:
+            ui->timeout_d->setProperty("chosen", (ui->timeout_d->property("num").toInt() + 1) % 16);
+            ui->timeout_d->setNum(ui->timeout_d->property("num").toInt());
+            break;
+        case 7:
             ui->name_d->backspace();
             break;
-        case 6:
+        case 8:
             ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
             ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
             _on_direction_background_numChanged();
@@ -2294,11 +2249,278 @@ void MainWindow::on_direction_editor_right_clicked()
         return;
     }
 
-}
+    if(channel_map_d[chosen_ref_d]->state == 2){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 3:
+            // ui->priority_d
+            break;
+        case 4:
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
+            break;
+        case 5:
+            ui->timeout_d->setProperty("chosen", (ui->timeout_d->property("num").toInt() + 1) % 16);
+            ui->timeout_d->setNum(ui->timeout_d->property("num").toInt());
+            break;
+        case 7:
+            ui->name_d->backspace();
+            break;
+        case 8:
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
 
-void MainWindow::on_channel_in_dir_name_clicked()
-{
-    ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);
+    if(channel_map_d[chosen_ref_d]->state == 3){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 4:
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
+            break;
+        case 7:
+            ui->name_d->backspace();
+            break;
+        case 8:
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
+
+    if(channel_map_d[chosen_ref_d]->state == 4){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 2:
+            ui->is_tone_call->toggle();
+            break;
+        case 4:
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
+            break;
+        case 6:
+            ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
+            ui->economizer->setNum(ui->economizer->property("num").toInt());
+            _on_economizer_numChanged();
+            break;
+        case 7:
+            ui->name_d->backspace();
+            break;
+        case 8:
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
+
+    if(channel_map_d[chosen_ref_d]->state == 5){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 2:
+            ui->is_tone_call->toggle();
+            break;
+        case 4:
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
+            break;
+        case 6:
+            ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
+            ui->economizer->setNum(ui->economizer->property("num").toInt());
+            _on_economizer_numChanged();
+            break;
+        case 7:
+            ui->name_d->backspace();
+            break;
+        case 8:
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
+
+    if(channel_map_d[chosen_ref_d]->state == 6){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 2:
+            ui->is_tone_call->toggle();
+            break;
+        case 4:
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
+            break;
+        case 6:
+            ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
+            ui->economizer->setNum(ui->economizer->property("num").toInt());
+            _on_economizer_numChanged();
+            break;
+        case 7:
+            ui->name_d->backspace();
+            break;
+        case 8:
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
+
+    if(channel_map_d[chosen_ref_d]->state == 7){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 2:
+            ui->is_tone_call->toggle();
+            break;
+        case 4:
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
+            break;
+        case 6:
+            ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
+            ui->economizer->setNum(ui->economizer->property("num").toInt());
+            _on_economizer_numChanged();
+            break;
+        case 7:
+            ui->name_d->backspace();
+            break;
+        case 8:
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
+
+    if(channel_map_d[chosen_ref_d]->state == 8){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // skip
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->toggle();
+            break;
+        case 2:
+            ui->is_tone_call->toggle();
+            break;
+        case 4:
+            if(ui->modals->currentWidget() == ui->scan_modal){
+               ui->modals->setCurrentWidget(ui->no_modals);
+            }
+            else{
+               ui->modals->setCurrentWidget(ui->scan_modal);
+            }
+            break;
+        case 6:
+            ui->economizer->setProperty("num", (ui->economizer->property("num").toInt() + 1) % 4);
+            ui->economizer->setNum(ui->economizer->property("num").toInt());
+            _on_economizer_numChanged();
+            break;
+        case 7:
+            ui->name_d->backspace();
+            break;
+        case 8:
+            ui->background_dir_picture->setProperty("num", (ui->background_dir_picture->property("num").toInt() + 1) % 10);
+            ui->background_dir_picture->setNum(ui->background_dir_picture->property("num").toInt());
+            _on_direction_background_numChanged();
+            break;
+        default:
+            qCritical("crit: on_direction_editor_right_clicked");
+            return;
+        }
+        update_direction_editor_page();
+        return;
+    }
+
+    update_direction_editor_page();
 }
 
 void MainWindow::on_channel_choice_list_itemClicked(QListWidgetItem *item)
@@ -3008,13 +3230,15 @@ void MainWindow::clear_chm25_fields(){
     ui->label_39->setVisible(false);
 }
 
-void MainWindow::clear_chm25_d_fields(){
-    ui->channel_in_dir_name->setStyleSheet("text-align: left;");
+void MainWindow::clear_direction_fields(){
+    ui->channel_in_dir_name->setStyleSheet("background: white;");
 
     ui->is_forbidden_prd_d->setStyleSheet("background: white;");
     ui->is_tone_call->setStyleSheet("background: white;");
     ui->scan->setStyleSheet("background: white;");
     ui->economizer->setStyleSheet("background: white;");
+    ui->priority_d->setStyleSheet("background: white;");
+    ui->timeout_d->setStyleSheet("background: white;");
 
     ui->name_d->setStyleSheet("background: white;");
     ui->background_dir_picture->setStyleSheet("");
@@ -3908,65 +4132,16 @@ void MainWindow::swap_direction_page(){
         return;
     }
 
-    switch (channel_map_d[chosen_ref_d]->state) {
-    case 0:
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    case 1:
-        // TODO: CHANGE
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    case 2:
-        // TODO: CHANGE
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    case 3:
-        // TODO: CHANGE
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    case 4:
-        // TODO: CHANGE
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    case 5:
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->direction_tuner_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
-        break;
-    case 6:
-        // TODO: CHANGE
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    case 7:
-        // TODO: CHANGE
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    case 8:
-        // TODO: CHANGE
-        if(ui->direction_editor_stackedWidget->currentWidget() != ui->empty_direction_editor_page)
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
-        break;
-    default:
-        qCritical("crit: direction_editor_stackedWidget");
-    }
+    if(ui->direction_editor_stackedWidget->currentWidget() != ui->direction_tuner_page)
+        ui->direction_editor_stackedWidget->setCurrentWidget(ui->direction_tuner_page);
 }
 
 void MainWindow::update_direction_editor_page(){
-    clear_chm25_d_fields();
+    clear_direction_fields();
 
-    if(chosen_ref_d == nullptr || curr_editor_field[direction_types[channel_map_d[chosen_ref_d]->state]] == 0){
-        if(chosen_ref_d){
-            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white; text-align: left;");
-        }
-        else{
-            ui->channel_in_dir_name->setStyleSheet("text-align: left;");
-        }
+    if(chosen_ref_d == nullptr || curr_editor_field["dir"] == 0){
+        ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+
         if(ui->direction_editor_stackedWidget->currentWidget() == ui->channel_choice_page){
             if(channel_map_d.empty()){
                 ui->direction_editor_left->setText("");
@@ -3976,7 +4151,7 @@ void MainWindow::update_direction_editor_page(){
             }
             ui->direction_editor_right->setText("Назад");
         }
-        else{
+        else{            
             ui->direction_editor_left->setText("Сохранить");
             if(direction_map[selected_items["direction_list"]].direction->is_idle){
                 ui->direction_editor_right->setText("");
@@ -3985,7 +4160,7 @@ void MainWindow::update_direction_editor_page(){
             }
 
         }
-        return;
+        if(chosen_ref_d == nullptr) return;
     }
 
     Channel* channel = channel_map_d[chosen_ref_d];
@@ -3994,16 +4169,174 @@ void MainWindow::update_direction_editor_page(){
     // none
     if(channel->state == 0){
         // was upper
+        ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
         return;
     }
 
-    // chm25_d
-    if(channel->state == 5){
-        clear_chm25_d_fields();
-        switch (curr_editor_field["chm25_d"]) {
+    clear_direction_fields();
+
+    // dmo_d
+    if(channel->state == 1){
+        switch (curr_editor_field["dir"]) {
         case 0:
             // was upper
-            //ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white; text-align: left;");
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 3:
+            ui->priority_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 4:
+            ui->scan->setStyleSheet("border: 2px solid black; background: white;");
+            if(ui->modals->currentWidget() == ui->scan_modal){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
+            }
+            else{
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
+            }
+            break;
+        case 5:
+            ui->timeout_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 7:
+            ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
+            break;
+        case 8:
+            ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        default:
+            qCritical("dmo_d: update_direction_editor_page: no way");
+        }
+
+        ui->widget_68->setVisible(false); // tone
+        ui->widget_74->setVisible(true); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(true); // timeout
+        ui->widget_75->setVisible(false); // eco
+
+        return;
+    }
+
+    // tmo_d
+    if(channel->state == 2){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // was upper
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 3:
+            ui->priority_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 4:
+            ui->scan->setStyleSheet("border: 2px solid black; background: white;");
+            if(ui->modals->currentWidget() == ui->scan_modal){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
+            }
+            else{
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
+            }
+            break;
+        case 7:
+            ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
+            break;
+        case 8:
+            ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        default:
+            qCritical("tmo_d: update_direction_editor_page: no way");
+        }
+
+        ui->widget_68->setVisible(false); // tone
+        ui->widget_74->setVisible(true); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(false); // timeout
+        ui->widget_75->setVisible(false); // eco
+
+        return;
+    }
+
+    // vpd_d
+    if(channel->state == 3){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // was upper
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 4:
+            ui->scan->setStyleSheet("border: 2px solid black; background: white;");
+            if(ui->modals->currentWidget() == ui->scan_modal){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
+            }
+            else{
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
+            }
+            break;
+        case 7:
+            ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
+            break;
+        case 8:
+            ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        default:
+            qCritical("vpd_d: update_direction_editor_page: no way");
+        }
+
+        ui->widget_68->setVisible(false); // tone
+        ui->widget_74->setVisible(false); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(false); // timeout
+        ui->widget_75->setVisible(false); // eco
+
+        return;
+    }
+
+    // am25_d
+    if(channel->state == 4){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // was upper
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
             break;
         case 1:
             ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
@@ -4015,9 +4348,9 @@ void MainWindow::update_direction_editor_page(){
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Изменить");
             break;
-        case 3:
+        case 4:
             ui->scan->setStyleSheet("border: 2px solid black; background: white;");
-            if(direction_editor_scan_popup->isVisible()){
+            if(ui->modals->currentWidget() == ui->scan_modal){
                 ui->direction_editor_left->setText("Выбрать");
                 ui->direction_editor_right->setText("Назад");
             }
@@ -4026,18 +4359,75 @@ void MainWindow::update_direction_editor_page(){
                 ui->direction_editor_right->setText("Выбрать");
             }
             break;
-        case 4:
+        case 6:
             ui->economizer->setStyleSheet("border: 2px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Выбрать");
             break;
-        case 5:
+        case 7:
             ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Стереть");
             ui->name_d->setFocus();
             break;
+        case 8:
+            ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        default:
+            qCritical("am25_d: update_direction_editor_page: no way");
+        }
+
+        ui->widget_68->setVisible(true); // tone
+        ui->widget_74->setVisible(false); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(false); // timeout
+        ui->widget_75->setVisible(true); // eco
+
+        return;
+    }
+
+    // chm25_d
+    if(channel->state == 5){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // was upper
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 2:
+            ui->is_tone_call->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 4:
+            ui->scan->setStyleSheet("border: 2px solid black; background: white;");
+            if(ui->modals->currentWidget() == ui->scan_modal){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
+            }
+            else{
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
+            }
+            break;
         case 6:
+            ui->economizer->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 7:
+            ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
+            break;
+        case 8:
             ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
             ui->direction_editor_left->setText("Сохранить");
             ui->direction_editor_right->setText("Выбрать");
@@ -4045,20 +4435,187 @@ void MainWindow::update_direction_editor_page(){
         default:
             qCritical("chm25_d: update_direction_editor_page: no way");
         }
+
+        ui->widget_68->setVisible(true); // tone
+        ui->widget_74->setVisible(false); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(false); // timeout
+        ui->widget_75->setVisible(true); // eco
+
+        return;
+    }
+
+    // chm50_d
+    if(channel->state == 6){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // was upper
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 2:
+            ui->is_tone_call->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 4:
+            ui->scan->setStyleSheet("border: 2px solid black; background: white;");
+            if(ui->modals->currentWidget() == ui->scan_modal){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
+            }
+            else{
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
+            }
+            break;
+        case 6:
+            ui->economizer->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 7:
+            ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
+            break;
+        case 8:
+            ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        default:
+            qCritical("chm50_d: update_direction_editor_page: no way");
+        }
+
+        ui->widget_68->setVisible(true); // tone
+        ui->widget_74->setVisible(false); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(false); // timeout
+        ui->widget_75->setVisible(true); // eco
+
+        return;
+    }
+
+    // obp_d
+    if(channel->state == 7){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // was upper
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 2:
+            ui->is_tone_call->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 4:
+            ui->scan->setStyleSheet("border: 2px solid black; background: white;");
+            if(ui->modals->currentWidget() == ui->scan_modal){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
+            }
+            else{
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
+            }
+            break;
+        case 6:
+            ui->economizer->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 7:
+            ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
+            break;
+        case 8:
+            ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        default:
+            qCritical("obp_d: update_direction_editor_page: no way");
+        }
+
+        ui->widget_68->setVisible(true); // tone
+        ui->widget_74->setVisible(false); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(false); // timeout
+        ui->widget_75->setVisible(true); // eco
+
+        return;
+    }
+
+    // fm_d
+    if(channel->state == 8){
+        switch (curr_editor_field["dir"]) {
+        case 0:
+            // was upper
+            ui->channel_in_dir_name->setStyleSheet("border: 2px solid black; background: white;");
+            break;
+        case 1:
+            ui->is_forbidden_prd_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 2:
+            ui->is_tone_call->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Изменить");
+            break;
+        case 4:
+            ui->scan->setStyleSheet("border: 2px solid black; background: white;");
+            if(ui->modals->currentWidget() == ui->scan_modal){
+                ui->direction_editor_left->setText("Выбрать");
+                ui->direction_editor_right->setText("Назад");
+            }
+            else{
+                ui->direction_editor_left->setText("Сохранить");
+                ui->direction_editor_right->setText("Выбрать");
+            }
+            break;
+        case 6:
+            ui->economizer->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        case 7:
+            ui->name_d->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Стереть");
+            ui->name_d->setFocus();
+            break;
+        case 8:
+            ui->background_dir_picture->setStyleSheet("border: 2px solid black; background: white;");
+            ui->direction_editor_left->setText("Сохранить");
+            ui->direction_editor_right->setText("Выбрать");
+            break;
+        default:
+            qCritical("fm_d: update_direction_editor_page: no way");
+        }
+
+        ui->widget_68->setVisible(true); // tone
+        ui->widget_74->setVisible(false); // priority
+        ui->widget_69->setVisible(true); // scan
+        ui->widget_73->setVisible(false); // timeout
+        ui->widget_75->setVisible(true); // eco
+
         return;
     }
 }
-
-/*
-
-              //\\
-             ///\\\
-            ////\\\\
-               ==
-               ==
-               ==
-               ==
-*/
 
 void MainWindow::volume_show(){
     QTimer *t;
@@ -4106,6 +4663,16 @@ void MainWindow::noise_handler(int i){
     }
 }
 
+/*
+
+              //\\
+             ///\\\
+            ////\\\\
+               ==
+               ==
+               ==
+               ==
+*/
 void MainWindow::on_up_arrow_clicked()
 {
     if(ui->modals->currentWidget() == ui->params_error){
@@ -4335,21 +4902,20 @@ void MainWindow::on_up_arrow_clicked()
             return;
         }
 
-        if(channel->state == 5){
-
-            if(curr_editor_field["chm25_d"] == 3){
-                if(direction_editor_scan_popup->isVisible()){
-                    go_up(direction_editor_scan_popup, 33);
-                    return;
-                }
-            }
-
-            uint sz = editor_fields["chm25_d"].size();
-            curr_editor_field["chm25_d"] = (curr_editor_field["chm25_d"] - 1 + sz) % sz;
-
-            update_direction_editor_page();
+        if(ui->modals->currentWidget() == ui->scan_modal){
+            go_up(ui->scan_popup, 33);
             return;
         }
+
+        uint sz = editor_fields["dir"].size();
+        curr_editor_field["dir"] = (curr_editor_field["dir"] - 1 + sz) % sz;
+
+        while(!direction_fields[curr_editor_field["dir"]]->isVisible()){
+            curr_editor_field["dir"] = (curr_editor_field["dir"] - 1 + sz) % sz;
+        }
+
+        update_direction_editor_page();
+        return;
     }
     if(curr == ui->navigation_page){
         if(ui->modals->currentWidget() == ui->navigation_menu){
@@ -4615,21 +5181,20 @@ void MainWindow::on_down_arrow_clicked()
             return;
         }
 
-        if(channel->state == 5){
-
-            if(curr_editor_field["chm25_d"] == 3){
-                if(direction_editor_scan_popup->isVisible()){
-                    go_down(direction_editor_scan_popup, 33);
-                    return;
-                }
-            }
-
-            uint sz = editor_fields["chm25_d"].size();
-            curr_editor_field["chm25_d"] = (curr_editor_field["chm25_d"] + 1) % sz;
-
-            update_direction_editor_page();
+        if(ui->modals->currentWidget() == ui->scan_modal){
+            go_down(ui->scan_popup, 33);
             return;
         }
+
+        uint sz = editor_fields["dir"].size();
+        curr_editor_field["dir"] = (curr_editor_field["dir"] + 1) % sz;
+
+        while(!direction_fields[curr_editor_field["dir"]]->isVisible()){
+            curr_editor_field["dir"] = (curr_editor_field["dir"] + 1) % sz;
+        }
+
+        update_direction_editor_page();
+        return;
     }
     if(curr == ui->navigation_page){
         if(ui->modals->currentWidget() == ui->navigation_menu){
@@ -4879,3 +5444,4 @@ void MainWindow::on_rec_msgs_right_clicked()
 {
     menu_screen();
 }
+
