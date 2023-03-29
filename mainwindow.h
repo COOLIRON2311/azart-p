@@ -14,6 +14,7 @@
 #include "modalwindowrd.h"
 #include "modalwindow3d.h"
 #include "modalwindownorm.h"
+#include "modalwindowrules.h"
 #include <QList>
 #include <set>
 
@@ -31,6 +32,7 @@ public:
     ModalWindowRD rdwin;
     ModalWindow3D _3dwin;    
     ModalWindowNorm normwin;
+    ModalWindowRules ruleswin;
 
 public slots:
     void change_global_time();
@@ -74,6 +76,7 @@ private:
     QAction *show3d;
     QAction *showrd;
     QAction *shownorm;
+    QAction *showrules;
 
     void sendDatagrams();
     void playSamples();
@@ -109,6 +112,8 @@ private slots:
     void show_radiodata();
 
     void show_normative();
+
+    void show_rules();
 
     void set_styles();
 

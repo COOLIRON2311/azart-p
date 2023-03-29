@@ -60,6 +60,8 @@ class ModalWindow3D : public QMainWindow
     Qt3DCore::QTransform *trans;
     int rx = 0, ry = 180, rz = 0;
     float dx = 0, dy = -7, dz = 0;
+    bool bLe = false, bRi = false, bUp = false, bDo = false;
+    bool bA = false, bD = false, bW = false, bS = false, bZ = false, bX = false;
     QUrl model;
     QUrl texture;
     void setup();
@@ -67,7 +69,7 @@ class ModalWindow3D : public QMainWindow
 public:
     explicit ModalWindow3D();
     void show();
-    void closeEvent(QEvent* event);
+    void closeEvent(QCloseEvent* event) override;
 
 public slots:
     bool eventFilter(QObject *watched, QEvent *event) override;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>802</width>
-    <height>303</height>
+    <height>357</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -104,14 +104,14 @@
             <enum>Qt::LeftToRight</enum>
            </property>
            <property name="text">
-            <string>Старт</string>
+            <string>К выполнению норматива приступить</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="stopb">
            <property name="text">
-            <string>Стоп</string>
+            <string>Готов</string>
            </property>
           </widget>
          </item>
