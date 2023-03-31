@@ -57,12 +57,25 @@ QPoint MainWindow::global_pos(QWidget* w){
     return QPoint(0, 0);
 }
 
+void MainWindow::readIP()
+{
+    QFile file("ip.txt");
+//    qDebug() << QDir::currentPath();
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream in(&file);
+    ADDR = in.readLine().trimmed();
+    file.close();
+//    qDebug() << ADDR;
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    readIP();
     auto _sz = MainWindow::size();
     setMinimumSize(_sz);
     setMaximumSize(_sz);
@@ -1743,6 +1756,7 @@ void MainWindow::on_channel_editor_left_clicked()
         break;
     case 1: // dmo
     {
+        curr->mode = Mode::TETRA_DMO;
         curr->pprch = ui->dmo_pprch->isChecked();
         curr->retr = ui->dmo_retr->isChecked();
         curr->prd_only_retr = ui->dmo_prd_only_retr->isChecked();
@@ -1774,6 +1788,7 @@ void MainWindow::on_channel_editor_left_clicked()
     }
     case 2: // tmo
     {
+        curr->mode = Mode::TETRA_TMO;
         curr->mcc = ui->tmo_mcc->text().trimmed();
         curr->mnc = ui->tmo_mnc->text().trimmed();
         curr->gssi = ui->tmo_gssi->text().trimmed();
@@ -1788,6 +1803,7 @@ void MainWindow::on_channel_editor_left_clicked()
     }
     case 3:  // vpd
     {
+        curr->mode = Mode::VPD;
         curr->mcc = ui->vpd_mcc->text().trimmed();
         curr->mnc = ui->vpd_mnc->text().trimmed();
         curr->gssi = ui->vpd_gssi->text().trimmed();
@@ -1801,6 +1817,7 @@ void MainWindow::on_channel_editor_left_clicked()
     }
     case 4: // am25
     {
+        curr->mode = Mode::AM25;
         curr->PRD = ui->am25_prd->isChecked();
         curr->dualfreq = ui->am25_dualfreq->isChecked();
         curr->freq = ui->am25_freq->text().toInt();
@@ -1815,6 +1832,7 @@ void MainWindow::on_channel_editor_left_clicked()
     }
     case 5: // chm25
     {
+        curr->mode = Mode::CHM25;
         curr->PRD = ui->chm25_prd->isChecked();
         curr->dualfreq = ui->chm25_dualfreq->isChecked();
         curr->freq = ui->chm25_freq->text().toInt();
@@ -1830,6 +1848,7 @@ void MainWindow::on_channel_editor_left_clicked()
     }
     case 6: // chm50
     {
+        curr->mode = Mode::CHM50;
         curr->PRD = ui->chm50_prd->isChecked();
         curr->dualfreq = ui->chm50_dualfreq->isChecked();
         curr->freq = ui->chm50_freq->text().toInt();
@@ -1845,6 +1864,7 @@ void MainWindow::on_channel_editor_left_clicked()
     }
     case 7: // obp
     {
+        curr->mode = Mode::OBP;
         curr->PRD = ui->obp_prd->isChecked();
         curr->band = ui->obp_band->property("band") == 1 ? 1 : 0;
         curr->freq = ui->obp_freq->text().toInt();
@@ -1857,6 +1877,7 @@ void MainWindow::on_channel_editor_left_clicked()
     }
     case 8: // fm
     {
+        curr->mode = Mode::FM;
         curr->PRD = ui->fm_prd->isChecked();
         curr->dualfreq = ui->fm_dualfreq->isChecked();
         curr->freq = ui->fm_freq->text().toInt();
@@ -2624,8 +2645,11 @@ void MainWindow::on_menu_right_clicked()
 
 void MainWindow::on_direction_selection_left_clicked()
 {
-    if(selected_items["direction_selection_list"] != nullptr){
+    if(selected_items["direction_selection_list"] != nullptr)
+    {
         current_direction = direction_map_d[selected_items["direction_selection_list"]];
+        set_header();
+        memcpy(_buf, &self, sizeof(Header));
         //broadcast_init();
     }
     else{
@@ -2724,20 +2748,111 @@ void MainWindow::hideDej(){
     }
 }
 
+int MainWindow::_check_mode_params()
+{
+    Header& s = self;
+    Header& o = corr;
+    if (s.mode == o.mode) // modes match
+    {
+        switch (self.mode)
+        {
+        case Mode::TETRA_DMO:
+            break;
+        case Mode::TETRA_TMO: // gssi?
+            if (s.mcc == o.mcc && s.mnc == o.mcc)
+                return 0;
+            break;
+        case Mode::VPD: // gssi?
+            if (s.mcc == o.mcc && s.mnc == o.mcc)
+                return 0;
+            break;
+        case Mode::AM25:
+            return 0;
+            break;
+        case Mode::CHM25:
+            if (s.ctcss == o.ctcss)
+                return 0;
+            break;
+        case Mode::CHM50:
+            if (s.ctcss == o.ctcss)
+                return 0;
+            break;
+        case Mode::OBP:
+            if (s.freq_band == o.freq_band)
+                return 0;
+            break;
+        case Mode::FM:
+            return 0;
+            break;
+        default:
+            break;
+        }
+    }
+    else // modes do not match but we still hear static because freqs match
+        return 1;
+    return -1;
+}
+/// 0 - configs match, 1 - partial match, -1 - no match
+int MainWindow::compare_configs()
+{
+    Header& s = self;
+    Header& o = corr;
+    if (s.dual_freq) // self is dual freq
+    {
+        if (o.dual_freq) // other is dual freq
+        {
+            if (s.recv == o.send) // dual freqs match
+                return _check_mode_params();
+            else
+                return -1;
+        }
+        else // other is single freq
+        {
+            if (s.recv == o.freq) // self recv freq matches other single freq
+                return _check_mode_params();
+            else
+                return -1;
+        }
+    }
+    else // self is single freq
+    {
+        if (o.dual_freq) // other is dual freq
+        {
+            if (s.freq == o.send) // self single freq matches other send freq
+                return _check_mode_params();
+            else
+                return -1;
+        }
+        else // other is single freq
+        {
+            if (s.freq == o.freq)
+                return _check_mode_params();
+            else
+                return -1;
+        }
+    }
+    return -1;
+}
+
 void MainWindow::recieveDatagrams()
 {
+    if (transmitting)
+        return;
+
     QByteArray datagram;
     while (udpSocket.hasPendingDatagrams()) {
         datagram.resize(int(udpSocket.pendingDatagramSize()));
         udpSocket.readDatagram(datagram.data(), datagram.size());
     }
-    int freq = getFreq();
-    int incoming_freq;
-    from_byte_array(datagram.constData(), incoming_freq);
-    if (incoming_freq == freq && !transmitting)
+    memcpy(&corr, datagram.constData(), sizeof (Header));
+//    qDebug() << "self: " << self;
+//    qDebug() << "corr: " << corr;
+
+    switch (compare_configs())
     {
+    case 0:  // configs match
         setReceiving();
-        if(ui->mainPages->currentWidget() == ui->main_page){            
+        if(ui->mainPages->currentWidget() == ui->main_page){
             ui->modals->setCurrentWidget(ui->pr_per);
         }
         hide_dej_labels();
@@ -2746,8 +2861,15 @@ void MainWindow::recieveDatagrams()
         receivedPackets++;
         connect(t, &QTimer::timeout, this, [t, this](){ hideDej(); t->stop(); });
         t->start(1000);
-        buffer.append(datagram.constData() + 4, datagram.size() - 4);
+        buffer.append(datagram.constData() + sizeof (Header), datagram.size() - sizeof (Header));
         playSamples();
+        break;
+     case 1: // partial match
+        // TODO: play static
+        break;
+
+     case -1: // no match
+        break;
     }
 }
 
@@ -2760,9 +2882,7 @@ void MainWindow::playSamples()
 void MainWindow::sendDatagrams()
 {
     QByteArray datagram;
-    int freq = getFreq();
-    to_byte_array(freq_bytes, freq);
-    datagram.append(freq_bytes, 4);
+    datagram.append(_buf, sizeof(_buf));
     datagram.append(inptDev->readAll());
     udpSocket.writeDatagram(datagram.data(), datagram.size(),
                             QHostAddress(ADDR), PORT);
@@ -2855,10 +2975,12 @@ void MainWindow::setTransmitting(){
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void MainWindow::on_talk_button_pressed()
@@ -2903,11 +3025,30 @@ void MainWindow::on_talk_button_released()
     }
 }
 
+void MainWindow::set_header()
+{
+    if (current_direction == nullptr || current_direction->ch == nullptr)
+        return;
 
-inline int MainWindow::getFreq(){
-    if(current_direction == nullptr || current_direction->ch == nullptr) return 0;
-    return (int)current_direction->ch->freq;
+    self.clear();
+//    Mode mode; // режим работы
+    self.mode = current_direction->ch->mode;
+    self.gssi = current_direction->ch->gssi.toInt();
+    self.speech_mask = current_direction->ch->mask;
+    self.mcc = current_direction->ch->mcc.toInt();
+    self.mnc = current_direction->ch->mnc.toInt();
+    self.dual_freq = current_direction->ch->dualfreq;
+    self.recv = current_direction->ch->prm_freq;
+    self.send = current_direction->ch->prd_freq;
+    self.freq = current_direction->ch->freq;
+    self.freq_band = current_direction->ch->band;
+//    self.ctss = current_direction->ch->ctcss;
 }
+
+//inline int MainWindow::getFreq(){
+//    if(current_direction == nullptr || current_direction->ch == nullptr) return 0;
+//    return (int)current_direction->ch->freq;
+//}
 // WD where is it from??? mb main_right_clicked() ?
 /*
 void MainWindow::on_direction_button_clicked()

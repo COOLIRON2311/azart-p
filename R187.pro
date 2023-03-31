@@ -31,6 +31,7 @@ SOURCES += \
         modalwindownorm.cpp \
         modalwindowrd.cpp \
         modalwindowrules.cpp \
+        protocol.cpp \
         styles.cpp
 
 HEADERS += \
