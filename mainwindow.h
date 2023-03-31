@@ -59,8 +59,11 @@ public Q_SLOTS:
     void IR_PRM_screen();
     void IR_PRD_screen();
 
+    void freq_plans_screen();
+
     void update_channel_list_screen();
     void update_direction_list_screen();
+    void update_freq_plans_screen();
 
     void channel_list_screen();
     void direction_list_screen();
@@ -252,6 +255,12 @@ private slots:
 
     void on_ctcss_popup_itemSelectionChanged();
 
+    void on_freq_plan_right_clicked();
+
+    void on_freq_plan_left_clicked();
+
+    void on_fps_popup_menu_list_itemSelectionChanged();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
@@ -325,6 +334,7 @@ private:
 
     QListWidgetItem* channel_popup_menu_list_item[3];
     QListWidgetItem* direction_popup_menu_list_item[3];
+    QListWidgetItem* fps_popup_menu_list_item[3];
 
     QTimer time_timer;
 
@@ -342,6 +352,7 @@ private:
     std::queue<QTimer*> timers;
     QList<QWidget*> dmo_fields;
     QList<QWidget*> direction_fields;
+    QList<QWidget*> freq_plans;
 
     QUdpSocket udpSocket;
     const QString ADDR = "26.115.163.75";

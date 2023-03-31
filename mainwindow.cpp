@@ -12,6 +12,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <sstream>
 #include <set>
+#include <QSizePolicy>
 /*
 
 PA - pay attention
@@ -378,6 +379,42 @@ MainWindow::MainWindow(QWidget *parent) :
                     ui->widget_71, // name
                     ui->widget_76  // back
                         });
+
+    for(int i = 1; i <= 32; i++){
+        QWidget* ptr;
+        freq_plans.push_back(ptr = new QWidget(ui->scrollAreaWidgetContents_2));
+
+        auto horizontalLayout = new QHBoxLayout(ptr);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        auto label_num = new QLabel(ptr);
+        label_num->setNum(i);
+
+        label_num->setMinimumSize(QSize(15, 0));
+        label_num->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        label_num->setStyleSheet(QString::fromUtf8("background: rgb(141, 192, 255)"));
+
+        horizontalLayout->addWidget(label_num);
+
+        auto label_fpn = new QLabel(ptr);
+        label_fpn->setText("Нет данных");
+
+        horizontalLayout->addWidget(label_fpn);
+
+        ui->verticalLayout_76->addWidget(ptr);
+    }
+
+    curr_editor_field["freq_plans"] = 0;
+
+    fps_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Просмотр");
+    fps_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить");
+    fps_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить");
+
+    for(int i = 0; i < 3; i++){
+        ui->fps_popup_menu_list->addItem(fps_popup_menu_list_item[i]);
+    }
+    ui->fps_popup_menu_list->setCurrentItem(fps_popup_menu_list_item[0]);
 }
 
 void MainWindow::setup(){
@@ -650,6 +687,11 @@ void MainWindow::on_nav_menu_list_itemSelectionChanged()
     selected_items["nav_menu_list"] = ui->nav_menu_list->currentItem();
 }
 
+void MainWindow::on_fps_popup_menu_list_itemSelectionChanged()
+{
+    selected_items["fps_popup_menu_list"] = ui->fps_popup_menu_list->currentItem();
+}
+
 bool check_password(const QString &pw){
     return true;
 }
@@ -723,6 +765,11 @@ void MainWindow::IR_PRD_screen(){
     ui->mainPages->setCurrentWidget(ui->IR_PRD_page);
 }
 
+void MainWindow::freq_plans_screen(){
+    ui->mainPages->setCurrentWidget(ui->freq_plans_page);
+    update_freq_plans_screen();
+}
+
 void MainWindow::update_channel_list_screen()
 {
     if(selected_items["channel_list"] == nullptr){
@@ -766,6 +813,12 @@ void MainWindow::on_data_editor_list_itemDoubleClicked(QListWidgetItem *item)
     }
     if(item == data_editor_list_item[2]){
         channel_list_screen();
+    }
+    if(item == data_editor_list_item[3]){
+        //scan lists
+    }
+    if(item == data_editor_list_item[4]){
+        freq_plans_screen();
     }
 }
 
@@ -2970,6 +3023,10 @@ void MainWindow::on_left_arrow_clicked()
         ui->navigation_left->click();
         return;
     }
+    if(curr == ui->freq_plans_page){
+        ui->freq_plan_left->click();
+        return;
+    }
 }
 
 /*
@@ -3039,6 +3096,10 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->received_messages_page){
         ui->rec_msgs_right->click();
+        return;
+    }
+    if(curr == ui->freq_plans_page){
+        ui->freq_plan_right->click();
         return;
     }
 }
@@ -5001,6 +5062,14 @@ void MainWindow::on_up_arrow_clicked()
             go_up(ui->nav_menu_list, 7);
         }
     }
+    if(curr == ui->freq_plans_page){
+        if(ui->modals->currentWidget() == ui->fps_menu){
+            go_up(ui->fps_popup_menu_list, 3);
+            return;
+        }
+        if(curr_editor_field["freq_plans"]-- == 0) curr_editor_field["freq_plans"]+= 32;
+        update_freq_plans_screen();
+    }
 }
 
 void go_down(QListWidget* qlw, uint size){
@@ -5280,6 +5349,14 @@ void MainWindow::on_down_arrow_clicked()
             go_down(ui->nav_menu_list, 7);
         }
     }
+    if(curr == ui->freq_plans_page){
+        if(ui->modals->currentWidget() == ui->fps_menu){
+            go_down(ui->fps_popup_menu_list, 3);
+            return;
+        }
+        if(++curr_editor_field["freq_plans"] == 32) curr_editor_field["freq_plans"] = 0;
+        update_freq_plans_screen();
+    }
 }
 
 void MainWindow::on_left_tube_clicked()
@@ -5475,6 +5552,10 @@ void MainWindow::on_right_tube_released()
             menu_screen();
             return;
         }
+        if(curr == ui->freq_plans_page){
+            data_editor_screen();
+            return;
+        }
     }
 }
 
@@ -5524,3 +5605,52 @@ void MainWindow::on_rec_msgs_right_clicked()
     menu_screen();
 }
 
+
+void MainWindow::on_freq_plan_right_clicked()
+{
+    if(ui->modals->currentWidget() == ui->fps_menu){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        ui->freq_plan_left->setText("Меню");
+        return;
+    }
+    data_editor_screen();
+}
+
+void MainWindow::on_freq_plan_left_clicked()
+{
+    if(ui->modals->currentWidget() == ui->fps_menu){
+        // CHECK
+        if(selected_items["fp_popup_menu_list"] == fps_popup_menu_list_item[0]){
+
+        }
+        // ADD
+        if(selected_items["fp_popup_menu_list"] == fps_popup_menu_list_item[1]){
+
+        }
+        // DELETE
+        if(selected_items["fp_popup_menu_list"] == fps_popup_menu_list_item[2]){
+
+        }
+        return;
+    }
+
+    ui->modals->setCurrentWidget(ui->fps_menu);
+    ui->freq_plan_left->setText("Выбрать");
+}
+
+void MainWindow::update_freq_plans_screen(){
+    if(ui->modals->currentWidget() == ui->fps_menu){
+
+        return;
+    }
+
+
+    // clear styles
+    for(int i = 0; i < 32; i++){
+        freq_plans[i]->setStyleSheet("");
+    }
+    // paint chosen
+    freq_plans[curr_editor_field["freq_plans"]]->setStyleSheet("background: rgb(62, 105, 194);");
+
+    ui->scrollArea_2->ensureWidgetVisible(freq_plans[curr_editor_field["freq_plans"]]);
+}
