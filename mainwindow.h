@@ -60,6 +60,7 @@ public Q_SLOTS:
     void IR_PRD_screen();
 
     void freq_plans_screen();
+    void freq_plan_screen();
 
     void update_channel_list_screen();
     void update_direction_list_screen();
@@ -255,11 +256,17 @@ private slots:
 
     void on_ctcss_popup_itemSelectionChanged();
 
+    void on_freq_plans_right_clicked();
+
+    void on_freq_plans_left_clicked();
+
+    void on_fps_popup_menu_list_itemSelectionChanged();
+
+    void on_fp_popup_menu_list_itemSelectionChanged();
+
     void on_freq_plan_right_clicked();
 
     void on_freq_plan_left_clicked();
-
-    void on_fps_popup_menu_list_itemSelectionChanged();
 
 private:
     void on_number_i_clicked(int);
@@ -335,6 +342,7 @@ private:
     QListWidgetItem* channel_popup_menu_list_item[3];
     QListWidgetItem* direction_popup_menu_list_item[3];
     QListWidgetItem* fps_popup_menu_list_item[3];
+    QListWidgetItem* fp_popup_menu_list_item[5];
 
     QTimer time_timer;
 

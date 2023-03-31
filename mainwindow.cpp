@@ -415,6 +415,19 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->fps_popup_menu_list->addItem(fps_popup_menu_list_item[i]);
     }
     ui->fps_popup_menu_list->setCurrentItem(fps_popup_menu_list_item[0]);
+
+
+
+    fp_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
+    fp_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить диапазон");
+    fp_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить диапазон");
+    fp_popup_menu_list_item[3] = new QListWidgetItem(QIcon(""), "Тестировать план");
+    fp_popup_menu_list_item[4] = new QListWidgetItem(QIcon(""), "Авто.формирование");
+
+    for(int i = 0; i < 5; i++){
+        ui->fp_popup_menu_list->addItem(fp_popup_menu_list_item[i]);
+    }
+    ui->fp_popup_menu_list->setCurrentItem(fp_popup_menu_list_item[0]);
 }
 
 void MainWindow::setup(){
@@ -692,6 +705,11 @@ void MainWindow::on_fps_popup_menu_list_itemSelectionChanged()
     selected_items["fps_popup_menu_list"] = ui->fps_popup_menu_list->currentItem();
 }
 
+void MainWindow::on_fp_popup_menu_list_itemSelectionChanged()
+{
+    selected_items["fp_popup_menu_list"] = ui->fp_popup_menu_list->currentItem();
+}
+
 bool check_password(const QString &pw){
     return true;
 }
@@ -769,6 +787,13 @@ void MainWindow::freq_plans_screen(){
     ui->mainPages->setCurrentWidget(ui->freq_plans_page);
     update_freq_plans_screen();
 }
+
+void MainWindow::freq_plan_screen(){
+    ui->mainPages->setCurrentWidget(ui->freq_plan_page);
+    //update_freq_plan_screen();
+}
+
+
 
 void MainWindow::update_channel_list_screen()
 {
@@ -3024,6 +3049,10 @@ void MainWindow::on_left_arrow_clicked()
         return;
     }
     if(curr == ui->freq_plans_page){
+        ui->freq_plans_left->click();
+        return;
+    }
+    if(curr == ui->freq_plan_page){
         ui->freq_plan_left->click();
         return;
     }
@@ -3099,6 +3128,10 @@ void MainWindow::on_right_arrow_clicked()
         return;
     }
     if(curr == ui->freq_plans_page){
+        ui->freq_plans_right->click();
+        return;
+    }
+    if(curr == ui->freq_plan_page){
         ui->freq_plan_right->click();
         return;
     }
@@ -5070,6 +5103,14 @@ void MainWindow::on_up_arrow_clicked()
         if(curr_editor_field["freq_plans"]-- == 0) curr_editor_field["freq_plans"]+= 32;
         update_freq_plans_screen();
     }
+    if(curr == ui->freq_plan_page){
+        if(ui->modals->currentWidget() == ui->fp_menu){
+            go_up(ui->fp_popup_menu_list, 5);
+            return;
+        }
+        //if(curr_editor_field["freq_plans"]-- == 0) curr_editor_field["freq_plans"]+= 32;
+        //update_freq_plans_screen();
+    }
 }
 
 void go_down(QListWidget* qlw, uint size){
@@ -5357,6 +5398,14 @@ void MainWindow::on_down_arrow_clicked()
         if(++curr_editor_field["freq_plans"] == 32) curr_editor_field["freq_plans"] = 0;
         update_freq_plans_screen();
     }
+    if(curr == ui->freq_plan_page){
+        if(ui->modals->currentWidget() == ui->fp_menu){
+            go_down(ui->fp_popup_menu_list, 5);
+            return;
+        }
+        //if(++curr_editor_field["freq_plans"] == 32) curr_editor_field["freq_plans"] = 0;
+        //update_freq_plans_screen();
+    }
 }
 
 void MainWindow::on_left_tube_clicked()
@@ -5553,7 +5602,7 @@ void MainWindow::on_right_tube_released()
             return;
         }
         if(curr == ui->freq_plans_page){
-            data_editor_screen();
+            freq_plans_screen();
             return;
         }
     }
@@ -5606,44 +5655,46 @@ void MainWindow::on_rec_msgs_right_clicked()
 }
 
 
-void MainWindow::on_freq_plan_right_clicked()
+void MainWindow::on_freq_plans_right_clicked()
 {
     if(ui->modals->currentWidget() == ui->fps_menu){
         ui->modals->setCurrentWidget(ui->no_modals);
-        ui->freq_plan_left->setText("Меню");
+        update_freq_plans_screen();
         return;
     }
     data_editor_screen();
 }
 
-void MainWindow::on_freq_plan_left_clicked()
+void MainWindow::on_freq_plans_left_clicked()
 {
     if(ui->modals->currentWidget() == ui->fps_menu){
         // CHECK
-        if(selected_items["fp_popup_menu_list"] == fps_popup_menu_list_item[0]){
+        if(selected_items["fps_popup_menu_list"] == fps_popup_menu_list_item[0]){
 
         }
         // ADD
-        if(selected_items["fp_popup_menu_list"] == fps_popup_menu_list_item[1]){
-
+        if(selected_items["fps_popup_menu_list"] == fps_popup_menu_list_item[1]){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            freq_plan_screen();
         }
         // DELETE
-        if(selected_items["fp_popup_menu_list"] == fps_popup_menu_list_item[2]){
+        if(selected_items["fps_popup_menu_list"] == fps_popup_menu_list_item[2]){
 
         }
         return;
     }
 
     ui->modals->setCurrentWidget(ui->fps_menu);
-    ui->freq_plan_left->setText("Выбрать");
+    update_freq_plans_screen();
 }
 
 void MainWindow::update_freq_plans_screen(){
     if(ui->modals->currentWidget() == ui->fps_menu){
-
+        ui->freq_plans_left->setText("Выбрать");
         return;
     }
 
+    ui->freq_plans_left->setText("Меню");
 
     // clear styles
     for(int i = 0; i < 32; i++){
@@ -5653,4 +5704,47 @@ void MainWindow::update_freq_plans_screen(){
     freq_plans[curr_editor_field["freq_plans"]]->setStyleSheet("background: rgb(62, 105, 194);");
 
     ui->scrollArea_2->ensureWidgetVisible(freq_plans[curr_editor_field["freq_plans"]]);
+}
+
+
+
+void MainWindow::on_freq_plan_right_clicked()
+{
+    if(ui->modals->currentWidget() == ui->fp_menu){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        //update_freq_plan_screen();
+        ui->freq_plan_left->setText("Меню");
+        return;
+    }
+    freq_plans_screen();
+}
+
+void MainWindow::on_freq_plan_left_clicked()
+{
+    if(ui->modals->currentWidget() == ui->fp_menu){
+        // EDIT
+        if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[0]){
+
+        }
+        // ADD RANGE
+        if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[1]){
+
+        }
+        // DELETE RANGE
+        if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[2]){
+
+        }
+        // TEST a PLAN
+        if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[3]){
+
+        }
+        // AUTOFORMATE
+        if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[4]){
+
+        }
+        return;
+    }
+
+    ui->modals->setCurrentWidget(ui->fp_menu);
+    ui->freq_plan_left->setText("Выбрать");
 }
