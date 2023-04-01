@@ -17,6 +17,7 @@
 #include "modalwindowrules.h"
 #include <QList>
 #include <set>
+#include <iomanip>
 
 namespace Ui {
     class MainWindow;
@@ -297,9 +298,14 @@ private:
     QString getFormatFreq(int freq);
     QString getNewDirectionName();
 
+    void save_freq_range();
+
 private:
     struct Channel;
     struct Direction;
+
+    struct FreqPlan;
+    struct FreqRange;
 
     Ui::MainWindow *ui;
 
@@ -371,6 +377,7 @@ private:
     QList<QWidget*> freq_plans;
     QList<QWidget*> freq_editor;
 
+    std::vector<FreqPlan*> freq_plan_vec = std::vector<FreqPlan*>(32, nullptr);
 
     QUdpSocket udpSocket;
     const QString ADDR = "26.115.163.75";
@@ -503,5 +510,27 @@ struct MainWindow::Direction
         timeout = 0;
     }
 };
+
+struct MainWindow::FreqPlan{
+    std::vector<FreqRange*> ranges;
+};
+
+static std::string freqTo2block(int f){
+    char buf[10] = "";
+    sprintf(buf, "%03d.%03d", f/1000000, (f/1000) % 1000);
+    return std::string(buf);
+}
+
+struct MainWindow::FreqRange{
+    int lower_freq;
+    int upper_freq;
+    double rssi;
+    int dist;
+
+    QString info(){
+        return QString("%1 - %2\n").arg(freqTo2block(lower_freq).c_str()).arg(freqTo2block(upper_freq).c_str());
+    }
+};
+
 
 #endif // MAINWINDOW_H

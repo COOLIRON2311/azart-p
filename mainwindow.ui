@@ -542,7 +542,7 @@ background: rgb(250, 250, 250)</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="freq_editor_page">
        <layout class="QVBoxLayout" name="verticalLayout_85">
@@ -1219,6 +1219,18 @@ background: none;</string>
              </property>
              <item>
               <widget class="QLabel" name="label_164">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>25</height>
+                </size>
+               </property>
                <property name="text">
                 <string>1 Частотный план</string>
                </property>
@@ -1226,58 +1238,41 @@ background: none;</string>
              </item>
              <item>
               <widget class="QLabel" name="label_163">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: rgb(110, 161, 253)</string>
+               </property>
                <property name="text">
                 <string>Список диапазонов</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QScrollArea" name="scrollArea_3">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+              <widget class="QLabel" name="label_169">
+               <property name="text">
+                <string>Пустой список</string>
                </property>
-               <property name="styleSheet">
-                <string notr="true">QScrollBar {width:10px;}</string>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="listWidget">
+               <property name="verticalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
                </property>
-               <property name="widgetResizable">
-                <bool>true</bool>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
                </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents_3">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>88</width>
-                  <height>16</height>
-                 </rect>
-                </property>
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_80">
-                 <property name="spacing">
-                  <number>2</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                </layout>
-               </widget>
               </widget>
              </item>
             </layout>
@@ -1564,8 +1559,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>88</width>
-                  <height>16</height>
+                  <width>193</width>
+                  <height>204</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -4697,7 +4692,7 @@ background: none;</string>
              <item>
               <widget class="QStackedWidget" name="channel_editor_states">
                <property name="currentIndex">
-                <number>3</number>
+                <number>4</number>
                </property>
                <widget class="QWidget" name="empty_state_page">
                 <layout class="QFormLayout" name="formLayout_4">
@@ -13436,6 +13431,25 @@ QListView::item:selected:!active {
       </layout>
      </widget>
     </widget>
+   </widget>
+   <widget class="QWidget" name="widget_87" native="true">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>660</y>
+      <width>65</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_88">
+     <item>
+      <widget class="QLabel" name="label_170">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

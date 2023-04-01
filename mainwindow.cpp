@@ -797,7 +797,11 @@ void MainWindow::freq_plans_screen(){
 
 void MainWindow::freq_plan_screen(){
     ui->mainPages->setCurrentWidget(ui->freq_plan_page);
-    //update_freq_plan_screen();
+    ui->listWidget->clear();
+    for(auto r : freq_plan_vec[curr_editor_field["freq_plans"]]->ranges){
+        ui->listWidget->addItem(new QListWidgetItem(r->info()));
+    }
+    ui->label_164->setText(QString("%1 Частотный план").arg(curr_editor_field["freq_plans"] + 1));
 }
 
 void MainWindow::freq_editor_screen(){
@@ -3011,6 +3015,11 @@ void MainWindow::on_direction_button_clicked()
 */
 void MainWindow::on_left_arrow_clicked()
 {
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->loading_page){
         if(is_open_communication){
@@ -3080,6 +3089,11 @@ void MainWindow::on_left_arrow_clicked()
 */
 void MainWindow::on_right_arrow_clicked()
 {
+    if(ui->modals->currentWidget() == ui->params_error){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+
     auto curr = ui->mainPages->currentWidget();
     if(curr == ui->main_page){
         ui->main_right->click();
@@ -5717,11 +5731,19 @@ void MainWindow::on_freq_plans_left_clicked()
     if(ui->modals->currentWidget() == ui->fps_menu){
         // CHECK
         if(selected_items["fps_popup_menu_list"] == fps_popup_menu_list_item[0]){
-
+            if(freq_plan_vec[curr_editor_field["freq_plans"]] == nullptr){
+                return;
+            }
+            ui->modals->setCurrentWidget(ui->no_modals);
+            freq_plan_screen();
         }
         // ADD
         if(selected_items["fps_popup_menu_list"] == fps_popup_menu_list_item[1]){
             ui->modals->setCurrentWidget(ui->no_modals);
+            if(freq_plan_vec[curr_editor_field["freq_plans"]] == nullptr){
+                freq_plan_vec[curr_editor_field["freq_plans"]] = new FreqPlan();
+                dynamic_cast<QLabel*>(freq_plans[curr_editor_field["freq_plans"]]->children()[2])->setText(QString("%1 Частотный план").arg(curr_editor_field["freq_plans"] + 1));
+            }
             freq_plan_screen();
         }
         // DELETE
@@ -5775,7 +5797,7 @@ void MainWindow::on_freq_plan_left_clicked()
         }
         // ADD RANGE
         if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[1]){
-            ui->modals->setCurrentWidget(ui->no_modals);
+            ui->modals->setCurrentWidget(ui->no_modals);            
             freq_editor_screen();
         }
         // DELETE RANGE
@@ -5817,7 +5839,11 @@ void MainWindow::on_freq_editor_right_clicked()
 
 void MainWindow::on_freq_editor_left_clicked()
 {
-
+    save_freq_range();
+    if(ui->modals->currentWidget() == ui->params_error){
+        return;
+    }
+    freq_plan_screen();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -5837,7 +5863,7 @@ void MainWindow::on_pushButton_clicked()
     std::stringstream ss;
     double rssi = -1./4500 * pow(mid - 520, 2) - 50;
     int dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
-    ss << std::setprecision(2) << "Средний " << rssi << " дБм\nДальность " << dist << "%";
+    ss << std::fixed << std::setprecision(2) << "Средний " << rssi << " дБм\nДальность " << dist << "%";
     ui->label_168->setText(ss.str().c_str());
 }
 
@@ -5878,4 +5904,23 @@ void MainWindow::update_freq_editor_screen(){
     default:
         qDebug() << "crit: on_freq_editor_right_clicked";
     }
+}
+
+void MainWindow::save_freq_range(){
+    int left = ui->lineEdit_2->text().toInt();
+    int right = ui->lineEdit_3->text().toInt();
+
+    if(!in_range(left, 27000000, 520000000) || !in_range(right, 27000000, 520000000) || left > right){
+        ui->modals->setCurrentWidget(ui->params_error);
+        return;
+    }
+
+    // saving
+    auto t = new FreqRange();
+    t->lower_freq = left;
+    t->upper_freq = right;
+    double mid = (left + right) / 2000000.;
+    t->rssi = -1./4500 * pow(mid - 520, 2) - 50;
+    t->dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
+    freq_plan_vec[curr_editor_field["freq_plan"]]->ranges.push_back(t);
 }
