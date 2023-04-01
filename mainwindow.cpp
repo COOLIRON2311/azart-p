@@ -12,6 +12,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <sstream>
 #include <set>
+#include <iomanip>
 #include <QSizePolicy>
 /*
 
@@ -3400,6 +3401,17 @@ void MainWindow::on_number_i_clicked(int i)
             return;
         }
     }
+    if(curr == ui->freq_editor_page){
+        switch (curr_editor_field["freq_editor"]) {
+        case 0:
+            addnle(ui->lineEdit_2, i);
+            break;
+        case 1:
+            addnle(ui->lineEdit_3, i);
+            break;
+        }
+        return;
+    }
 }
 
 void go_up(QListWidget* qlw, uint size){
@@ -5810,7 +5822,23 @@ void MainWindow::on_freq_editor_left_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
+    // check ranges
+    int left = ui->lineEdit_2->text().toInt();
+    int right = ui->lineEdit_3->text().toInt();
 
+    if(!in_range(left, 27000000, 520000000) || !in_range(right, 27000000, 520000000) || left > right){
+        ui->label_168->setText("Ошибка. Допустимый\nдиапазон 27..520 МГц");
+        return;
+    }
+
+    // print result
+    // kinda rssi calculation
+    double mid = (left + right) / 2000000.;
+    std::stringstream ss;
+    double rssi = -1./4500 * pow(mid - 520, 2) - 50;
+    int dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
+    ss << std::setprecision(2) << "Средний " << rssi << " дБм\nДальность " << dist << "%";
+    ui->label_168->setText(ss.str().c_str());
 }
 
 void MainWindow::update_freq_editor_screen(){
@@ -5821,17 +5849,31 @@ void MainWindow::update_freq_editor_screen(){
     ui->label_166->setVisible(false);
     ui->label_167->setVisible(false);
 
+    int left, right;
+    left = (ui->lineEdit_2->text().toInt() / 10000) * 10000;
+    right = (ui->lineEdit_3->text().toInt() / 10000) * 10000;
+
     switch (curr_editor_field["freq_editor"]) {
     case 0:
         ui->widget_81->setStyleSheet("#widget_81 { background: white; border: 2px solid; }");
         ui->label_166->setVisible(true);
+        ui->freq_editor_right->setText("Стереть");
+
+        ui->lineEdit_3->setText(QString::number(right));
         break;
     case 1:
         ui->widget_82->setStyleSheet("#widget_82 { background: white; border: 2px solid; }");
         ui->label_167->setVisible(true);
+        ui->freq_editor_right->setText("Стереть");
+
+        ui->lineEdit_2->setText(QString::number(left));
         break;
     case 2:
         ui->pushButton->setStyleSheet("border: 2px solid;");
+        ui->freq_editor_right->setText("Тестировать");
+
+        ui->lineEdit_2->setText(QString::number(left));
+        ui->lineEdit_3->setText(QString::number(right));
         break;
     default:
         qDebug() << "crit: on_freq_editor_right_clicked";

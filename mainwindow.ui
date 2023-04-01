@@ -706,6 +706,24 @@ background: none;</string>
                 </sizepolicy>
                </property>
                <layout class="QFormLayout" name="formLayout_5">
+                <property name="horizontalSpacing">
+                 <number>0</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>4</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_162">
                   <property name="text">
@@ -743,8 +761,8 @@ background: none;</string>
                    </property>
                    <item>
                     <widget class="QLineEdit" name="lineEdit_2">
-                     <property name="styleSheet">
-                      <string notr="true"/>
+                     <property name="maxLength">
+                      <number>9</number>
                      </property>
                     </widget>
                    </item>
@@ -780,7 +798,11 @@ background: none;</string>
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="QLineEdit" name="lineEdit_3"/>
+                    <widget class="QLineEdit" name="lineEdit_3">
+                     <property name="maxLength">
+                      <number>9</number>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_167">
@@ -805,7 +827,7 @@ background: none;</string>
                  <number>9</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>9</number>
                 </property>
                 <property name="rightMargin">
                  <number>9</number>
@@ -893,6 +915,21 @@ background: none;</string>
                 <item>
                  <widget class="QWidget" name="widget_85" native="true">
                   <layout class="QVBoxLayout" name="verticalLayout_86">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="label_168">
                      <property name="sizePolicy">
@@ -902,10 +939,10 @@ background: none;</string>
                       </sizepolicy>
                      </property>
                      <property name="text">
-                      <string>TextLabel</string>
+                      <string/>
                      </property>
                      <property name="alignment">
-                      <set>Qt::AlignCenter</set>
+                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                      </property>
                     </widget>
                    </item>
@@ -1213,8 +1250,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>193</width>
-                  <height>178</height>
+                  <width>88</width>
+                  <height>16</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -1527,8 +1564,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>193</width>
-                  <height>204</height>
+                  <width>88</width>
+                  <height>16</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
