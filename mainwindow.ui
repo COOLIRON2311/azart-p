@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Р-187П1</string>
+   <string>Р-187-П1</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
@@ -13469,8 +13469,8 @@ QListView::item:selected:!active {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>833</width>
-     <height>21</height>
+     <width>515</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

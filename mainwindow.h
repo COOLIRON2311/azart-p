@@ -15,6 +15,7 @@
 #include "modalwindow3d.h"
 #include "modalwindownorm.h"
 #include "modalwindowrules.h"
+#include "protocol.h"
 #include <QList>
 #include <set>
 #include <iomanip>
@@ -26,6 +27,8 @@ namespace Ui {
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    Header self; // own config
+    Header corr; // correspondent
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
@@ -80,27 +83,18 @@ public Q_SLOTS:
     void broadcast_init();
 
 private:
+    char _buf[sizeof (Header)];
     QAction *show3d;
     QAction *showrd;
     QAction *shownorm;
     QAction *showrules;
 
+    inline void set_header();
+    inline int _check_mode_params();
+    /// 0 - configs match, 1 - partial match, -1 - no match
+    inline int compare_configs();
     void sendDatagrams();
     void playSamples();
-
-    inline int getFreq();
-
-    template<typename T>
-    inline void to_byte_array(char a[], T t)
-    {
-        memcpy(a, &t, sizeof(T));
-    }
-
-    template<typename T>
-    inline void from_byte_array(const char a[], T& t)
-    {
-        memcpy(&t, a, sizeof(T));
-    }
 
     void setReceiving();
     void setTransmitting();
@@ -108,8 +102,10 @@ private:
     size_t receivedPackets = 0;
 
 private slots:
+    void recieveDatagrams();
 
     void hide_dej_labels();
+
     void show_dej_labels();
 
     void hideDej();
@@ -123,8 +119,6 @@ private slots:
     void show_rules();
 
     void set_styles();
-
-    void recieveDatagrams();
 
     void on_menu_list_itemDoubleClicked(QListWidgetItem *item);
 
@@ -278,6 +272,7 @@ private slots:
     void on_pushButton_clicked();
 
 private:
+    void readIP();
     void on_number_i_clicked(int);
     void clear_chm25_fields();
     void clear_direction_fields();
@@ -380,7 +375,7 @@ private:
     std::vector<FreqPlan*> freq_plan_vec = std::vector<FreqPlan*>(32, nullptr);
 
     QUdpSocket udpSocket;
-    const QString ADDR = "26.115.163.75";
+    QString ADDR;
     const uint PORT = 52130;
     bool transmitting = false;
     QAudioInput* inpt;
@@ -407,6 +402,7 @@ protected:
 
 struct MainWindow::Channel
 {
+    Mode mode = Mode::None;
     std::set<Direction*> used_by;
     bool is_new = true;
     quint32 state = 0; //"Не задано"
@@ -446,6 +442,7 @@ struct MainWindow::Channel
 
     // set default all fields
     void clear(){
+        mode = Mode::None;
         state = 0; //"Не задано"
         PRD = false;
         dualfreq = false;
