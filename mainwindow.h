@@ -528,7 +528,7 @@ struct MainWindow::FreqRange{
     int dist;
 
     QString info(){
-        return QString("%1 - %2\n").arg(freqTo2block(lower_freq).c_str()).arg(freqTo2block(upper_freq).c_str());
+        return QString("%1 - %2 МГц\nСредний RSSI %3 дБм").arg(freqTo2block(lower_freq).c_str()).arg(freqTo2block(upper_freq).c_str()).arg(rssi, 0, 'g', 3);
     }
 };
 

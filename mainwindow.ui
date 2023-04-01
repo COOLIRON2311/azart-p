@@ -542,7 +542,7 @@ background: rgb(250, 250, 250)</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="freq_editor_page">
        <layout class="QVBoxLayout" name="verticalLayout_85">
@@ -1267,6 +1267,18 @@ background: none;</string>
              </item>
              <item>
               <widget class="QListWidget" name="listWidget">
+               <property name="styleSheet">
+                <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
+</string>
+               </property>
                <property name="verticalScrollBarPolicy">
                 <enum>Qt::ScrollBarAlwaysOff</enum>
                </property>
@@ -1571,7 +1583,7 @@ background: none;</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_76">
                  <property name="spacing">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <property name="leftMargin">
                   <number>0</number>

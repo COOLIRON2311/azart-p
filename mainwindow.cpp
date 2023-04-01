@@ -385,6 +385,8 @@ MainWindow::MainWindow(QWidget *parent) :
         QWidget* ptr;
         freq_plans.push_back(ptr = new QWidget(ui->scrollAreaWidgetContents_2));
 
+        //ptr->setMinimumSize(QSize(0, 25));
+
         auto horizontalLayout = new QHBoxLayout(ptr);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -392,7 +394,7 @@ MainWindow::MainWindow(QWidget *parent) :
         auto label_num = new QLabel(ptr);
         label_num->setNum(i);
 
-        label_num->setMinimumSize(QSize(15, 0));
+        label_num->setMinimumSize(QSize(15, 25));
         label_num->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         label_num->setStyleSheet(QString::fromUtf8("background: rgb(141, 192, 255)"));
 
@@ -801,11 +803,16 @@ void MainWindow::freq_plan_screen(){
     for(auto r : freq_plan_vec[curr_editor_field["freq_plans"]]->ranges){
         ui->listWidget->addItem(new QListWidgetItem(r->info()));
     }
+    ui->label_169->setVisible(freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.empty());
+
     ui->label_164->setText(QString("%1 Частотный план").arg(curr_editor_field["freq_plans"] + 1));
+    ui->label_163->setText(freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.empty() ? QString("Список диапазонов") : QString("Список диапазонов [%1]").arg(freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.size()));
 }
 
 void MainWindow::freq_editor_screen(){
     ui->mainPages->setCurrentWidget(ui->freq_editor_page);
+    ui->lineEdit_2->setText("");
+    ui->lineEdit_3->setText("");
     update_freq_editor_screen();
 }
 
@@ -5151,7 +5158,7 @@ void MainWindow::on_up_arrow_clicked()
             go_up(ui->fp_popup_menu_list, 5);
             return;
         }
-        //if(curr_editor_field["freq_plans"]-- == 0) curr_editor_field["freq_plans"]+= 32;
+        go_up(ui->listWidget, ui->listWidget->count());
         //update_freq_plans_screen();
     }
     if(curr == ui->freq_editor_page){
@@ -5451,7 +5458,7 @@ void MainWindow::on_down_arrow_clicked()
             go_down(ui->fp_popup_menu_list, 5);
             return;
         }
-        //if(++curr_editor_field["freq_plans"] == 32) curr_editor_field["freq_plans"] = 0;
+        go_down(ui->listWidget, ui->listWidget->count());
         //update_freq_plans_screen();
     }
     if(curr == ui->freq_editor_page){
@@ -5742,6 +5749,7 @@ void MainWindow::on_freq_plans_left_clicked()
             ui->modals->setCurrentWidget(ui->no_modals);
             if(freq_plan_vec[curr_editor_field["freq_plans"]] == nullptr){
                 freq_plan_vec[curr_editor_field["freq_plans"]] = new FreqPlan();
+                dynamic_cast<QLabel*>(freq_plans[curr_editor_field["freq_plans"]]->children()[1])->setText("");
                 dynamic_cast<QLabel*>(freq_plans[curr_editor_field["freq_plans"]]->children()[2])->setText(QString("%1 Частотный план").arg(curr_editor_field["freq_plans"] + 1));
             }
             freq_plan_screen();
@@ -5863,7 +5871,7 @@ void MainWindow::on_pushButton_clicked()
     std::stringstream ss;
     double rssi = -1./4500 * pow(mid - 520, 2) - 50;
     int dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
-    ss << std::fixed << std::setprecision(2) << "Средний " << rssi << " дБм\nДальность " << dist << "%";
+    ss << std::fixed << std::setprecision(3) << "Средний " << rssi << " дБм\nДальность " << dist << "%";
     ui->label_168->setText(ss.str().c_str());
 }
 
@@ -5922,5 +5930,5 @@ void MainWindow::save_freq_range(){
     double mid = (left + right) / 2000000.;
     t->rssi = -1./4500 * pow(mid - 520, 2) - 50;
     t->dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
-    freq_plan_vec[curr_editor_field["freq_plan"]]->ranges.push_back(t);
+    freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.push_back(t);
 }
