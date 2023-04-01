@@ -428,6 +428,12 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->fp_popup_menu_list->addItem(fp_popup_menu_list_item[i]);
     }
     ui->fp_popup_menu_list->setCurrentItem(fp_popup_menu_list_item[0]);
+
+    freq_editor.append(QList<QWidget*>{
+                          ui->widget_81,
+                           ui->widget_82,
+                           ui->widget_86,
+                       });
 }
 
 void MainWindow::setup(){
@@ -793,7 +799,10 @@ void MainWindow::freq_plan_screen(){
     //update_freq_plan_screen();
 }
 
-
+void MainWindow::freq_editor_screen(){
+    ui->mainPages->setCurrentWidget(ui->freq_editor_page);
+    update_freq_editor_screen();
+}
 
 void MainWindow::update_channel_list_screen()
 {
@@ -3056,6 +3065,10 @@ void MainWindow::on_left_arrow_clicked()
         ui->freq_plan_left->click();
         return;
     }
+    if(curr == ui->freq_editor_page){
+        ui->freq_editor_left->click();
+        return;
+    }
 }
 
 /*
@@ -3133,6 +3146,10 @@ void MainWindow::on_right_arrow_clicked()
     }
     if(curr == ui->freq_plan_page){
         ui->freq_plan_right->click();
+        return;
+    }
+    if(curr == ui->freq_editor_page){
+        ui->freq_editor_right->click();
         return;
     }
 }
@@ -5111,6 +5128,11 @@ void MainWindow::on_up_arrow_clicked()
         //if(curr_editor_field["freq_plans"]-- == 0) curr_editor_field["freq_plans"]+= 32;
         //update_freq_plans_screen();
     }
+    if(curr == ui->freq_editor_page){
+        if(curr_editor_field["freq_editor"]-- == 0) curr_editor_field["freq_editor"] += 3;
+        update_freq_editor_screen();
+        return;
+    }
 }
 
 void go_down(QListWidget* qlw, uint size){
@@ -5406,6 +5428,11 @@ void MainWindow::on_down_arrow_clicked()
         //if(++curr_editor_field["freq_plans"] == 32) curr_editor_field["freq_plans"] = 0;
         //update_freq_plans_screen();
     }
+    if(curr == ui->freq_editor_page){
+        if(++curr_editor_field["freq_editor"] == 3) curr_editor_field["freq_editor"] = 0;
+        update_freq_editor_screen();
+        return;
+    }
 }
 
 void MainWindow::on_left_tube_clicked()
@@ -5602,7 +5629,15 @@ void MainWindow::on_right_tube_released()
             return;
         }
         if(curr == ui->freq_plans_page){
+            data_editor_screen();
+            return;
+        }
+        if(curr == ui->freq_plan_page){
             freq_plans_screen();
+            return;
+        }
+        if(curr == ui->freq_editor_page){
+            freq_plan_screen();
             return;
         }
     }
@@ -5728,7 +5763,8 @@ void MainWindow::on_freq_plan_left_clicked()
         }
         // ADD RANGE
         if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[1]){
-
+            ui->modals->setCurrentWidget(ui->no_modals);
+            freq_editor_screen();
         }
         // DELETE RANGE
         if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[2]){
@@ -5747,4 +5783,57 @@ void MainWindow::on_freq_plan_left_clicked()
 
     ui->modals->setCurrentWidget(ui->fp_menu);
     ui->freq_plan_left->setText("Выбрать");
+}
+
+void MainWindow::on_freq_editor_right_clicked()
+{
+    switch (curr_editor_field["freq_editor"]) {
+    case 0:
+        ui->lineEdit_2->backspace();
+        break;
+    case 1:
+        ui->lineEdit_3->backspace();
+        break;
+    case 2:
+        ui->pushButton->click();
+        break;
+    default:
+        qDebug() << "crit: on_freq_editor_right_clicked";
+    }
+    update_freq_editor_screen();
+}
+
+void MainWindow::on_freq_editor_left_clicked()
+{
+
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+
+}
+
+void MainWindow::update_freq_editor_screen(){
+    // clear styles
+    ui->widget_81->setStyleSheet("#widget_81 { background: white; }");
+    ui->widget_82->setStyleSheet("#widget_82 { background: white; }");
+    ui->pushButton->setStyleSheet("border: 1px solid;");
+    ui->label_166->setVisible(false);
+    ui->label_167->setVisible(false);
+
+    switch (curr_editor_field["freq_editor"]) {
+    case 0:
+        ui->widget_81->setStyleSheet("#widget_81 { background: white; border: 2px solid; }");
+        ui->label_166->setVisible(true);
+        break;
+    case 1:
+        ui->widget_82->setStyleSheet("#widget_82 { background: white; border: 2px solid; }");
+        ui->label_167->setVisible(true);
+        break;
+    case 2:
+        ui->pushButton->setStyleSheet("border: 2px solid;");
+        break;
+    default:
+        qDebug() << "crit: on_freq_editor_right_clicked";
+    }
 }

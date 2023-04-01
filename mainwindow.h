@@ -61,10 +61,12 @@ public Q_SLOTS:
 
     void freq_plans_screen();
     void freq_plan_screen();
+    void freq_editor_screen();
 
     void update_channel_list_screen();
     void update_direction_list_screen();
     void update_freq_plans_screen();
+    void update_freq_editor_screen();
 
     void channel_list_screen();
     void direction_list_screen();
@@ -268,6 +270,12 @@ private slots:
 
     void on_freq_plan_left_clicked();
 
+    void on_freq_editor_right_clicked();
+
+    void on_freq_editor_left_clicked();
+
+    void on_pushButton_clicked();
+
 private:
     void on_number_i_clicked(int);
     void clear_chm25_fields();
@@ -361,6 +369,8 @@ private:
     QList<QWidget*> dmo_fields;
     QList<QWidget*> direction_fields;
     QList<QWidget*> freq_plans;
+    QList<QWidget*> freq_editor;
+
 
     QUdpSocket udpSocket;
     const QString ADDR = "26.115.163.75";
