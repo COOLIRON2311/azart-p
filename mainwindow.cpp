@@ -2944,6 +2944,7 @@ void MainWindow::hideDej(){
     }
 }
 
+/// 0 - configs match, 1 - partial match, -1 - no match
 int MainWindow::_check_mode_params()
 {
     Header& s = self;
@@ -2953,13 +2954,14 @@ int MainWindow::_check_mode_params()
         switch (self.mode)
         {
         case Mode::TETRA_DMO:
+            return 0; // TODO: proper compare
             break;
         case Mode::TETRA_TMO: // gssi?
-            if (s.mcc == o.mcc && s.mnc == o.mcc)
+            if (s.mcc == o.mcc && s.mnc == o.mnc)
                 return 0;
             break;
         case Mode::VPD: // gssi?
-            if (s.mcc == o.mcc && s.mnc == o.mcc)
+            if (s.mcc == o.mcc && s.mnc == o.mnc)
                 return 0;
             break;
         case Mode::AM25:
@@ -2984,9 +2986,7 @@ int MainWindow::_check_mode_params()
             break;
         }
     }
-    else // modes do not match but we still hear static because freqs match
-        return 1;
-    return -1;
+    return -1; // modes do not match but we still hear static because freqs match;
 }
 /// 0 - configs match, 1 - partial match, -1 - no match
 int MainWindow::compare_configs()
@@ -3227,7 +3227,6 @@ void MainWindow::set_header()
         return;
 
     self.clear();
-//    Mode mode; // режим работы
     self.mode = current_direction->ch->mode;
     self.gssi = current_direction->ch->gssi.toInt();
     self.speech_mask = current_direction->ch->mask;
@@ -3238,7 +3237,7 @@ void MainWindow::set_header()
     self.send = current_direction->ch->prd_freq;
     self.freq = current_direction->ch->freq;
     self.freq_band = current_direction->ch->band;
-//    self.ctss = current_direction->ch->ctcss;
+    self.ctcss = current_direction->ch->ctcss;
 }
 
 //inline int MainWindow::getFreq(){

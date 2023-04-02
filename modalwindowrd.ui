@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Бланк радиоданных</string>
+   <string>Радиоданные</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
@@ -33,11 +33,11 @@
     </property>
     <item>
      <widget class="QLabel" name="label">
+      <property name="styleSheet">
+       <string notr="true">image: url(:/resources/rdblank.png)</string>
+      </property>
       <property name="text">
        <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="resource.qrc">:/resources/rdblank.png</pixmap>
       </property>
      </widget>
     </item>
