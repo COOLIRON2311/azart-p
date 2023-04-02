@@ -66,11 +66,15 @@ public Q_SLOTS:
     void freq_plans_screen();
     void freq_plan_screen();
     void freq_editor_screen();
+    void keys_list_screen();
+    void key_editor_screen();
 
     void update_channel_list_screen();
     void update_direction_list_screen();
     void update_freq_plans_screen();
     void update_freq_editor_screen();
+    void update_keys_list_screen();
+    void update_key_editor_screen();
 
     void channel_list_screen();
     void direction_list_screen();
@@ -271,6 +275,18 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_keys_list_right_clicked();
+
+    void on_keys_list_menu_list_itemSelectionChanged();
+
+    void on_keys_list_left_clicked();
+
+    void on_key_editor_menu_list_itemSelectionChanged();
+
+    void on_key_editor_right_clicked();
+
+    void on_key_editor_left_clicked();
+
 private:
     void readIP();
     void on_number_i_clicked(int);
@@ -301,6 +317,8 @@ private:
 
     struct FreqPlan;
     struct FreqRange;
+
+    struct Key;
 
     Ui::MainWindow *ui;
 
@@ -352,6 +370,8 @@ private:
     QListWidgetItem* direction_popup_menu_list_item[3];
     QListWidgetItem* fps_popup_menu_list_item[3];
     QListWidgetItem* fp_popup_menu_list_item[5];
+    QListWidgetItem* keys_list_menu_list_item[2];
+    QListWidgetItem* key_editor_menu_list_item[2];
 
     QTimer time_timer;
 
@@ -371,8 +391,12 @@ private:
     QList<QWidget*> direction_fields;
     QList<QWidget*> freq_plans;
     QList<QWidget*> freq_editor;
+    QList<QWidget*> keys_list;
+    QList<QWidget*> key_editor;
 
     std::vector<FreqPlan*> freq_plan_vec = std::vector<FreqPlan*>(32, nullptr);
+    std::vector<Key*> keys_vec = std::vector<Key*>(32, nullptr);
+
 
     QUdpSocket udpSocket;
     QString ADDR;
@@ -394,6 +418,7 @@ private:
     int MIN_VOLUME = 1;
     int MIN_NOISE = 0;
 
+    bool generate = false;
 protected:
 
     void keyPressEvent(QKeyEvent *event) override;
@@ -529,5 +554,10 @@ struct MainWindow::FreqRange{
     }
 };
 
+struct MainWindow::Key{
+    int crc = 0;
+    QString values[8];
+    int values2[8];
+};
 
 #endif // MAINWINDOW_H

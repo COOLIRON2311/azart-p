@@ -14,6 +14,8 @@
 #include <set>
 #include <iomanip>
 #include <QSizePolicy>
+#include <QLineEdit>
+
 /*
 
 PA - pay attention
@@ -432,8 +434,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     ui->fps_popup_menu_list->setCurrentItem(fps_popup_menu_list_item[0]);
 
-
-
     fp_popup_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
     fp_popup_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Добавить диапазон");
     fp_popup_menu_list_item[2] = new QListWidgetItem(QIcon(""), "Удалить диапазон");
@@ -450,6 +450,65 @@ MainWindow::MainWindow(QWidget *parent) :
                            ui->widget_82,
                            ui->widget_86,
                        });
+
+    for(int i = 1; i <= 32; i++){
+        QWidget* ptr;
+        keys_list.push_back(ptr = new QWidget(ui->scrollAreaWidgetContents_3));
+
+        //ptr->setMinimumSize(QSize(0, 25));
+
+        auto horizontalLayout = new QHBoxLayout(ptr);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        auto label_num = new QLabel(ptr);
+        label_num->setNum(i);
+
+        label_num->setMinimumSize(QSize(15, 25));
+        label_num->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        label_num->setStyleSheet(QString::fromUtf8("background: rgb(141, 192, 255)"));
+
+        horizontalLayout->addWidget(label_num);
+
+        auto label_fpn = new QLabel(ptr);
+        label_fpn->setText("Нет данных");
+
+        horizontalLayout->addWidget(label_fpn);
+
+        ui->verticalLayout_89->addWidget(ptr);
+    }
+
+    curr_editor_field["keys_list"] = 0;
+
+
+    keys_list_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Редактировать");
+    keys_list_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Удалить");
+
+    for(int i = 0; i < 2; i++){
+        ui->keys_list_menu_list->addItem(keys_list_menu_list_item[i]);
+    }
+
+    ui->keys_list_menu_list->setCurrentItem(keys_list_menu_list_item[0]);
+
+    key_editor_menu_list_item[0] = new QListWidgetItem(QIcon(""), "Сохранить");
+    key_editor_menu_list_item[1] = new QListWidgetItem(QIcon(""), "Генерировать");
+
+    for(int i = 0; i < 2; i++){
+        ui->key_editor_menu_list->addItem(key_editor_menu_list_item[i]);
+    }
+
+    ui->key_editor_menu_list->setCurrentItem(key_editor_menu_list_item[0]);
+
+    key_editor.append(QList<QWidget*>{
+                          ui->widget_97,
+                          ui->widget_90,
+                          ui->widget_91,
+                          ui->widget_92,
+                          ui->widget_93,
+                          ui->widget_94,
+                          ui->widget_95,
+                          ui->widget_96
+                      });
 }
 
 void MainWindow::setup(){
@@ -732,6 +791,16 @@ void MainWindow::on_fp_popup_menu_list_itemSelectionChanged()
     selected_items["fp_popup_menu_list"] = ui->fp_popup_menu_list->currentItem();
 }
 
+void MainWindow::on_keys_list_menu_list_itemSelectionChanged()
+{
+    selected_items["keys_list_menu_list"] = ui->keys_list_menu_list->currentItem();
+}
+
+void MainWindow::on_key_editor_menu_list_itemSelectionChanged()
+{
+    selected_items["key_editor_menu_list"] = ui->key_editor_menu_list->currentItem();
+}
+
 bool check_password(const QString &pw){
     return true;
 }
@@ -810,6 +879,18 @@ void MainWindow::freq_plans_screen(){
     update_freq_plans_screen();
 }
 
+void MainWindow::keys_list_screen(){
+    ui->mainPages->setCurrentWidget(ui->keys_list_page);
+
+    for(int i = 0; i < 32; i++){
+        if(keys_vec[i] != nullptr){
+            dynamic_cast<QLabel*>(keys_list[i]->children()[2])->setText(QString("Ключ (CRC: %1)").arg(keys_vec[i]->crc));
+        }
+    }
+
+    update_keys_list_screen();
+}
+
 void MainWindow::freq_plan_screen(){
     ui->mainPages->setCurrentWidget(ui->freq_plan_page);
     ui->listWidget->clear();
@@ -869,15 +950,31 @@ void MainWindow::on_data_editor_list_itemDoubleClicked(QListWidgetItem *item)
 {
     if(item == data_editor_list_item[1]){
         direction_list_screen();
+        return;
     }
     if(item == data_editor_list_item[2]){
         channel_list_screen();
+        return;
     }
     if(item == data_editor_list_item[3]){
         //scan lists
+        return;
     }
     if(item == data_editor_list_item[4]){
         freq_plans_screen();
+        return;
+    }
+    if(item == data_editor_list_item[5]){
+        keys_list_screen();
+        return;
+    }
+    if(item == data_editor_list_item[6]){
+
+        return;
+    }
+    if(item == data_editor_list_item[7]){
+
+        return;
     }
 }
 
@@ -3227,6 +3324,12 @@ void MainWindow::on_left_arrow_clicked()
         ui->freq_editor_left->click();
         return;
     }
+    if(curr == ui->keys_list_page){
+        ui->keys_list_left->click();
+    }
+    if(curr == ui->key_editor_page){
+        ui->key_editor_left->click();
+    }
 }
 
 /*
@@ -3314,6 +3417,12 @@ void MainWindow::on_right_arrow_clicked()
     if(curr == ui->freq_editor_page){
         ui->freq_editor_right->click();
         return;
+    }
+    if(curr == ui->keys_list_page){
+        ui->keys_list_right->click();
+    }
+    if(curr == ui->key_editor_page){
+        ui->key_editor_right->click();
     }
 }
 
@@ -3573,6 +3682,9 @@ void MainWindow::on_number_i_clicked(int i)
             break;
         }
         return;
+    }
+    if(curr == ui->key_editor_page){
+        addnle(dynamic_cast<QLineEdit*>(key_editor[curr_editor_field["key_editor"]]->children()[2]), i);
     }
 }
 
@@ -5293,6 +5405,7 @@ void MainWindow::on_up_arrow_clicked()
         }
         if(curr_editor_field["freq_plans"]-- == 0) curr_editor_field["freq_plans"]+= 32;
         update_freq_plans_screen();
+        return;
     }
     if(curr == ui->freq_plan_page){
         if(ui->modals->currentWidget() == ui->fp_menu){
@@ -5301,11 +5414,29 @@ void MainWindow::on_up_arrow_clicked()
         }
         go_up(ui->listWidget, ui->listWidget->count());
         //update_freq_plans_screen();
+        return;
     }
     if(curr == ui->freq_editor_page){
         if(curr_editor_field["freq_editor"]-- == 0) curr_editor_field["freq_editor"] += 3;
         update_freq_editor_screen();
         return;
+    }
+    if(curr == ui->keys_list_page){
+        if(ui->modals->currentWidget() == ui->keys_list_menu){
+            go_up(ui->keys_list_menu_list, 2);
+            return;
+        }
+        if(curr_editor_field["keys_list"]-- == 0) curr_editor_field["keys_list"]+= 32;
+        update_keys_list_screen();
+        return;
+    }
+    if(curr == ui->key_editor_page){
+        if(ui->modals->currentWidget() == ui->key_editor_menu){
+            go_up(ui->key_editor_menu_list, 2);
+            return;
+        }
+        if(curr_editor_field["key_editor"]-- == 0) curr_editor_field["key_editor"] += 8;
+        update_key_editor_screen();
     }
 }
 
@@ -5585,6 +5716,7 @@ void MainWindow::on_down_arrow_clicked()
         if(ui->modals->currentWidget() == ui->navigation_menu){
             go_down(ui->nav_menu_list, 7);
         }
+        return;
     }
     if(curr == ui->freq_plans_page){
         if(ui->modals->currentWidget() == ui->fps_menu){
@@ -5593,6 +5725,7 @@ void MainWindow::on_down_arrow_clicked()
         }
         if(++curr_editor_field["freq_plans"] == 32) curr_editor_field["freq_plans"] = 0;
         update_freq_plans_screen();
+        return;
     }
     if(curr == ui->freq_plan_page){
         if(ui->modals->currentWidget() == ui->fp_menu){
@@ -5601,11 +5734,29 @@ void MainWindow::on_down_arrow_clicked()
         }
         go_down(ui->listWidget, ui->listWidget->count());
         //update_freq_plans_screen();
+        return;
     }
     if(curr == ui->freq_editor_page){
         if(++curr_editor_field["freq_editor"] == 3) curr_editor_field["freq_editor"] = 0;
         update_freq_editor_screen();
         return;
+    }
+    if(curr == ui->keys_list_page){
+        if(ui->modals->currentWidget() == ui->keys_list_menu){
+            go_down(ui->keys_list_menu_list, 2);
+            return;
+        }
+        if(++curr_editor_field["keys_list"] == 32) curr_editor_field["keys_list"] = 0;
+        update_keys_list_screen();
+        return;
+    }
+    if(curr == ui->key_editor_page){
+        if(ui->modals->currentWidget() == ui->key_editor_menu){
+            go_down(ui->key_editor_menu_list, 2);
+            return;
+        }
+        if(++curr_editor_field["key_editor"] == 8) curr_editor_field["key_editor"] = 0;
+        update_key_editor_screen();
     }
 }
 
@@ -5807,12 +5958,23 @@ void MainWindow::on_right_tube_released()
             return;
         }
         if(curr == ui->freq_plan_page){
+            ui->modals->setCurrentWidget(ui->no_modals);
             freq_plans_screen();
             return;
         }
         if(curr == ui->freq_editor_page){
+            ui->modals->setCurrentWidget(ui->no_modals);
             freq_plan_screen();
             return;
+        }
+        if(curr == ui->keys_list_page){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            data_editor_screen();
+        }
+        if(curr == ui->key_editor_page){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            generate = false;
+            keys_list_screen();
         }
     }
 }
@@ -5862,7 +6024,6 @@ void MainWindow::on_rec_msgs_right_clicked()
 {
     menu_screen();
 }
-
 
 void MainWindow::on_freq_plans_right_clicked()
 {
@@ -5924,7 +6085,23 @@ void MainWindow::update_freq_plans_screen(){
     ui->scrollArea_2->ensureWidgetVisible(freq_plans[curr_editor_field["freq_plans"]]);
 }
 
+void MainWindow::update_keys_list_screen(){
+    if(ui->modals->currentWidget() == ui->keys_list_menu){
+        ui->keys_list_left->setText("Выбрать");
+        return;
+    }
 
+    ui->keys_list_left->setText("Меню");
+
+    // clear styles
+    for(int i = 0; i < 32; i++){
+        keys_list[i]->setStyleSheet("");
+    }
+    // paint chosen
+    keys_list[curr_editor_field["keys_list"]]->setStyleSheet("background: rgb(62, 105, 194);");
+
+    ui->scrollArea_3->ensureWidgetVisible(keys_list[curr_editor_field["keys_list"]]);
+}
 
 void MainWindow::on_freq_plan_right_clicked()
 {
@@ -6072,4 +6249,172 @@ void MainWindow::save_freq_range(){
     t->rssi = -1./4500 * pow(mid - 520, 2) - 50;
     t->dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
     freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.push_back(t);
+}
+
+void MainWindow::on_keys_list_right_clicked()
+{
+    if(ui->modals->currentWidget() != ui->no_modals){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        return;
+    }
+    data_editor_screen();
+}
+
+void MainWindow::on_keys_list_left_clicked()
+{
+    if(ui->modals->currentWidget() == ui->keys_list_menu){
+        // EDIT / ADD
+        if(selected_items["keys_list_menu_list"] == keys_list_menu_list_item[0]){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            key_editor_screen();
+        }
+
+        // DELETE
+        if(selected_items["keys_list_menu_list"] == keys_list_menu_list_item[1]){
+
+        }
+        return;
+    }
+    ui->modals->setCurrentWidget(ui->keys_list_menu);
+}
+
+void MainWindow::key_editor_screen(){
+    ui->mainPages->setCurrentWidget(ui->key_editor_page);
+
+    ui->lineEdit_4->setText("0");
+    ui->lineEdit_5->setText("0");
+    ui->lineEdit_6->setText("0");
+    ui->lineEdit_7->setText("0");
+    ui->lineEdit_8->setText("0");
+    ui->lineEdit_9->setText("0");
+    ui->lineEdit_10->setText("0");
+    ui->lineEdit_11->setText("0");
+
+    ui->label_184->setText("0");
+    ui->label_187->setText("0");
+    ui->label_193->setText("0");
+    ui->label_175->setText("0");
+    ui->label_190->setText("0");
+    ui->label_178->setText("0");
+    ui->label_181->setText("0");
+    ui->label_196->setText("0");
+
+    ui->label_172->setText("CRC: 0");
+
+    update_key_editor_screen();
+}
+
+void MainWindow::update_key_editor_screen(){
+    // clear
+    ui->widget_97->setStyleSheet("background: white;");
+    ui->widget_90->setStyleSheet("background: white;");
+    ui->widget_91->setStyleSheet("background: white;");
+    ui->widget_92->setStyleSheet("background: white;");
+    ui->widget_93->setStyleSheet("background: white;");
+    ui->widget_94->setStyleSheet("background: white;");
+    ui->widget_95->setStyleSheet("background: white;");
+    ui->widget_96->setStyleSheet("background: white;");
+
+    if(ui->modals->currentWidget() == ui->key_editor_menu){
+        ui->key_editor_left->setText("Выбрать");
+        ui->key_editor_right->setText("Назад");
+        if(generate == true){
+            key_editor_menu_list_item[1]->setIcon(QIcon(":/resources/green-ok.png"));
+        }
+        else{
+            key_editor_menu_list_item[1]->setIcon(QIcon(""));
+        }
+    }
+    else{
+        ui->key_editor_left->setText("Меню");
+        if(generate == true) {
+            ui->key_editor_right->setText("Стоп");
+        }
+        else{
+            ui->key_editor_right->setText("Стереть");
+        }
+    }
+
+    auto k = new Key();
+    for(int i = 0; i < 8; i++){
+        k->values[i] = dynamic_cast<QLineEdit*>(key_editor[i]->children()[2])->text();
+        k->values2[i] = dynamic_cast<QLabel*>(key_editor[i]->children()[3])->text().toInt();
+        k->crc += k->values[i].toInt();
+    }
+    k->crc %= 521;
+
+    ui->label_172->setText(QString("CRC: %1").arg(k->crc));
+    delete k;
+    k = nullptr;
+
+    key_editor[curr_editor_field["key_editor"]]->setStyleSheet("background: #387ef3;");
+}
+
+void MainWindow::on_key_editor_right_clicked()
+{
+    if(ui->modals->currentWidget() == ui->key_editor_menu){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        update_key_editor_screen();
+        return;
+    }
+    if(generate){
+
+        return;
+    }
+
+    switch (curr_editor_field["key_editor"]) {
+    case 0:
+        ui->lineEdit_4->backspace();
+        break;
+    case 1:
+        ui->lineEdit_5->backspace();
+        break;
+    case 2:
+        ui->lineEdit_6->backspace();
+        break;
+    case 3:
+        ui->lineEdit_7->backspace();
+        break;
+    case 4:
+        ui->lineEdit_8->backspace();
+        break;
+    case 5:
+        ui->lineEdit_9->backspace();
+        break;
+    case 6:
+        ui->lineEdit_10->backspace();
+        break;
+    case 7:
+        ui->lineEdit_11->backspace();
+        break;
+    }
+}
+
+void MainWindow::on_key_editor_left_clicked()
+{
+    if(ui->modals->currentWidget() == ui->key_editor_menu){
+        // SAVE
+        if(ui->key_editor_menu_list->currentItem() == key_editor_menu_list_item[0]){
+            auto k = new Key();
+            for(int i = 0; i < 8; i++){
+                k->values[i] = dynamic_cast<QLineEdit*>(key_editor[i]->children()[2])->text();
+                k->values2[i] = dynamic_cast<QLabel*>(key_editor[i]->children()[3])->text().toInt();
+                k->crc += k->values[i].toInt();
+            }
+            k->crc %= 521;
+
+            keys_vec[curr_editor_field["keys_list"]] = k;
+            keys_list_screen();
+        }
+        // GEN
+        if(ui->key_editor_menu_list->currentItem() == key_editor_menu_list_item[1]){
+            generate = !generate;
+        }
+        ui->modals->setCurrentWidget(ui->no_modals);
+        update_key_editor_screen();
+        return;
+    }
+    ui->modals->setCurrentWidget(ui->key_editor_menu);
+    update_key_editor_screen();
+    return;
 }

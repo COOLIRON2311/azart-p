@@ -56,5 +56,6 @@
         <file>resources/black32.png</file>
         <file>resources/white16.png</file>
         <file>resources/yellow_star.png</file>
+        <file>resources/green-ok.png</file>
     </qresource>
 </RCC>
