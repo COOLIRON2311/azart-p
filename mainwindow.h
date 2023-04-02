@@ -90,6 +90,7 @@ private:
     QAction *showrules;
 
     inline void set_header();
+    /// 0 - configs match, 1 - partial match, -1 - no match
     inline int _check_mode_params();
     /// 0 - configs match, 1 - partial match, -1 - no match
     inline int compare_configs();
