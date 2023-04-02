@@ -2113,6 +2113,45 @@ void MainWindow::on_direction_list_left_clicked()
     }
 }
 
+bool MainWindow::delete_direction(QListWidgetItem *item){
+    if(selected_items["direction_list"] != nullptr){
+        if(direction_map[item].direction->ch){
+            direction_map[item].direction->ch->used_by.erase(direction_map[item].direction);
+            if(direction_map[item].direction->ch->used_by.empty()){
+                auto ch = direction_map[item].direction->ch;
+                for(auto kv : channel_map){
+                    if(kv.second.channel == ch){
+                        kv.first->setIcon(QIcon(":/resources/white16.png"));
+                        kv.second.ref2->setIcon(QIcon(":/resources/white16.png"));
+                        break;
+                    }
+                }
+            }
+        }
+
+        ui->direction_list->removeItemWidget(selected_items["direction_list"]);
+        ui->direction_selection_list->removeItemWidget(direction_map[selected_items["direction_list"]].ref2);
+        direction_map_d.erase(direction_map[selected_items["direction_list"]].ref2);
+
+        if(current_direction == direction_map[selected_items["direction_list"]].direction){
+            current_direction = nullptr;
+        }
+        delete direction_map[selected_items["direction_list"]].direction;
+        delete direction_map[selected_items["direction_list"]].ref2;
+        direction_map.erase(selected_items["direction_list"]);
+
+        delete selected_items["direction_list"];
+
+        // PA: the same in channel actions
+        // selected_items["direction_list"] = direction_map.empty() ? nullptr : direction_map.begin()->first;
+        // ui->direction_list->setCurrentItem(direction_map.empty() ? nullptr : direction_map.begin()->first);
+
+        ui->modals->setCurrentWidget(ui->no_modals);
+        ui->direction_list_left->setText("Меню");
+        //TODO ~update_direction_list
+    }
+}
+
 void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem *item)
 {
     //look at the choice
@@ -2140,47 +2179,14 @@ void MainWindow::on_direction_popup_menu_list_itemDoubleClicked(QListWidgetItem 
 
         ui->modals->setCurrentWidget(ui->no_modals);
         ui->direction_list_left->setText("Меню");
+
+        chosen_ref_d = 0;
+
         direction_editor_screen();
     }
     // DELETE
     if(item == direction_popup_menu_list_item[2]){
-        if(selected_items["direction_list"] != nullptr){
-
-            if(direction_map[item].direction->ch){
-                direction_map[item].direction->ch->used_by.erase(direction_map[item].direction);
-                if(direction_map[item].direction->ch->used_by.empty()){
-                    auto ch = direction_map[item].direction->ch;
-                    for(auto kv : channel_map){
-                        if(kv.second.channel == ch){
-                            kv.first->setIcon(QIcon(":/resources/white16.png"));
-                            kv.second.ref2->setIcon(QIcon(":/resources/white16.png"));
-                            break;
-                        }
-                    }
-                }
-            }
-
-            ui->direction_list->removeItemWidget(selected_items["direction_list"]);
-            ui->direction_selection_list->removeItemWidget(direction_map[selected_items["direction_list"]].ref2);
-            direction_map_d.erase(direction_map[selected_items["direction_list"]].ref2);
-
-            if(current_direction == direction_map[selected_items["direction_list"]].direction){
-                current_direction = nullptr;
-            }
-            delete direction_map[selected_items["direction_list"]].direction;
-            delete direction_map[selected_items["direction_list"]].ref2;
-            direction_map.erase(selected_items["direction_list"]);
-
-            delete selected_items["direction_list"];
-
-            // PA: the same in channel actions
-            // selected_items["direction_list"] = direction_map.empty() ? nullptr : direction_map.begin()->first;
-            // ui->direction_list->setCurrentItem(direction_map.empty() ? nullptr : direction_map.begin()->first);
-
-            ui->modals->setCurrentWidget(ui->no_modals);
-            ui->direction_list_left->setText("Меню");
-            //TODO ~update_direction_list
-        }
+        delete_direction(selected_items["direction_list"]);
     }
 }
 
@@ -2453,6 +2459,8 @@ void MainWindow::on_direction_editor_left_clicked()
     selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
     direction_map[selected_items["direction_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
     direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
+
+    chosen_ref_d = 0;
 
     direction_list_screen();
 }
@@ -3688,6 +3696,7 @@ void MainWindow::on_number_i_clicked(int i)
 }
 
 void go_up(QListWidget* qlw, uint size){
+    if(size == 0) return;
     qlw->setCurrentRow((qlw->currentRow() - 1 + size) % size);
 }
 
@@ -5440,6 +5449,7 @@ void MainWindow::on_up_arrow_clicked()
 }
 
 void go_down(QListWidget* qlw, uint size){
+    if(size == 0) return;
     qlw->setCurrentRow((qlw->currentRow() + 1) % size);
 }
 
@@ -5912,6 +5922,11 @@ void MainWindow::on_right_tube_released()
             return;
         }
         if(curr == ui->direction_editor_page){
+            if(ui->modals->currentWidget() == ui->no_modals){
+                delete_direction(selected_items["direction_list"]);
+                direction_list_screen();
+            }
+            ui->modals->setCurrentWidget(ui->no_modals);
             return;
         }
 

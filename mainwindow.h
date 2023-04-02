@@ -148,6 +148,7 @@ private slots:
     void on_data_editor_right_clicked(); //
 
     bool delete_channel(QListWidgetItem *item);
+    bool delete_direction(QListWidgetItem *item);
 
     void on_channel_popup_menu_list_itemDoubleClicked(QListWidgetItem *item);
 

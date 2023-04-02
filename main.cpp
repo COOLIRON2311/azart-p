@@ -9,8 +9,7 @@ int main(int argc, char *argv[])
     w.show();
     w.setup();
     //w.off_screen();
-    //w.channel_list_screen();
-    w.keys_list_screen();
+    w.channel_list_screen();
     w.rdwin.hide();
     return a.exec();
 }
