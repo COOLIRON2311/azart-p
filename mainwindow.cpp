@@ -509,6 +509,8 @@ MainWindow::MainWindow(QWidget *parent) :
                           ui->widget_95,
                           ui->widget_96
                       });
+
+    update_mask_key_popup_list();
 }
 
 void MainWindow::setup(){
@@ -799,6 +801,11 @@ void MainWindow::on_keys_list_menu_list_itemSelectionChanged()
 void MainWindow::on_key_editor_menu_list_itemSelectionChanged()
 {
     selected_items["key_editor_menu_list"] = ui->key_editor_menu_list->currentItem();
+}
+
+void MainWindow::on_mask_key_popup_list_itemSelectionChanged()
+{
+    selected_items["mask_key_popup_list"] = ui->mask_key_popup_list->currentItem();
 }
 
 bool check_password(const QString &pw){
@@ -1154,6 +1161,8 @@ void MainWindow::set_default_channel_fields(){
     ui->dmo_n_retr->setText("");
     ui->dmo_mask->setChecked(false);
     ui->dmo_mask_key->setText("Нет");
+    ui->dmo_mask_key->setProperty("chosen", 0);
+    ui->mask_key_popup_list->setCurrentRow(0);
     ui->dmo_name->setText("");
 
     // tmo
@@ -1163,6 +1172,8 @@ void MainWindow::set_default_channel_fields(){
     ui->tmo_vesh->setChecked(false);
     ui->tmo_mask->setChecked(false);
     ui->tmo_mask_key->setText("Нет");
+    ui->tmo_mask_key->setProperty("chosen", 0);
+    ui->mask_key_popup_list->setCurrentRow(0);
     ui->tmo_name->setText("");
 
     // vpd
@@ -1254,7 +1265,9 @@ void MainWindow::channel_editor_screen()
         ui->dmo_prd_net->setText(curr->prd_net);
         ui->dmo_n_retr->setText(curr->n_retr);
         ui->dmo_mask->setChecked(curr->mask);
-        ui->dmo_mask_key->setText(curr->mask_key);
+        ui->dmo_mask_key->setProperty("chosen", curr->mask_key);
+        ui->dmo_mask_key->setText(curr->mask_key == 0 ? QString("Нет") : QString("%1 Ключ").arg(curr->mask_key));
+        ui->mask_key_popup_list->setCurrentRow(0); // вообще немного другое должно быть, но мне лень опять в цикле искать
         ui->dmo_name->setText(curr->name);
         break;
     }
@@ -1266,7 +1279,9 @@ void MainWindow::channel_editor_screen()
         ui->tmo_vesh->setChecked(curr->vesh);
         ui->tmo_mask->setChecked(curr->mask);
         ui->tmo_name->setText(curr->name);
-        //tmo_mask_key->setText(curr-> ? ); TODO
+        ui->tmo_mask_key->setProperty("chosen", curr->mask_key);
+        ui->tmo_mask_key->setText(curr->mask_key == 0 ? QString("Нет") : QString("%1 Ключ").arg(curr->mask_key));
+        ui->mask_key_popup_list->setCurrentRow(0); // вообще немного другое должно быть, но мне лень опять в цикле искать
         break;
     }
     case 3: // vpd
@@ -1339,6 +1354,18 @@ void MainWindow::channel_editor_screen()
     curr_editor_field[channel_types[curr->state]] = 0;
 
     update_channel_editor_page();
+}
+
+template<typename T>
+int n_not_0(std::vector<T*> v, int n){
+    for(int i = 0; i < 32; i++){
+        if(v[i]){
+            if(n-- == 0){
+                return i;
+            }
+        }
+    }
+    return 0;
 }
 
 void MainWindow::on_channel_editor_right_clicked()
@@ -1430,7 +1457,12 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->dmo_mask->toggle();
             break;
         case 21:
-            //ui->dmo_mask_key
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->mask_key_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 22:
             ui->dmo_name->backspace();
@@ -1467,7 +1499,12 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->tmo_mask->toggle();
             break;
         case 7:
-            //ui->tmo_mask_key
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->mask_key_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 8:
             ui->tmo_name->backspace();
@@ -1703,6 +1740,38 @@ void MainWindow::on_channel_editor_left_clicked()
         }
     }
 
+    if(ui->channel_editor_state->property("chosen") == 1){
+        if(ui->modals->currentWidget() == ui->mask_key_popup){
+            int t = ui->mask_key_popup_list->currentRow();
+            ui->dmo_mask_key->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(keys_vec, t - 1));
+            if(t == 0){
+                ui->dmo_mask_key->setText("Нет");
+            }
+            else{
+                ui->dmo_mask_key->setText(QString::number(ui->dmo_mask_key->property("chosen").toInt()));
+            }
+            ui->modals->setCurrentWidget(ui->no_modals);
+            update_channel_editor_page();
+            return;
+        }
+    }
+
+    if(ui->channel_editor_state->property("chosen") == 2){
+        if(ui->modals->currentWidget() == ui->mask_key_popup){
+            int t = ui->mask_key_popup_list->currentRow();
+            ui->tmo_mask_key->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(keys_vec, t - 1));
+            if(t == 0){
+                ui->tmo_mask_key->setText("Нет");
+            }
+            else{
+                ui->tmo_mask_key->setText(QString::number(ui->tmo_mask_key->property("chosen").toInt()));
+            }
+            ui->modals->setCurrentWidget(ui->no_modals);
+            update_channel_editor_page();
+            return;
+        }
+    }
+
     if(ui->channel_editor_state->property("chosen") == 4){
         //nothing
     }
@@ -1755,10 +1824,6 @@ void MainWindow::on_channel_editor_left_clicked()
         u32 mnc = ui->dmo_mnc->text().toInt();
         u32 gssi = ui->dmo_gssi->text().toInt();
         if (!in_range(mcc, 0, 1000) || !in_range(mnc, 0, 1000) || !in_range(gssi, 0, 16777216))
-        {
-            ERR
-        }
-        if (ui->tmo_name->text().isEmpty())
         {
             ERR
         }
@@ -1973,12 +2038,12 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->prd_net = ui->dmo_prd_net->text().trimmed();
         curr->n_retr = ui->dmo_n_retr->text().trimmed();
         curr->mask = ui->dmo_mask->isChecked();
-        curr->mask_key = ui->dmo_mask_key->text().trimmed();
+        curr->mask_key = ui->dmo_mask_key->property("chosen").toInt();
 
         if(ui->dmo_name->text().isEmpty()){
-
+            curr->name = "DMO N" + curr->gssi;
         }else{
-            ui->dmo_name->setText(curr->name);
+            curr->name = ui->dmo_name->text();
         }
         break;
     }
@@ -1990,6 +2055,7 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->gssi = ui->tmo_gssi->text().trimmed();
         curr->vesh = ui->tmo_vesh->isChecked();
         curr->mask = ui->tmo_mask->isChecked();
+        curr->mask_key = ui->tmo_mask_key->property("chosen").toInt();
         if(ui->tmo_name->text().isEmpty()){
             curr->name = "TMO N" + curr->gssi;
         }else{
@@ -4030,8 +4096,16 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 21:
             ui->dmo_mask_key->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
+
             ui->scrollArea->ensureWidgetVisible(ui->widget_53, 0, 10);
             break;
         case 22:
@@ -4248,8 +4322,14 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 7:
             ui->tmo_mask_key->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
             break;
         case 8:
             ui->tmo_name->setStyleSheet("border: 2px solid black; background: white;");
@@ -5258,6 +5338,13 @@ void MainWindow::on_up_arrow_clicked()
 
         // tetra dmo
         if(ui->channel_editor_state->property("chosen") == 1){
+
+            if(ui->modals->currentWidget() == ui->mask_key_popup){
+                go_up(ui->mask_key_popup_list, ui->mask_key_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
+
             uint sz = editor_fields["dmo"].size();
             curr_editor_field["dmo"] = (curr_editor_field["dmo"] - 1 + sz) % sz;
             while(!dmo_fields.at(curr_editor_field["dmo"])->isVisible()){
@@ -5270,6 +5357,12 @@ void MainWindow::on_up_arrow_clicked()
 
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
+            if(ui->modals->currentWidget() == ui->mask_key_popup){
+                go_up(ui->mask_key_popup_list, ui->mask_key_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
+
             uint sz = editor_fields["tmo"].size();
             curr_editor_field["tmo"] = (curr_editor_field["tmo"] - 1 + sz) % sz;
 
@@ -5568,10 +5661,17 @@ void MainWindow::on_down_arrow_clicked()
 
         // tetra dmo
         if(ui->channel_editor_state->property("chosen") == 1){
+
+            if(ui->modals->currentWidget() == ui->mask_key_popup){
+                go_down(ui->mask_key_popup_list, ui->mask_key_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
+
             uint sz = editor_fields["dmo"].size();
             curr_editor_field["dmo"] = (curr_editor_field["dmo"] + 1) % sz;
             while(!dmo_fields.at(curr_editor_field["dmo"])->isVisible()){
-                qDebug() << dmo_fields.at(curr_editor_field["dmo"])->objectName();
+                //qDebug() << dmo_fields.at(curr_editor_field["dmo"])->objectName();
                 curr_editor_field["dmo"] = (curr_editor_field["dmo"] + 1) % sz;
             }
 
@@ -5581,6 +5681,13 @@ void MainWindow::on_down_arrow_clicked()
 
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
+
+            if(ui->modals->currentWidget() == ui->mask_key_popup){
+                go_down(ui->mask_key_popup_list, ui->mask_key_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
+
             uint sz = editor_fields["tmo"].size();
             curr_editor_field["tmo"] = (curr_editor_field["tmo"] + 1) % sz;
 
@@ -6404,6 +6511,17 @@ void MainWindow::on_key_editor_right_clicked()
     }
 }
 
+void MainWindow::update_mask_key_popup_list(){
+    ui->mask_key_popup_list->clear();
+    ui->mask_key_popup_list->addItem("Не задано");
+    for(int i = 0; i < 32; i++){
+        if(keys_vec[i]){
+            ui->mask_key_popup_list->addItem(QString("%1 Ключ").arg(i+1));
+        }
+    }
+    ui->mask_key_popup_list->setCurrentRow(0);
+}
+
 void MainWindow::on_key_editor_left_clicked()
 {
     if(ui->modals->currentWidget() == ui->key_editor_menu){
@@ -6418,6 +6536,9 @@ void MainWindow::on_key_editor_left_clicked()
             k->crc %= 521;
 
             keys_vec[curr_editor_field["keys_list"]] = k;
+
+            update_mask_key_popup_list();
+
             keys_list_screen();
         }
         // GEN

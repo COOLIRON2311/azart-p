@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>833</width>
+    <width>769</width>
     <height>989</height>
    </rect>
   </property>
@@ -542,7 +542,7 @@ background: rgb(250, 250, 250)</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>17</number>
       </property>
       <widget class="QWidget" name="key_editor_page">
        <layout class="QVBoxLayout" name="verticalLayout_94">
@@ -1645,8 +1645,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>193</width>
-                  <height>204</height>
+                  <width>88</width>
+                  <height>16</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -7015,7 +7015,7 @@ background: none;</string>
                     <property name="geometry">
                      <rect>
                       <x>0</x>
-                      <y>0</y>
+                      <y>-141</y>
                       <width>183</width>
                       <height>460</height>
                      </rect>
@@ -13838,13 +13838,13 @@ text-align:right;</string>
     <property name="geometry">
      <rect>
       <x>530</x>
-      <y>10</y>
+      <y>20</y>
       <width>195</width>
       <height>250</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>9</number>
+     <number>17</number>
     </property>
     <widget class="QWidget" name="no_modals"/>
     <widget class="QWidget" name="params_error">
@@ -14562,6 +14562,43 @@ QListView::item:selected:!active {
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="mask_key_popup">
+     <widget class="QListWidget" name="mask_key_popup_list">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>30</y>
+        <width>111</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListView {
+    show-decoration-selected: 1; /* make the selection span the entire width of the view */
+	border: 1px solid;
+}
+
+QListView::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #385282, stop: 1 #7597D9);
+	color: #FFFFFF;
+}
+</string>
+      </property>
+      <property name="selectionRectVisible">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QStackedWidget" name="atuners">
     <property name="geometry">
@@ -14767,7 +14804,7 @@ QListView::item:selected:!active {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>833</width>
+     <width>769</width>
      <height>21</height>
     </rect>
    </property>

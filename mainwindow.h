@@ -76,6 +76,8 @@ public Q_SLOTS:
     void update_keys_list_screen();
     void update_key_editor_screen();
 
+    void update_mask_key_popup_list();
+
     void channel_list_screen();
     void direction_list_screen();
 
@@ -289,6 +291,8 @@ private slots:
 
     void on_key_editor_left_clicked();
 
+    void on_mask_key_popup_list_itemSelectionChanged();
+
 private:
     void readIP();
     void on_number_i_clicked(int);
@@ -464,7 +468,7 @@ struct MainWindow::Channel
     QString prm_net = "";
     QString prd_net = "";
     QString n_retr = "";
-    QString mask_key = "";
+    int mask_key = 0;
 
 
     // set default all fields
@@ -502,7 +506,7 @@ struct MainWindow::Channel
         prm_net = "";
         prd_net = "";
         n_retr = "";
-        mask_key = "";
+        mask_key = 0;
     }
 };
 
