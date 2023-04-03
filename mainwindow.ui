@@ -542,7 +542,7 @@ background: rgb(250, 250, 250)</string>
        <number>1</number>
       </property>
       <property name="currentIndex">
-       <number>17</number>
+       <number>20</number>
       </property>
       <widget class="QWidget" name="key_editor_page">
        <layout class="QVBoxLayout" name="verticalLayout_94">

@@ -511,6 +511,9 @@ MainWindow::MainWindow(QWidget *parent) :
                       });
 
     update_mask_key_popup_list();
+
+    ui->direction_selection_list->setIconSize(QSize(32, 32));
+    ui->direction_list->setIconSize(QSize(32, 32));
 }
 
 void MainWindow::setup(){
@@ -2465,9 +2468,9 @@ void MainWindow::on_direction_editor_left_clicked()
         curr->is_idle = true;
         curr->PRD = true;
         selected_items["direction_list"]->setText(curr->name + "\n ");
-        selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
+        selected_items["direction_list"]->setIcon(QIcon(":/resources/black32.png"));
         direction_map[selected_items["direction_list"]].ref2->setText(curr->name);
-        direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
+        direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/black32.png"));
         direction_list_screen();
         return;
     }
@@ -2522,9 +2525,9 @@ void MainWindow::on_direction_editor_left_clicked()
     curr->background = ui->background_dir_picture->property("num").toInt();
 
     selected_items["direction_list"]->setText(curr->name + "\n" + curr->ch->name);
-    selected_items["direction_list"]->setIcon(QIcon(":/resources/picture32.png"));
+    selected_items["direction_list"]->setIcon(QIcon(":/resources/back (" + QString::number(curr->background) + ").png"));
     direction_map[selected_items["direction_list"]].ref2->setText(curr->name); // + "\n" + curr->ch->name
-    direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/picture32.png"));
+    direction_map[selected_items["direction_list"]].ref2->setIcon(QIcon(":/resources/back (" + QString::number(curr->background) + ").png"));
 
     chosen_ref_d = 0;
 
