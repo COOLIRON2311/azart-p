@@ -3595,7 +3595,7 @@ void MainWindow::on_number_i_clicked(int i)
             case 15:
                 addnle(ui->dmo_prd_hz, i);
                 break;
-            case 18:
+            case 19:
                 addnle(ui->dmo_n_retr, i);
                 break;
             }
