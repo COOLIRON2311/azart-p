@@ -511,6 +511,7 @@ MainWindow::MainWindow(QWidget *parent) :
                       });
 
     update_mask_key_popup_list();
+    update_fp_popup_list();
 
     ui->direction_selection_list->setIconSize(QSize(32, 32));
     ui->direction_list->setIconSize(QSize(32, 32));
@@ -809,6 +810,11 @@ void MainWindow::on_key_editor_menu_list_itemSelectionChanged()
 void MainWindow::on_mask_key_popup_list_itemSelectionChanged()
 {
     selected_items["mask_key_popup_list"] = ui->mask_key_popup_list->currentItem();
+}
+
+void MainWindow::on_fp_popup_list_itemSelectionChanged()
+{
+    selected_items["fp_popup_list"] = ui->fp_popup_list->currentItem();
 }
 
 bool check_password(const QString &pw){
@@ -1155,18 +1161,25 @@ void MainWindow::set_default_channel_fields(){
     ui->dmo_f_retr->setText("");
     ui->dmo_tx_dmo->setText("");
     ui->dmo_chp_dmo->setText("Не задано");
+    ui->dmo_chp_dmo->setProperty("chosen", 0);
     ui->dmo_chp_retr->setText("Не задано");
+    ui->dmo_chp_retr->setProperty("chosen", 0);
     ui->dmo_chp_prd->setText("Не задано");
+    ui->dmo_chp_prd->setProperty("chosen", 0);
     ui->dmo_prm_hz->setText("");
     ui->dmo_prd_hz->setText("");
     ui->dmo_prm_net->setText("Не задано");
+    ui->dmo_prm_net->setProperty("chosen", 0);
     ui->dmo_prd_net->setText("Не задано");
+    ui->dmo_prd_net->setProperty("chosen", 0);
     ui->dmo_n_retr->setText("");
     ui->dmo_mask->setChecked(false);
     ui->dmo_mask_key->setText("Нет");
     ui->dmo_mask_key->setProperty("chosen", 0);
-    ui->mask_key_popup_list->setCurrentRow(0);
     ui->dmo_name->setText("");
+
+    ui->mask_key_popup_list->setCurrentRow(0);
+    ui->fp_popup_list->setCurrentRow(0);
 
     // tmo
     ui->tmo_mcc->setText("250");
@@ -1259,19 +1272,27 @@ void MainWindow::channel_editor_screen()
         ui->dmo_f_dmo->setText(curr->f_dmo);
         ui->dmo_f_retr->setText(curr->f_retr);
         ui->dmo_tx_dmo->setText(curr->tx_dmo);
-        ui->dmo_chp_dmo->setText(curr->chp_dmo);
-        ui->dmo_chp_retr->setText(curr->chp_retr);
-        ui->dmo_chp_prd->setText(curr->chp_prd);
+        ui->dmo_chp_dmo->setProperty("chosen", curr->chp_dmo);
+        ui->dmo_chp_dmo->setText(curr->chp_dmo == 0 ? QString("Не задано") : QString("%1 ЧП").arg(curr->chp_dmo));
+        ui->dmo_chp_retr->setProperty("chosen", curr->chp_retr);
+        ui->dmo_chp_retr->setText(curr->chp_retr == 0 ? QString("Не задано") : QString("%1 ЧП").arg(curr->chp_retr));
+        ui->dmo_chp_prd->setProperty("chosen", curr->chp_prd);
+        ui->dmo_chp_prd->setText(curr->chp_prd == 0 ? QString("Не задано") : QString("%1 ЧП").arg(curr->chp_prd));
         ui->dmo_prm_hz->setText(curr->prm_hz);
         ui->dmo_prd_hz->setText(curr->prd_hz);
-        ui->dmo_prm_net->setText(curr->prm_net);
-        ui->dmo_prd_net->setText(curr->prd_net);
+        ui->dmo_prm_net->setProperty("chosen", curr->prm_net);
+        ui->dmo_prm_net->setText(curr->prm_net == 0 ? QString("Не задано") : QString("%1 ЧП").arg(curr->prm_net));
+        ui->dmo_prd_net->setProperty("chosen", curr->prd_net);
+        ui->dmo_prd_net->setText(curr->prd_net == 0 ? QString("Не задано") : QString("%1 ЧП").arg(curr->prd_net));
         ui->dmo_n_retr->setText(curr->n_retr);
         ui->dmo_mask->setChecked(curr->mask);
         ui->dmo_mask_key->setProperty("chosen", curr->mask_key);
         ui->dmo_mask_key->setText(curr->mask_key == 0 ? QString("Нет") : QString("%1 Ключ").arg(curr->mask_key));
-        ui->mask_key_popup_list->setCurrentRow(0); // вообще немного другое должно быть, но мне лень опять в цикле искать
         ui->dmo_name->setText(curr->name);
+
+        ui->mask_key_popup_list->setCurrentRow(0); // вообще немного другое должно быть, но мне лень опять в цикле искать
+        ui->fp_popup_list->setCurrentRow(0); // вообще немного другое должно быть, но мне лень опять в цикле искать
+
         break;
     }
     case 2: // tmo
@@ -1433,13 +1454,28 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->dmo_tx_dmo->backspace();
             break;
         case 12:
-            //ui->dmo_chp_dmo
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->fp_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 13:
-            //ui->dmo_chp_retr
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->fp_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 14:
-            //ui->dmo_chp_prd
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->fp_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 15:
             ui->dmo_prm_hz->backspace();
@@ -1448,10 +1484,20 @@ void MainWindow::on_channel_editor_right_clicked()
             ui->dmo_prd_hz->backspace();
             break;
         case 17:
-            //ui->dmo_prm_net
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->fp_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 18:
-            //ui->dmo_prd_net
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->fp_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 19:
             ui->dmo_n_retr->backspace();
@@ -1757,6 +1803,62 @@ void MainWindow::on_channel_editor_left_clicked()
             update_channel_editor_page();
             return;
         }
+        if(ui->modals->currentWidget() == ui->fp_popup){
+            int t = ui->fp_popup_list->currentRow();
+            switch (curr_editor_field["dmo"]) {
+            case 12:
+                ui->dmo_chp_dmo->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(freq_plan_vec, t - 1));
+                if(t == 0){
+                    ui->dmo_chp_dmo->setText("Не задано");
+                }
+                else{
+                    ui->dmo_chp_dmo->setText(QString("%1 ЧП").arg(ui->dmo_chp_dmo->property("chosen").toInt()));
+                }
+                break;
+            case 13:
+                ui->dmo_chp_retr->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(freq_plan_vec, t - 1));
+                if(t == 0){
+                    ui->dmo_chp_retr->setText("Не задано");
+                }
+                else{
+                    ui->dmo_chp_retr->setText(QString("%1 ЧП").arg(ui->dmo_chp_retr->property("chosen").toInt()));
+                }
+                break;
+            case 14:
+                ui->dmo_chp_prd->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(freq_plan_vec, t - 1));
+                if(t == 0){
+                    ui->dmo_chp_prd->setText("Не задано");
+                }
+                else{
+                    ui->dmo_chp_prd->setText(QString("%1 ЧП").arg(ui->dmo_chp_prd->property("chosen").toInt()));
+                }
+                break;
+            case 17:
+                ui->dmo_prm_net->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(freq_plan_vec, t - 1));
+                if(t == 0){
+                    ui->dmo_prm_net->setText("Не задано");
+                }
+                else{
+                    ui->dmo_prm_net->setText(QString("%1 ЧП").arg(ui->dmo_prm_net->property("chosen").toInt()));
+                }
+                break;
+            case 18:
+                ui->dmo_prd_net->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(freq_plan_vec, t - 1));
+                if(t == 0){
+                    ui->dmo_prd_net->setText("Не задано");
+                }
+                else{
+                    ui->dmo_prd_net->setText(QString("%1 ЧП").arg(ui->dmo_prd_net->property("chosen").toInt()));
+                }
+                break;
+            default:
+                qDebug() << "crit: ui->modals->currentWidget() == ui->fp_popup";
+                break;
+            }
+            ui->modals->setCurrentWidget(ui->no_modals);
+            update_channel_editor_page();
+            return;
+        }
     }
 
     if(ui->channel_editor_state->property("chosen") == 2){
@@ -2032,13 +2134,13 @@ void MainWindow::on_channel_editor_left_clicked()
         curr->f_dmo = ui->dmo_f_dmo->text().trimmed();
         curr->f_retr = ui->dmo_f_retr->text().trimmed();
         curr->tx_dmo = ui->dmo_tx_dmo->text().trimmed();
-        curr->chp_dmo = ui->dmo_chp_dmo->text().trimmed();
-        curr->chp_retr = ui->dmo_chp_retr->text().trimmed();
-        curr->chp_prd = ui->dmo_chp_prd->text().trimmed();
+        curr->chp_dmo = ui->dmo_chp_dmo->property("chosen").toInt();
+        curr->chp_retr = ui->dmo_chp_retr->property("chosen").toInt();
+        curr->chp_prd = ui->dmo_chp_prd->property("chosen").toInt();
         curr->prm_hz = ui->dmo_prm_hz->text().trimmed();
         curr->prd_hz = ui->dmo_prd_hz->text().trimmed();
-        curr->prm_net = ui->dmo_prm_net->text().trimmed();
-        curr->prd_net = ui->dmo_prd_net->text().trimmed();
+        curr->prm_net = ui->dmo_prm_net->property("chosen").toInt();
+        curr->prd_net = ui->dmo_prd_net->property("chosen").toInt();
         curr->n_retr = ui->dmo_n_retr->text().trimmed();
         curr->mask = ui->dmo_mask->isChecked();
         curr->mask_key = ui->dmo_mask_key->property("chosen").toInt();
@@ -4043,20 +4145,38 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 12:
             ui->dmo_chp_dmo->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
             ui->scrollArea->ensureWidgetVisible(ui->widget_41, 0, 10);
             break;
         case 13:
             ui->dmo_chp_retr->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
             ui->scrollArea->ensureWidgetVisible(ui->widget_47, 0, 10);
             break;
         case 14:
             ui->dmo_chp_prd->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Стереть");
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
             ui->scrollArea->ensureWidgetVisible(ui->widget_59, 0, 10);
             break;
         case 15:
@@ -4075,14 +4195,26 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 17:
             ui->dmo_prm_net->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
             ui->scrollArea->ensureWidgetVisible(ui->widget_51, 0, 10);
             break;
         case 18:
             ui->dmo_prd_net->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
             ui->scrollArea->ensureWidgetVisible(ui->widget_52, 0, 10);
             break;
         case 19:
@@ -5348,6 +5480,12 @@ void MainWindow::on_up_arrow_clicked()
                 return;
             }
 
+            if(ui->modals->currentWidget() == ui->fp_popup){
+                go_up(ui->fp_popup_list, ui->fp_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
+
             uint sz = editor_fields["dmo"].size();
             curr_editor_field["dmo"] = (curr_editor_field["dmo"] - 1 + sz) % sz;
             while(!dmo_fields.at(curr_editor_field["dmo"])->isVisible()){
@@ -5667,6 +5805,12 @@ void MainWindow::on_down_arrow_clicked()
 
             if(ui->modals->currentWidget() == ui->mask_key_popup){
                 go_down(ui->mask_key_popup_list, ui->mask_key_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
+
+            if(ui->modals->currentWidget() == ui->fp_popup){
+                go_down(ui->fp_popup_list, ui->fp_popup_list->count());
                 update_channel_editor_page();
                 return;
             }
@@ -6293,6 +6437,7 @@ void MainWindow::on_freq_editor_left_clicked()
     if(ui->modals->currentWidget() == ui->params_error){
         return;
     }
+    update_fp_popup_list();
     freq_plan_screen();
 }
 
@@ -6372,7 +6517,7 @@ void MainWindow::save_freq_range(){
     double mid = (left + right) / 2000000.;
     t->rssi = -1./4500 * pow(mid - 520, 2) - 50;
     t->dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
-    freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.push_back(t);
+    freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.push_back(t);    
 }
 
 void MainWindow::on_keys_list_right_clicked()
@@ -6555,4 +6700,15 @@ void MainWindow::on_key_editor_left_clicked()
     ui->modals->setCurrentWidget(ui->key_editor_menu);
     update_key_editor_screen();
     return;
+}
+
+void MainWindow::update_fp_popup_list(){
+    ui->fp_popup_list->clear();
+    ui->fp_popup_list->addItem("Не задано");
+    for(int i = 0; i < 32; i++){
+        if(freq_plan_vec[i]){
+            ui->fp_popup_list->addItem(QString("%1 ЧП").arg(i+1));
+        }
+    }
+    ui->fp_popup_list->setCurrentRow(0);
 }

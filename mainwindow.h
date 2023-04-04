@@ -77,6 +77,7 @@ public Q_SLOTS:
     void update_key_editor_screen();
 
     void update_mask_key_popup_list();
+    void update_fp_popup_list();
 
     void channel_list_screen();
     void direction_list_screen();
@@ -293,6 +294,8 @@ private slots:
 
     void on_mask_key_popup_list_itemSelectionChanged();
 
+    void on_fp_popup_list_itemSelectionChanged();
+
 private:
     void readIP();
     void on_number_i_clicked(int);
@@ -460,13 +463,13 @@ struct MainWindow::Channel
     QString f_retr = "";
     QString tx_dmo = "";
 
-    QString chp_dmo = "";
-    QString chp_retr = "";
-    QString chp_prd = "";
+    int chp_dmo = 0;
+    int chp_retr = 0;
+    int chp_prd = 0;
     QString prm_hz = "";
     QString prd_hz = "";
-    QString prm_net = "";
-    QString prd_net = "";
+    int prm_net = 0;
+    int prd_net = 0;
     QString n_retr = "";
     int mask_key = 0;
 
@@ -498,13 +501,13 @@ struct MainWindow::Channel
         f_retr = "";
         tx_dmo = "";
 
-        chp_dmo = "";
-        chp_retr = "";
-        chp_prd = "";
+        chp_dmo = 0;
+        chp_retr = 0;
+        chp_prd = 0;
         prm_hz = "";
         prd_hz = "";
-        prm_net = "";
-        prd_net = "";
+        prm_net = 0;
+        prd_net = 0;
         n_retr = "";
         mask_key = 0;
     }
