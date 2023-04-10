@@ -71,7 +71,7 @@ void MainWindow::readIP()
     QTextStream in(&file);
     ADDR = in.readLine().trimmed();
     file.close();
-//    qDebug() << ADDR;
+    qDebug() << ADDR;
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -2284,7 +2284,7 @@ void MainWindow::on_direction_list_left_clicked()
     }
 }
 
-bool MainWindow::delete_direction(QListWidgetItem *item){
+void MainWindow::delete_direction(QListWidgetItem *item){
     if(selected_items["direction_list"] != nullptr){
         if(direction_map[item].direction->ch){
             direction_map[item].direction->ch->used_by.erase(direction_map[item].direction);
@@ -3067,8 +3067,7 @@ void MainWindow::broadcast_init()
 {
     udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
     udpSocket.joinMulticastGroup(QHostAddress(ADDR));
-    connect(&udpSocket, &QUdpSocket::readyRead,
-            this, &MainWindow::recieveDatagrams);
+    connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
 
     QAudioFormat format_in;
     format_in.setSampleRate(8000);
@@ -3101,7 +3100,7 @@ void MainWindow::broadcast_init()
 
     outpDev = outp->start();
 
-    connect(&udpSocket, SIGNAL(readyRead()), this, SLOT(recieveDatagrams()), Qt::QueuedConnection);
+    //connect(&udpSocket, &QIODevice::bytesWritten, this, &MainWindow::recieveDatagrams, Qt::QueuedConnection);
 }
 
 void MainWindow::hide_dej_labels(){
@@ -3210,9 +3209,12 @@ int MainWindow::compare_configs()
 }
 
 void MainWindow::recieveDatagrams()
-{
-    if (transmitting)
+{    
+    qDebug() << "a try to receive a datagrams";
+    if (transmitting){
+        qDebug() << "is transmitting -> reject";
         return;
+    }
 
     QByteArray datagram;
     while (udpSocket.hasPendingDatagrams()) {
@@ -3307,6 +3309,10 @@ void MainWindow::setTransmitting(){
                            "}");
         ui->forb_transm_label->setText("ЗАПРЕЩЕНА ПЕРЕДАЧА");
     }
+    else{
+        ui->dej->setStyleSheet("#dej { background:white; }");
+        ui->forb_transm_label->setText("");
+    }
 
     if(current_direction->is_idle){
         ui->dej_label_1->setText("");
@@ -3374,6 +3380,8 @@ void MainWindow::on_talk_button_pressed()
 
             if(current_direction->PRD || current_direction->ch->PRD) return;
 
+            qDebug() << "123";
+
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
                                this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
@@ -3385,18 +3393,15 @@ void MainWindow::on_talk_button_released()
 {
     if(current_direction != nullptr && current_direction->ch != nullptr)
     {
-        if(true)
-        {
-            transmitting = false;
-            ui->modals->setCurrentWidget(ui->no_modals);
-            if(!current_direction->is_idle) show_dej_labels();
+        transmitting = false;
+        ui->modals->setCurrentWidget(ui->no_modals);
+        if(!current_direction->is_idle) show_dej_labels();
 
-            if(current_direction->PRD || current_direction->ch->PRD) return;
+        if(current_direction->PRD || current_direction->ch->PRD) return;
 
-            inptDev->close();
-            inpt->stop();
-            disconnect(inptConn);
-        }
+        inptDev->close();
+        inpt->stop();
+        disconnect(inptConn);
     }
 }
 
@@ -5818,7 +5823,6 @@ void MainWindow::on_down_arrow_clicked()
             uint sz = editor_fields["dmo"].size();
             curr_editor_field["dmo"] = (curr_editor_field["dmo"] + 1) % sz;
             while(!dmo_fields.at(curr_editor_field["dmo"])->isVisible()){
-                //qDebug() << dmo_fields.at(curr_editor_field["dmo"])->objectName();
                 curr_editor_field["dmo"] = (curr_editor_field["dmo"] + 1) % sz;
             }
 
