@@ -107,6 +107,7 @@ private:
 
     void setReceiving();
     void setTransmitting();
+    void reset_socket();
 
     size_t receivedPackets = 0;
 

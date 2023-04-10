@@ -3431,7 +3431,6 @@ void MainWindow::on_talk_button_released()
         inpt->stop();
         disconnect(inptConn);
         reset_socket();
-
     }
 }
 
