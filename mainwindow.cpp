@@ -3356,6 +3356,7 @@ void MainWindow::setTransmitting(){
 
 void MainWindow::reset_socket()
 {
+    disconnect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
     udpSocket.close();
     udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
     udpSocket.joinMulticastGroup(QHostAddress(ADDR));
