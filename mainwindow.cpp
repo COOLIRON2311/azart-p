@@ -3356,7 +3356,21 @@ void MainWindow::setTransmitting(){
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    Q_UNUSED(event);
+    if (event->key() == Qt::Key_F1)
+    {
+        bool ok;
+        QString text = QInputDialog::getText(this, "Адрес сети",
+                                             tr("Введите адрес:"), QLineEdit::Normal,
+                                             ADDR, &ok);
+        if (ok && !text.isEmpty())
+        {
+            ADDR = text;
+            udpSocket.close();
+            udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
+            udpSocket.joinMulticastGroup(QHostAddress(ADDR));
+            connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
+        }
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
