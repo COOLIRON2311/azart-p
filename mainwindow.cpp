@@ -3211,7 +3211,7 @@ int MainWindow::compare_configs()
 void MainWindow::recieveDatagrams()
 {    
     qDebug() << "a try to receive a datagrams";
-    if (transmitting){
+    if (transmitting) {
         qDebug() << "is transmitting -> reject";
         return;
     }
@@ -3354,9 +3354,19 @@ void MainWindow::setTransmitting(){
     }
 }
 
+void MainWindow::reset_socket()
+{
+    udpSocket.close();
+    udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
+    udpSocket.joinMulticastGroup(QHostAddress(ADDR));
+    connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_F1)
+    switch (event->key())
+    {
+    case Qt::Key_F1:
     {
         bool ok;
         QString text = QInputDialog::getText(this, "Адрес сети",
@@ -3365,11 +3375,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if (ok && !text.isEmpty())
         {
             ADDR = text;
-            udpSocket.close();
-            udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
-            udpSocket.joinMulticastGroup(QHostAddress(ADDR));
-            connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
+            reset_socket();
         }
+        break;
+    }
+    case Qt::Key_F2:
+    {
+        reset_socket();
+        break;
+    }
     }
 }
 
@@ -3416,6 +3430,8 @@ void MainWindow::on_talk_button_released()
         inptDev->close();
         inpt->stop();
         disconnect(inptConn);
+        reset_socket();
+
     }
 }
 
