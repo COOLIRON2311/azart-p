@@ -8,7 +8,7 @@
 #include <map>
 #include <tuple>
 #include <queue>
-#include <QUdpSocket>
+#include <QTcpSocket>
 #include <QAudioInput>
 #include <QAudioOutput>
 #include <qbuffer.h>
@@ -104,7 +104,7 @@ private:
     inline int _check_mode_params();
     /// 0 - configs match, 1 - partial match, -1 - no match
     inline int compare_configs();
-    void sendDatagrams();
+    void sendData();
     void playSamples();
 
     void setReceiving();
@@ -114,7 +114,7 @@ private:
     size_t receivedPackets = 0;
 
 private slots:
-    void recieveDatagrams();
+    void receiveData();
 
     void hide_dej_labels();
 
@@ -413,7 +413,7 @@ private:
     std::vector<Key*> keys_vec = std::vector<Key*>(32, nullptr);
 
 
-    QUdpSocket udpSocket;
+    QTcpSocket *sock;
     QString ADDR;
     const uint PORT = 52130;
     bool transmitting = false;
@@ -424,8 +424,7 @@ private:
     QByteArray buffer;
     QMetaObject::Connection inptConn;
     QMetaObject::Connection outpConn;
-    const uint BUF_SZ = 1024;
-    char freq_bytes[4];
+    const uint BUF_SZ = 2048;
 
     int volume = 6;
     int MAX_VOLUME = 16;

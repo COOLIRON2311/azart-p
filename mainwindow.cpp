@@ -550,7 +550,6 @@ void MainWindow::show_rules()
 MainWindow::~MainWindow()
 {
     delete ui;
-    udpSocket.leaveMulticastGroup(QHostAddress(ADDR));
     outpDev->close();
 }
 
@@ -1949,7 +1948,7 @@ void MainWindow::on_channel_editor_left_clicked()
     switch (state)
     {
     case 0: // none
-        // skip        
+        // skip
         break;
     case 1: // dmo
     {
@@ -2681,7 +2680,7 @@ void MainWindow::on_direction_editor_right_clicked()
         else{
             if(direction_map[selected_items["direction_list"]].direction->is_idle) return;
             //Выбрать
-            ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);            
+            ui->direction_editor_stackedWidget->setCurrentWidget(ui->channel_choice_page);
             update_direction_editor_page();
             return;
         }
@@ -3057,7 +3056,7 @@ void MainWindow::on_direction_selection_left_clicked()
         current_direction = direction_map_d[selected_items["direction_selection_list"]];
         set_header();
         memcpy(_buf, &self, sizeof(Header));
-        //broadcast_init();
+        // broadcast_init();
     }
     else{
         current_direction = nullptr;
@@ -3097,9 +3096,9 @@ void MainWindow::on_direction_selection_list_itemClicked(QListWidgetItem *item)
 
 void MainWindow::broadcast_init()
 {
-    udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
-    udpSocket.joinMulticastGroup(QHostAddress(ADDR));
-    connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
+    sock = new QTcpSocket(this);
+    sock->connectToHost(ADDR, PORT);
+    connect(sock, &QTcpSocket::readyRead, this, &MainWindow::receiveData);
 
     QAudioFormat format_in;
     format_in.setSampleRate(8000);
@@ -3252,22 +3251,17 @@ int MainWindow::compare_configs()
     return -1;
 }
 
-void MainWindow::recieveDatagrams()
-{    
-    qDebug() << "a try to receive a datagrams";
+void MainWindow::receiveData()
+{
     if (transmitting) {
-        qDebug() << "is transmitting -> reject";
         return;
     }
 
-    QByteArray datagram;
-    while (udpSocket.hasPendingDatagrams()) {
-        datagram.resize(int(udpSocket.pendingDatagramSize()));
-        udpSocket.readDatagram(datagram.data(), datagram.size());
+    QByteArray data;
+    while (sock->bytesAvailable() > 0) {
+        data = sock->readAll();
     }
-    memcpy(&corr, datagram.constData(), sizeof (Header));
-//    qDebug() << "self: " << self;
-//    qDebug() << "corr: " << corr;
+    memcpy(&corr, data.constData(), sizeof (Header));
 
     switch (compare_configs())
     {
@@ -3282,7 +3276,7 @@ void MainWindow::recieveDatagrams()
         receivedPackets++;
         connect(t, &QTimer::timeout, this, [t, this](){ hideDej(); t->stop(); });
         t->start(1000);
-        buffer.append(datagram.constData() + sizeof (Header), datagram.size() - sizeof (Header));
+        buffer.append(data.constData() + sizeof (Header), data.size() - sizeof (Header));
         playSamples();
         break;
      case 1: // partial match
@@ -3300,13 +3294,13 @@ void MainWindow::playSamples()
     buffer.clear();
 }
 
-void MainWindow::sendDatagrams()
+void MainWindow::sendData()
 {
-    QByteArray datagram;
-    datagram.append(_buf, sizeof(_buf));
-    datagram.append(inptDev->readAll());
-    udpSocket.writeDatagram(datagram.data(), datagram.size(),
-                            QHostAddress(ADDR), PORT);
+    QByteArray data;
+    data.append(_buf, sizeof(_buf));
+    data.append(inptDev->readAll());
+    sock->write(data.data(), data.size());
+//    sock->waitForBytesWritten();
 }
 
 void MainWindow::setReceiving(){
@@ -3400,11 +3394,11 @@ void MainWindow::setTransmitting(){
 
 void MainWindow::reset_socket()
 {
-    //disconnect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
-    udpSocket.flush();
-    //udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
-    //udpSocket.joinMulticastGroup(QHostAddress(ADDR));
-    //connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
+    disconnect(sock, &QTcpSocket::readyRead, this, &MainWindow::receiveData);
+    delete sock;
+    sock = new QTcpSocket(this);
+    sock->connectToHost(ADDR, PORT);
+    connect(sock, &QTcpSocket::readyRead, this, &MainWindow::receiveData);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -3447,7 +3441,7 @@ void MainWindow::on_talk_button_pressed()
 
             setTransmitting();
             hide_dej_labels();
-            if(ui->mainPages->currentWidget() == ui->main_page){                
+            if(ui->mainPages->currentWidget() == ui->main_page){
                 ui->modals->setCurrentWidget(ui->pr_per);
             }
 
@@ -3457,7 +3451,7 @@ void MainWindow::on_talk_button_pressed()
 
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
-                               this, &MainWindow::sendDatagrams, Qt::QueuedConnection);
+                               this, &MainWindow::sendData, Qt::QueuedConnection);
         }
     }
 }
@@ -3475,7 +3469,7 @@ void MainWindow::on_talk_button_released()
         inptDev->close();
         inpt->stop();
         disconnect(inptConn);
-        reset_socket();
+//        reset_socket();
     }
 }
 
@@ -4977,7 +4971,7 @@ void MainWindow::update_direction_editor_page(){
             }
             ui->direction_editor_right->setText("Назад");
         }
-        else{            
+        else{
             ui->direction_editor_left->setText("Сохранить");
             if(direction_map[selected_items["direction_list"]].direction->is_idle){
                 ui->direction_editor_right->setText("");
@@ -5485,7 +5479,7 @@ void MainWindow::noise_handler(int i){
                 ui->noise->setProperty("from_menu", false);
                 menu_screen();
             }
-        }        
+        }
     }
 }
 
@@ -5838,7 +5832,7 @@ void MainWindow::on_down_arrow_clicked()
         return;
     }
 
-    auto curr = ui->mainPages->currentWidget();    
+    auto curr = ui->mainPages->currentWidget();
     if(curr == ui->loading_page){
         //changing type
         if(is_open_communication){
@@ -6527,7 +6521,7 @@ void MainWindow::on_freq_plan_left_clicked()
         }
         // ADD RANGE
         if(selected_items["fp_popup_menu_list"] == fp_popup_menu_list_item[1]){
-            ui->modals->setCurrentWidget(ui->no_modals);            
+            ui->modals->setCurrentWidget(ui->no_modals);
             freq_editor_screen();
         }
         // DELETE RANGE
@@ -6653,7 +6647,7 @@ void MainWindow::save_freq_range(){
     double mid = (left + right) / 2000000.;
     t->rssi = -1./4500 * pow(mid - 520, 2) - 50;
     t->dist = (int)(-1./4100 * pow(mid - 520, 2) + 100);
-    freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.push_back(t);    
+    freq_plan_vec[curr_editor_field["freq_plans"]]->ranges.push_back(t);
 }
 
 void MainWindow::on_keys_list_right_clicked()

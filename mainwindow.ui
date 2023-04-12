@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>873</width>
+    <width>515</width>
     <height>989</height>
    </rect>
   </property>
@@ -1645,8 +1645,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>88</width>
-                  <height>16</height>
+                  <width>100</width>
+                  <height>30</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -2814,8 +2814,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>88</width>
-                  <height>16</height>
+                  <width>100</width>
+                  <height>30</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -14878,8 +14878,8 @@ QListView::item:selected:!active {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>873</width>
-     <height>21</height>
+     <width>515</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>
