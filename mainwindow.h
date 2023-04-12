@@ -20,6 +20,7 @@
 #include <QList>
 #include <set>
 #include <iomanip>
+#include <QSoundEffect>
 
 namespace Ui {
     class MainWindow;
@@ -30,6 +31,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     Header self; // own config
     Header corr; // correspondent
+
+    QSoundEffect noise_effect;
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
@@ -89,6 +92,8 @@ public Q_SLOTS:
     void direction_selection_screen();
 
     void broadcast_init();
+
+    void update_noise();
 
 private:
     char _buf[sizeof (Header)];
@@ -525,6 +530,7 @@ struct MainWindow::Direction
 {
     bool is_idle = false;
     int noise = 2;
+    int noiselevel = rand() % 4 + 4;
 
     Channel* ch = nullptr;
     bool PRD = false;

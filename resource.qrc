@@ -58,5 +58,6 @@
         <file>resources/yellow_star.png</file>
         <file>resources/green-ok.png</file>
         <file>resources/text.html</file>
+        <file>resources/shum.wav</file>
     </qresource>
 </RCC>

@@ -14830,7 +14830,7 @@ QListView::item:selected:!active {
          <item>
           <widget class="QLabel" name="label_92">
            <property name="styleSheet">
-            <string notr="true">image: url(:/resources/volume_6.png)</string>
+            <string notr="true">image: url(:/resources/volume_2.png)</string>
            </property>
            <property name="text">
             <string/>
@@ -14879,7 +14879,7 @@ QListView::item:selected:!active {
      <x>0</x>
      <y>0</y>
      <width>515</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

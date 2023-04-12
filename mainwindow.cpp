@@ -521,6 +521,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->direction_selection_list->setIconSize(QSize(32, 32));
     ui->direction_list->setIconSize(QSize(32, 32));
+
+    noise_effect.setSource(QUrl::fromLocalFile(":/resources/shum.wav"));
+    noise_effect.setLoopCount(QSoundEffect::Infinite);
+    noise_effect.setVolume(0.25f);
+    //noise_effect.play();
 }
 
 void MainWindow::setup(){
@@ -555,6 +560,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::off_screen(){
     ui->mainPages->setCurrentWidget(ui->offscreen);
+    update_noise();
 }
 
 void MainWindow::selfcontrol_screen()
@@ -643,6 +649,8 @@ void MainWindow::main_screen()
 {
     ui->mainPages->setCurrentWidget(ui->main_page);
 
+    update_noise();
+
     if(current_direction != nullptr && current_direction->is_idle){
         ui->main_background->setStyleSheet("background-color: black");
         hide_dej_labels();
@@ -678,6 +686,9 @@ void MainWindow::main_screen()
 void MainWindow::menu_screen()
 {
     ui->mainPages->setCurrentWidget(ui->menu_page);
+
+    update_noise();
+
     ui->modals->setCurrentWidget(ui->no_modals);
     if(current_direction != nullptr){
         show_dej_labels();
@@ -690,6 +701,8 @@ void MainWindow::menu_screen()
 void MainWindow::service_menu_screen()
 {
     ui->mainPages->setCurrentWidget(ui->service_menu_page);
+
+    update_noise();
     //ui->service_menu_list->setCurrentItem(selected_items["service_menu_list"]);
 }
 
@@ -1970,7 +1983,7 @@ void MainWindow::on_channel_editor_left_clicked()
         {
             ERR
         }
-        if(ui->tmo_net->property("chosen") == 0){
+        if(ui->tmo_net->property("chosen").toInt() == 0){
             ERR
         }
         if(ui->tmo_mask->isChecked() && ui->tmo_mask_key->property("chosen").toInt() == 0){
@@ -3135,6 +3148,22 @@ void MainWindow::broadcast_init()
     outpDev = outp->start();
 
     //connect(&udpSocket, &QIODevice::bytesWritten, this, &MainWindow::recieveDatagrams, Qt::QueuedConnection);
+}
+
+void MainWindow::update_noise(){
+    if(ui->mainPages->currentWidget() != ui->main_page && ui->mainPages->currentWidget() != ui->menu_page){
+        noise_effect.stop();
+        return;
+    }
+
+    if(current_direction == 0 || current_direction->ch == 0 || current_direction->is_idle){
+        noise_effect.stop();
+        return;
+    }
+
+    noise_effect.setVolume(volume / float(MAX_VOLUME));
+    if(current_direction->noise < current_direction->noiselevel) noise_effect.play();
+    else noise_effect.stop();
 }
 
 void MainWindow::hide_dej_labels(){
@@ -5437,6 +5466,7 @@ void MainWindow::update_direction_editor_page(){
 }
 
 void MainWindow::volume_show(){
+    update_noise();
     QTimer *t;
     timers.push(t = new QTimer());
     int i = ui->volume->property("clicked_times").toInt() + 1;
@@ -5446,6 +5476,7 @@ void MainWindow::volume_show(){
 }
 
 void MainWindow::noise_show(){
+    update_noise();
     QTimer *t;
     timers.push(t = new QTimer());
     int i = ui->noise->property("clicked_times").toInt() + 1;
