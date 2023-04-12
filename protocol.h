@@ -91,6 +91,7 @@ struct Header
             }
         }
 */
+        net = 0;
     }
 
 //    operator QString() const
