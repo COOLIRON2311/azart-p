@@ -3450,8 +3450,6 @@ void MainWindow::on_talk_button_pressed()
 
             if(current_direction->PRD || current_direction->ch->PRD) return;
 
-            qDebug() << "123";
-
             inptDev = inpt->start();
             inptConn = connect(inptDev, &QIODevice::readyRead,
                                this, &MainWindow::sendData, Qt::QueuedConnection);
