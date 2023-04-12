@@ -1645,8 +1645,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>100</width>
-                  <height>30</height>
+                  <width>88</width>
+                  <height>16</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -2814,8 +2814,8 @@ background: none;</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>100</width>
-                  <height>30</height>
+                  <width>88</width>
+                  <height>16</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -13844,7 +13844,7 @@ text-align:right;</string>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>19</number>
+     <number>11</number>
     </property>
     <widget class="QWidget" name="no_modals"/>
     <widget class="QWidget" name="params_error">
