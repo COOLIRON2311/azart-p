@@ -1,3 +1,5 @@
+from time import localtime, strftime
+
 from twisted.internet import reactor
 from twisted.internet.protocol import Factory, Protocol
 from twisted.python import failure
@@ -28,21 +30,24 @@ class Line(Protocol):
         self.users = users
         self.ip = None
 
+    def _now(self):
+        return strftime("%H:%M:%S", localtime())
+
     def connectionMade(self):
         self.users.add(self)
         self.ip = self.transport.getPeer().host
-        print(f'{self.ip} подключен')
+        print(f'{self._now()}: {self.ip} подключен')
         return super().connectionMade()
 
     def dataReceived(self, data):
-        # print(f'получено {len(data)}б от {self.ip}')
+        # print(f'{self._now()}: получено {len(data)}б от {self.ip}')
         for u in self.users:
             if u != self:
                 # print(f'отправляю {u.ip}')
                 u.transport.write(data)
 
     def connectionLost(self, reason: failure.Failure = ...):
-        print(f'{self.ip} отключен')
+        print(f'{self._now()}: {self.ip} отключен')
         return super().connectionLost(reason)
 
 

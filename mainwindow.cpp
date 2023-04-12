@@ -410,6 +410,7 @@ MainWindow::MainWindow(QWidget *parent) :
         label_num->setNum(i);
 
         label_num->setMinimumSize(QSize(15, 25));
+        label_num->setMargin(2);
         label_num->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         label_num->setStyleSheet(QString::fromUtf8("background: rgb(141, 192, 255)"));
 
