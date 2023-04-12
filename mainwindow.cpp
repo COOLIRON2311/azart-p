@@ -1973,6 +1973,9 @@ void MainWindow::on_channel_editor_left_clicked()
         if(ui->tmo_net->property("chosen") == 0){
             ERR
         }
+        if(ui->tmo_mask && current_direction->ch->mask_key == 0){
+            ERR
+        }
         /*
         if (ui->tmo_name->text().isEmpty())
         {
@@ -3514,15 +3517,12 @@ void MainWindow::set_header()
     self.freq_band = current_direction->ch->band;
     self.ctcss = current_direction->ch->ctcss;
     // P_1
-    if(current_direction->ch->mask_key > 0 && keys_vec[current_direction->ch->mask_key - 1] != 0){
-        self.speech_mask = true;
+    if(self.speech_mask && keys_vec[current_direction->ch->mask_key - 1] != 0){
         for(int i = 0; i < 8; i++) {
             self.keys[i] = keys_vec[current_direction->ch->mask_key - 1]->values[i].toInt();
         }
     }
-    else{
-        self.speech_mask = false;
-    }
+
     self.net = current_direction->ch->net;
 
     self.pprch = current_direction->ch->pprch;
