@@ -7,8 +7,8 @@ ModalWindowRD::ModalWindowRD(QWidget *parent) :
 {
     ui->setupUi(this);
     auto blank = QPixmap(":/resources/rdblank.png");
-    setMinimumSize(blank.size() / 4);
-    setMaximumSize(blank.size() / 4);
+    setMinimumSize(blank.size() / 2);
+    setMaximumSize(blank.size() / 2);
 }
 
 ModalWindowRD::~ModalWindowRD()
