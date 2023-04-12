@@ -3523,6 +3523,7 @@ void MainWindow::set_header()
     else{
         self.speech_mask = false;
     }
+    self.net = current_direction->ch->net;
 
     self.pprch = current_direction->ch->pprch;
     self.retr = current_direction->ch->retr;
