@@ -1973,7 +1973,7 @@ void MainWindow::on_channel_editor_left_clicked()
         if(ui->tmo_net->property("chosen") == 0){
             ERR
         }
-        if(ui->tmo_mask && current_direction->ch->mask_key == 0){
+        if(ui->tmo_mask->isChecked() && current_direction->ch->mask_key == 0){
             ERR
         }
         /*
