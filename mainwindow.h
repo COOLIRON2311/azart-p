@@ -97,7 +97,9 @@ private:
     QAction *shownorm;
     QAction *showrules;
 
-    inline void set_header();
+    ///0: chp_dmo, 1: chp_retr, 2: chp_prd, 3: prm_net, 4: prd_net
+    void set_header_fr(int idx, int value);
+    void set_header();
     /// 0 - configs match, 1 - partial match, -1 - no match
     inline int _check_mode_params();
     /// 0 - configs match, 1 - partial match, -1 - no match
@@ -298,6 +300,8 @@ private slots:
 
     void on_fp_popup_list_itemSelectionChanged();
 
+    void on_network_popup_list_itemSelectionChanged();
+
 private:
     void readIP();
     void on_number_i_clicked(int);
@@ -475,6 +479,7 @@ struct MainWindow::Channel
     QString n_retr = "";
     int mask_key = 0;
 
+    int net = 0;
 
     // set default all fields
     void clear(){
@@ -512,6 +517,8 @@ struct MainWindow::Channel
         prd_net = 0;
         n_retr = "";
         mask_key = 0;
+
+        net = 0;
     }
 };
 

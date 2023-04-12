@@ -513,6 +513,12 @@ MainWindow::MainWindow(QWidget *parent) :
     update_mask_key_popup_list();
     update_fp_popup_list();
 
+    ui->network_popup_list->addItem("Не задано");
+    for(int i = 0; i < 3; i++){
+        ui->network_popup_list->addItem(QString("Сеть %1").arg(i+1));
+    }
+    ui->network_popup_list->setCurrentRow(0);
+
     ui->direction_selection_list->setIconSize(QSize(32, 32));
     ui->direction_list->setIconSize(QSize(32, 32));
 }
@@ -817,6 +823,11 @@ void MainWindow::on_fp_popup_list_itemSelectionChanged()
     selected_items["fp_popup_list"] = ui->fp_popup_list->currentItem();
 }
 
+void MainWindow::on_network_popup_list_itemSelectionChanged()
+{
+    selected_items["network_popup_list"] = ui->network_popup_list->currentItem();
+}
+
 bool check_password(const QString &pw){
     return true;
 }
@@ -1007,6 +1018,7 @@ void MainWindow::on_service_menu_right_clicked()
     delay(1000);
     ui->modals->setCurrentWidget(ui->no_modals);
     menu_screen();
+    set_header();
 }
 
 void MainWindow::on_service_menu_left_clicked()
@@ -1180,6 +1192,7 @@ void MainWindow::set_default_channel_fields(){
 
     ui->mask_key_popup_list->setCurrentRow(0);
     ui->fp_popup_list->setCurrentRow(0);
+    ui->network_popup_list->setCurrentRow(0);
 
     // tmo
     ui->tmo_mcc->setText("250");
@@ -1297,6 +1310,7 @@ void MainWindow::channel_editor_screen()
     }
     case 2: // tmo
     {
+        ui->tmo_net->setText(ui->network_popup_list->item(curr->net)->text());
         ui->tmo_mcc->setText(curr->mcc);
         ui->tmo_mnc->setText(curr->mnc);
         ui->tmo_gssi->setText(curr->gssi);
@@ -1306,6 +1320,7 @@ void MainWindow::channel_editor_screen()
         ui->tmo_mask_key->setProperty("chosen", curr->mask_key);
         ui->tmo_mask_key->setText(curr->mask_key == 0 ? QString("Нет") : QString("%1 Ключ").arg(curr->mask_key));
         ui->mask_key_popup_list->setCurrentRow(0); // вообще немного другое должно быть, но мне лень опять в цикле искать
+        ui->network_popup_list->setCurrentRow(0); // вообще немного другое должно быть, но мне лень опять в цикле искать
         break;
     }
     case 3: // vpd
@@ -1530,7 +1545,12 @@ void MainWindow::on_channel_editor_right_clicked()
             // skip
             break;
         case 1:
-            // skip
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->modals->setCurrentWidget(ui->network_popup);
+            }
+            else{
+                ui->modals->setCurrentWidget(ui->no_modals);
+            }
             break;
         case 2:
             ui->tmo_mcc->backspace();
@@ -1862,6 +1882,14 @@ void MainWindow::on_channel_editor_left_clicked()
     }
 
     if(ui->channel_editor_state->property("chosen") == 2){
+        if(ui->modals->currentWidget() == ui->network_popup){
+            int t = ui->network_popup_list->currentRow();
+            ui->tmo_net->setText(ui->network_popup_list->currentItem()->text());
+            ui->tmo_net->setProperty("chosen", t);
+            ui->modals->setCurrentWidget(ui->no_modals);
+            update_channel_editor_page();
+            return;
+        }
         if(ui->modals->currentWidget() == ui->mask_key_popup){
             int t = ui->mask_key_popup_list->currentRow();
             ui->tmo_mask_key->setProperty("chosen", t == 0 ? 0 : 1 + n_not_0(keys_vec, t - 1));
@@ -1941,6 +1969,9 @@ void MainWindow::on_channel_editor_left_clicked()
         u32 gssi = ui->tmo_gssi->text().toInt();
         if (!in_range(mcc, 0, 1000) || !in_range(mnc, 0, 1000) || !in_range(gssi, 0, 16777216))
         {
+            ERR
+        }
+        if(ui->tmo_net->property("chosen") == 0){
             ERR
         }
         /*
@@ -2155,6 +2186,7 @@ void MainWindow::on_channel_editor_left_clicked()
     case 2: // tmo
     {
         curr->mode = Mode::TETRA_TMO;
+        curr->net = ui->tmo_net->property("chosen").toInt();
         curr->mcc = ui->tmo_mcc->text().trimmed();
         curr->mnc = ui->tmo_mnc->text().trimmed();
         curr->gssi = ui->tmo_gssi->text().trimmed();
@@ -3132,11 +3164,18 @@ int MainWindow::_check_mode_params()
         switch (self.mode)
         {
         case Mode::TETRA_DMO:
+            if(s.pprch != o.pprch) return -1;
             return 0; // TODO: proper compare
             break;
         case Mode::TETRA_TMO: // gssi?
-            if (s.mcc == o.mcc && s.mnc == o.mnc)
+            if (s.mcc == o.mcc && s.mnc == o.mnc && s.net == o.net && s.speech_mask == o.speech_mask){
+                if(s.speech_mask){
+                    for(int i = 0; i < 8; i++){
+                        if(s.keys[i] != o.keys[i]) return -1;
+                    }
+                }
                 return 0;
+            }
             break;
         case Mode::VPD: // gssi?
             if (s.mcc == o.mcc && s.mnc == o.mnc)
@@ -3171,6 +3210,11 @@ int MainWindow::compare_configs()
 {
     Header& s = self;
     Header& o = corr;
+
+    if (s.mode == o.mode && (s.mode == Mode::TETRA_DMO || s.mode == Mode::TETRA_TMO)){
+        return _check_mode_params();
+    }
+
     if (s.dual_freq) // self is dual freq
     {
         if (o.dual_freq) // other is dual freq
@@ -3356,11 +3400,11 @@ void MainWindow::setTransmitting(){
 
 void MainWindow::reset_socket()
 {
-    disconnect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
-    udpSocket.close();
-    udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
-    udpSocket.joinMulticastGroup(QHostAddress(ADDR));
-    connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
+    //disconnect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
+    udpSocket.flush();
+    //udpSocket.bind(QHostAddress::AnyIPv4, PORT, QUdpSocket::ShareAddress);
+    //udpSocket.joinMulticastGroup(QHostAddress(ADDR));
+    //connect(&udpSocket, &QUdpSocket::readyRead, this, &MainWindow::recieveDatagrams);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -3435,12 +3479,35 @@ void MainWindow::on_talk_button_released()
     }
 }
 
+void MainWindow::set_header_fr(int idx, int value){
+    /*
+    if(value == 0 || freq_plan_vec[value - 1] == 0){
+        for(int i = 0; i < franges; i++){
+            self.frs[idx].lower_freq[i] = 0;
+            self.frs[idx].upper_freq[i] = 0;
+        }
+    }else{
+        for(int i = 0; i < franges; i++){
+            if(freq_plan_vec[value - 1]->ranges.size() <= i){
+                self.frs[idx].lower_freq[i] = 0;
+                self.frs[idx].upper_freq[i] = 0;
+            }
+            else{
+                self.frs[idx].lower_freq[i] = freq_plan_vec[value - 1]->ranges[i]->lower_freq;
+                self.frs[idx].upper_freq[i] = freq_plan_vec[value - 1]->ranges[i]->upper_freq;
+            }
+        }
+    }
+*/
+}
+
 void MainWindow::set_header()
 {
+    self.clear();
+
     if (current_direction == nullptr || current_direction->ch == nullptr)
         return;
 
-    self.clear();
     self.mode = current_direction->ch->mode;
     self.gssi = current_direction->ch->gssi.toInt();
     self.speech_mask = current_direction->ch->mask;
@@ -3452,6 +3519,25 @@ void MainWindow::set_header()
     self.freq = current_direction->ch->freq;
     self.freq_band = current_direction->ch->band;
     self.ctcss = current_direction->ch->ctcss;
+    // P_1
+    if(current_direction->ch->mask_key > 0 && keys_vec[current_direction->ch->mask_key - 1] != 0){
+        self.speech_mask = true;
+        for(int i = 0; i < 8; i++) {
+            self.keys[i] = keys_vec[current_direction->ch->mask_key - 1]->values[i].toInt();
+        }
+    }
+    else{
+        self.speech_mask = false;
+    }
+
+    self.pprch = current_direction->ch->pprch;
+    self.retr = current_direction->ch->retr;
+
+    set_header_fr(0, current_direction->ch->chp_dmo);
+    set_header_fr(1, current_direction->ch->chp_retr);
+    set_header_fr(2, current_direction->ch->chp_prd);
+    set_header_fr(3, current_direction->ch->prm_net);
+    set_header_fr(4, current_direction->ch->prd_net);
 }
 
 //inline int MainWindow::getFreq(){
@@ -4462,8 +4548,14 @@ void MainWindow::update_channel_editor_page(){
             break;
         case 1:
             ui->tmo_net->setStyleSheet("border: 2px solid black; background: white;");
-            ui->channel_editor_left->setText("Сохранить");
-            ui->channel_editor_right->setText("Выбрать");
+            if(ui->modals->currentWidget() == ui->no_modals){
+                ui->channel_editor_left->setText("Сохранить");
+                ui->channel_editor_right->setText("Выбрать");
+            }
+            else{
+                ui->channel_editor_left->setText("Выбрать");
+                ui->channel_editor_right->setText("Назад");
+            }
             break;
         case 2:
             ui->tmo_mcc->setStyleSheet("border: 2px solid black; background: white;");
@@ -5533,6 +5625,11 @@ void MainWindow::on_up_arrow_clicked()
 
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
+            if(ui->modals->currentWidget() == ui->network_popup){
+                go_up(ui->network_popup_list, ui->network_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
             if(ui->modals->currentWidget() == ui->mask_key_popup){
                 go_up(ui->mask_key_popup_list, ui->mask_key_popup_list->count());
                 update_channel_editor_page();
@@ -5863,6 +5960,11 @@ void MainWindow::on_down_arrow_clicked()
         // tetra tmo
         if(ui->channel_editor_state->property("chosen") == 2){
 
+            if(ui->modals->currentWidget() == ui->network_popup){
+                go_down(ui->network_popup_list, ui->network_popup_list->count());
+                update_channel_editor_page();
+                return;
+            }
             if(ui->modals->currentWidget() == ui->mask_key_popup){
                 go_down(ui->mask_key_popup_list, ui->mask_key_popup_list->count());
                 update_channel_editor_page();
@@ -6175,11 +6277,11 @@ void MainWindow::on_right_tube_released()
                 return;
             }
 
-            QTimer *t;
-            timers.push(t = new QTimer());
             ui->modals->setCurrentWidget(ui->wait);
-            connect(t, &QTimer::timeout, this, [t, this](){ ui->modals->setCurrentWidget(ui->no_modals); menu_screen(); t->stop(); });
-            t->start(1000);
+            delay(1000);
+            ui->modals->setCurrentWidget(ui->no_modals);
+            menu_screen();
+            set_header();
             return;
         }
         if(curr == ui->data_editor_page){

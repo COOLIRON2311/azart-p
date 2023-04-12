@@ -18,6 +18,13 @@ enum class Mode : unsigned char {
 
 QDebug& operator<<(QDebug& d, const Mode& m);
 
+#define franges 3
+struct FRs
+{
+    uint32_t lower_freq[franges];
+    uint32_t upper_freq[franges];
+};
+
 struct Header
 {
     Mode mode; // режим работы
@@ -25,15 +32,23 @@ struct Header
     // --------------------
     // TETRA TMO (стр. 147)
     // --------------------
+    uint8_t net;
     uint32_t gssi; // групповой идентификатор (0 - 16777215)
     bool speech_mask; // маскирование речи
+    uint32_t keys[8];
 
     // --------------------
     // TETRA DMO (стр. 148)
     // --------------------
-    uint32_t mcc; // код страны
-    uint32_t mnc; // код сети
+    uint16_t mcc; // код страны
+    uint16_t mnc; // код сети
     // gssi
+
+    bool pprch;
+    bool retr;
+
+    ///0: chp_dmo, 1: chp_retr, 2: chp_prd, 3: prm_net, 4: prd_net
+    //FRs frs[5];
 
     // -----------------------------
     // АМ25(50), ЧМ25(50) (стр. 150)
@@ -55,14 +70,27 @@ struct Header
         mode = Mode::None;
         gssi = 0;
         speech_mask = false;
-        mcc = false;
-        mnc = false;
+        mcc = 0;
+        mnc = 0;
         dual_freq = false;
         recv = 0;
         send = 0;
         freq = 0;
         ctcss = 0.0;
         freq_band = false;
+        for(int i = 0; i < 8; i++){
+            keys[i] = 0;
+        }
+        pprch = false;
+        retr = false;
+        /*
+        for(int j = 0; j < 5; j++){
+            for(int i = 0; i < franges; i++){
+                frs[j].lower_freq[i] = 0;
+                frs[j].upper_freq[i] = 0;
+            }
+        }
+*/
     }
 
 //    operator QString() const
