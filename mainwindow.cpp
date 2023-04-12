@@ -3235,7 +3235,7 @@ int MainWindow::_check_mode_params()
             break;
         }
     }
-    return -1; // modes do not match but we still hear static because freqs match;
+    return 1; // modes do not match but we still hear static because freqs match;
 }
 /// 0 - configs match, 1 - partial match, -1 - no match
 int MainWindow::compare_configs()
@@ -3441,8 +3441,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key_F1:
     {
         bool ok;
-        QString text = QInputDialog::getText(this, "Адрес сети",
-                                             tr("Введите адрес:"), QLineEdit::Normal,
+        QString text = QInputDialog::getText(this, "Адрес",
+                                             tr("Введите адрес сервера:"), QLineEdit::Normal,
                                              ADDR, &ok);
         if (ok && !text.isEmpty())
         {
@@ -6524,10 +6524,10 @@ void MainWindow::update_keys_list_screen(){
 
     // clear styles
     for(int i = 0; i < 32; i++){
-        keys_list[i]->setStyleSheet("");
+        keys_list[i]->setStyleSheet("margin-left: 1;");
     }
     // paint chosen
-    keys_list[curr_editor_field["keys_list"]]->setStyleSheet("background: rgb(62, 105, 194);");
+    keys_list[curr_editor_field["keys_list"]]->setStyleSheet("background: rgb(62, 105, 194); margin-left: 1;");
 
     ui->scrollArea_3->ensureWidgetVisible(keys_list[curr_editor_field["keys_list"]]);
 }

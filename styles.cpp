@@ -131,6 +131,46 @@ void MainWindow::set_styles()
     ui->label_19->setFont(lsf);
     ui->label_20->setFont(lsf);
 
+    // Freq plan page
+    ui->freq_plan_left->setFont(fb);
+    ui->freq_plan_right->setFont(fb);
+
+    // Freq plans page
+    ui->freq_plans_left->setFont(fb);
+    ui->freq_plans_right->setFont(fb);
+
+    // Freq editor page
+    ui->freq_editor_left->setFont(fb);
+    ui->freq_editor_right->setFont(fb);
+
+    // Key editor menu
+    ui->key_editor_left->setFont(fb);
+    ui->key_editor_right->setFont(fb);
+
+    // Keys list
+    ui->keys_list_left->setFont(fb);
+    ui->keys_list_right->setFont(fb);
+
+    // Bluetooth PRM
+    ui->BL_PRM_left->setFont(fb);
+    ui->BL_PRM_right->setFont(fb);
+
+    // RS-485 PRM
+    ui->RS485_PRM_left->setFont(fb);
+    ui->RS485_PRM_right->setFont(fb);
+
+    // RS-485 PRD
+    ui->RS485_PRD_left->setFont(fb);
+    ui->RS485_PRD_right->setFont(fb);
+
+    // Other popups
+    ui->scan_popup->setFont(fpop);
+    ui->channel_popup_menu_list->setFont(fpop);
+    ui->fps_popup_menu_list->setFont(fpop);
+    ui->fp_popup_menu_list->setFont(fpop);
+    ui->keys_list_menu_list->setFont(fpop);
+    ui->key_editor_menu_list->setFont(fpop);
+
     // List styles
     ui->service_menu_list->setItemDelegate(new ListWidgetItemDelegate);
     ui->menu_list->setItemDelegate(new ListWidgetItemDelegate(0.2, 0));
