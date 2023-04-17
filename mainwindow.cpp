@@ -3154,17 +3154,43 @@ void MainWindow::broadcast_init()
 void MainWindow::update_noise(){
     if(ui->mainPages->currentWidget() != ui->main_page && ui->mainPages->currentWidget() != ui->menu_page){
         noise_effect.stop();
+        if(ui->modals->currentWidget() == ui->pr_per){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            show_dej_labels();
+        }
         return;
     }
 
     if(current_direction == 0 || current_direction->ch == 0 || current_direction->is_idle){
         noise_effect.stop();
+        if(ui->modals->currentWidget() == ui->pr_per){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            show_dej_labels();
+        }
+        return;
+    }
+
+    if(transmitting){
+        noise_effect.stop();
         return;
     }
 
     noise_effect.setVolume(volume / float(MAX_VOLUME));
-    if(current_direction->noise < current_direction->noiselevel) noise_effect.play();
-    else noise_effect.stop();
+    if(current_direction->noise < current_direction->noiselevel) {
+        noise_effect.play();
+        hide_dej_labels();
+        setReceiving();
+        ui->modals->setCurrentWidget(ui->pr_per);
+        return;
+    }
+
+    noise_effect.stop();
+    if(!receivedPackets){
+        if(ui->modals->currentWidget() == ui->pr_per){
+            ui->modals->setCurrentWidget(ui->no_modals);
+            show_dej_labels();
+        }
+    }
 }
 
 void MainWindow::hide_dej_labels(){
@@ -3182,7 +3208,7 @@ void MainWindow::show_dej_labels(){
 void MainWindow::hideDej(){
     if(!--receivedPackets){
         ui->modals->setCurrentWidget(ui->no_modals);
-        hide_dej_labels();
+        show_dej_labels();
     }
 }
 
