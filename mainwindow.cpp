@@ -2505,6 +2505,7 @@ void MainWindow::direction_editor_screen()
         ui->channel_in_dir_name->setText("Не задано(Idle)");
         ui->channel_choice_list->setCurrentRow(0);
         ui->direction_editor_stackedWidget->setCurrentWidget(ui->empty_direction_editor_page);
+        update_direction_editor_page();
         return;
     }
     ui->channel_in_dir_name->setText(curr->ch->name);
@@ -2611,6 +2612,7 @@ void MainWindow::on_direction_editor_left_clicked()
     // a try to save without a channel
     if(chosen_ref_d == 0){
         Direction* curr = direction_map[selected_items["direction_list"]].direction;
+        curr->is_new = false;
         curr->ch = new Channel();
         curr->ch->state = 0;
         curr->ch->name = "Канал не определен";
@@ -2653,7 +2655,8 @@ void MainWindow::on_direction_editor_left_clicked()
     }
     // clearing before saving
     curr->clear();
-    // REFACTOR
+
+    curr->is_new = false;
     curr->ch = channel; //channel_map_d[selected_items["channel_choice_list"]];
     curr->ch->used_by.insert(curr);
 
@@ -6384,7 +6387,9 @@ void MainWindow::on_right_tube_released()
         }
         if(curr == ui->direction_editor_page){
             if(ui->modals->currentWidget() == ui->no_modals){
-                delete_direction(selected_items["direction_list"]);
+                if(direction_map[selected_items["direction_list"]].direction->is_new){
+                    delete_direction(selected_items["direction_list"]);
+                }
                 direction_list_screen();
             }
             ui->modals->setCurrentWidget(ui->no_modals);

@@ -529,6 +529,7 @@ struct MainWindow::Channel
 
 struct MainWindow::Direction
 {
+    bool is_new = true;
     bool is_idle = false;
     int noise = 2;
     int noiselevel = rand() % 4 + 4;
