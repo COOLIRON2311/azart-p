@@ -117,6 +117,7 @@ private:
     void reset_socket();
 
     size_t receivedPackets = 0;
+    size_t receivedNoise = 0;
 
 private slots:
     void receiveData();

@@ -3206,7 +3206,7 @@ void MainWindow::show_dej_labels(){
 }
 
 void MainWindow::hideDej(){
-    if(!--receivedPackets){
+    if(!--receivedPackets && !--receivedNoise){
         ui->modals->setCurrentWidget(ui->no_modals);
         show_dej_labels();
     }
@@ -3226,10 +3226,11 @@ int MainWindow::_check_mode_params()
             return 0; // TODO: proper compare
             break;
         case Mode::TETRA_TMO: // gssi?
-            if (s.mcc == o.mcc && s.mnc == o.mnc && s.net == o.net && s.speech_mask == o.speech_mask){
+            if (s.mcc == o.mcc && s.mnc == o.mnc && s.net == o.net){
+                if(s.speech_mask != o.speech_mask) return 1;
                 if(s.speech_mask){
                     for(int i = 0; i < 8; i++){
-                        if(s.keys[i] != o.keys[i]) return -1;
+                        if(s.keys[i] != o.keys[i]) return 1;
                     }
                 }
                 return 0;
@@ -3322,6 +3323,7 @@ void MainWindow::receiveData()
     }
     memcpy(&corr, data.constData(), sizeof (Header));
 
+    QTimer *t;
     switch (compare_configs())
     {
     case 0:  // configs match
@@ -3330,7 +3332,6 @@ void MainWindow::receiveData()
             ui->modals->setCurrentWidget(ui->pr_per);
         }
         hide_dej_labels();
-        QTimer *t;
         timers.push(t = new QTimer());
         receivedPackets++;
         connect(t, &QTimer::timeout, this, [t, this](){ hideDej(); t->stop(); });
@@ -3339,7 +3340,16 @@ void MainWindow::receiveData()
         playSamples();
         break;
      case 1: // partial match
-        // TODO: play static
+        // static
+        setReceiving();
+        if(ui->mainPages->currentWidget() == ui->main_page){
+            ui->modals->setCurrentWidget(ui->pr_per);
+        }
+        hide_dej_labels();
+        timers.push(t = new QTimer());
+        receivedNoise++;
+        connect(t, &QTimer::timeout, this, [t, this](){ hideDej(); t->stop(); });
+        t->start(1000);
         break;
 
      case -1: // no match
