@@ -3327,6 +3327,10 @@ void MainWindow::receiveData()
         return;
     }
 
+    if(ui->mainPages->currentWidget() != ui->main_page && ui->mainPages->currentWidget() != ui->menu_page && ui->mainPages->currentWidget() != ui->direction_selection_page){
+        return;
+    }
+
     QByteArray data;
     while (sock->bytesAvailable() > 0) {
         data = sock->readAll();
@@ -3513,6 +3517,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 
 void MainWindow::on_talk_button_pressed()
 {
+    if(ui->mainPages->currentWidget() != ui->main_page && ui->mainPages->currentWidget() != ui->menu_page && ui->mainPages->currentWidget() != ui->direction_selection_page){
+        return;
+    }
     if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         if(!transmitting)
@@ -3536,6 +3543,9 @@ void MainWindow::on_talk_button_pressed()
 
 void MainWindow::on_talk_button_released()
 {
+    if(ui->mainPages->currentWidget() != ui->main_page && ui->mainPages->currentWidget() != ui->menu_page && ui->mainPages->currentWidget() != ui->direction_selection_page){
+        return;
+    }
     if(current_direction != nullptr && current_direction->ch != nullptr)
     {
         transmitting = false;
