@@ -3071,8 +3071,7 @@ void MainWindow::on_direction_selection_left_clicked()
     if(selected_items["direction_selection_list"] != nullptr)
     {
         current_direction = direction_map_d[selected_items["direction_selection_list"]];
-        set_header();
-        memcpy(_buf, &self, sizeof(Header));
+        set_header();        
         // broadcast_init();
     }
     else{
@@ -3606,6 +3605,8 @@ void MainWindow::set_header()
     set_header_fr(2, current_direction->ch->chp_prd);
     set_header_fr(3, current_direction->ch->prm_net);
     set_header_fr(4, current_direction->ch->prd_net);
+
+    memcpy(_buf, &self, sizeof(Header));
 }
 
 //inline int MainWindow::getFreq(){
