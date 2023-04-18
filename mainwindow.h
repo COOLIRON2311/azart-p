@@ -430,7 +430,7 @@ private:
     QByteArray buffer;
     QMetaObject::Connection inptConn;
     QMetaObject::Connection outpConn;
-    const uint BUF_SZ = 2048;
+    const uint BUF_SZ = 4096;
 
     int volume = 6;
     int MAX_VOLUME = 16;

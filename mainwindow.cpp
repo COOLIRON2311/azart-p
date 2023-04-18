@@ -3206,9 +3206,17 @@ void MainWindow::show_dej_labels(){
 }
 
 void MainWindow::hideDej(){
-    if(!--receivedPackets && !--receivedNoise){
+    if(receivedPackets && !--receivedPackets){
         ui->modals->setCurrentWidget(ui->no_modals);
         show_dej_labels();
+        return;
+    }
+
+    if(receivedNoise && !--receivedNoise){
+        ui->modals->setCurrentWidget(ui->no_modals);
+        show_dej_labels();
+        update_noise();
+        return;
     }
 }
 
@@ -3350,6 +3358,7 @@ void MainWindow::receiveData()
         receivedNoise++;
         connect(t, &QTimer::timeout, this, [t, this](){ hideDej(); t->stop(); });
         t->start(1000);
+        noise_effect.play();
         break;
 
      case -1: // no match
