@@ -3453,32 +3453,39 @@ void MainWindow::setTransmitting(){
     ui->arrow->setStyleSheet("border-image: url(:/resources/per.png)");
 
     Channel *ch = current_direction->ch;
-    auto t = ch->dualfreq ? getFormatFreq(ch->prd_freq) : getFormatFreq(ch->freq);
-    ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
+    auto t = ch->dualfreq ? getFormatFreq(ch->prd_freq) : getFormatFreq(ch->freq);    
     switch (ch->state) {
     case 1:
         ui->dej_label_2->setText(tr("TETRA_DMO"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА "));
         break;
     case 2:
         ui->dej_label_2->setText(tr("TETRA_TMO"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА "));
         break;
     case 3:
         ui->dej_label_2->setText(tr("ВПД"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
         break;
     case 4:
         ui->dej_label_2->setText(tr("АМ25"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
         break;
     case 5:
         ui->dej_label_2->setText(tr("ЧМ25"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
         break;
     case 6:
         ui->dej_label_2->setText(tr("ЧМ50"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
         break;
     case 7:
         ui->dej_label_2->setText(tr("ОБП"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
         break;
     case 8:
         ui->dej_label_2->setText(tr("FM радио"));
+        ui->dej_label_1->setText(tr("ПЕРЕДАЧА ") + t);
         break;
     }
 }
