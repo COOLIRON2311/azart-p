@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Правила ведения переговоров</string>
+   <string>Правила ведения переговоров на средствах связи</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
